@@ -1,0 +1,7 @@
+# Raw data files that exceed GitHub's regular file size limits.
+Waterbase_v2020_1_*.csv
+weather_data.csv
+
+# Python cache files.
+__pycache__/
+*.py[cod]
