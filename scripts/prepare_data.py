@@ -16,13 +16,32 @@ from typing import Iterable
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-RAW_DIR = PROJECT_ROOT
+RAW_DIR = PROJECT_ROOT / "data" / "raw"
 OUTPUT_DIR = PROJECT_ROOT / "data" / "processed"
 
-PLANTS_FILE = RAW_DIR / "conventional_power_plants_DE.csv"
-SPATIAL_FILE = RAW_DIR / "Waterbase_v2020_1_S_WISE6_SpatialObject_DerivedData.csv"
-WATER_FILE = RAW_DIR / "Waterbase_v2020_1_T_WISE6_AggregatedData.csv"
-WEATHER_FILE = RAW_DIR / "weather_data.csv"
+
+def raw_path(preferred_path: Path, legacy_filename: str) -> Path:
+    if preferred_path.exists():
+        return preferred_path
+    return PROJECT_ROOT / legacy_filename
+
+
+PLANTS_FILE = raw_path(
+    RAW_DIR / "power_plants" / "conventional_power_plants_DE.csv",
+    "conventional_power_plants_DE.csv",
+)
+SPATIAL_FILE = raw_path(
+    RAW_DIR / "waterbase" / "Waterbase_v2020_1_S_WISE6_SpatialObject_DerivedData.csv",
+    "Waterbase_v2020_1_S_WISE6_SpatialObject_DerivedData.csv",
+)
+WATER_FILE = raw_path(
+    RAW_DIR / "waterbase" / "Waterbase_v2020_1_T_WISE6_AggregatedData.csv",
+    "Waterbase_v2020_1_T_WISE6_AggregatedData.csv",
+)
+WEATHER_FILE = raw_path(
+    RAW_DIR / "weather" / "weather_data.csv",
+    "weather_data.csv",
+)
 
 
 @dataclass(frozen=True)
