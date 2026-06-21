@@ -1,0 +1,10 @@
+plant_id,plant_name,block_name,state,capacity_mw,commissioned_year,shutdown_year,status,latitude,longitude
+BNA0157,Brokdorf,KBR,Schleswig-Holstein,1410.0,1986,,operating,53.851094999999994,9.345944
+BNA0251,Grohnde,KWG,Niedersachsen,1360.0,1985,,operating,52.035641,9.413497
+BNA0263,Isar 2,KKI 2,Bayern,1410.0,1988,,operating,48.6046,12.295069999999999
+BNA0355,Grafenrheinfeld,KKG,Bayern,1275.0,,2015,shutdown,49.984424,10.181753
+BNA0381,Kernkraft Gundremmingen,B,Bayern,1284.0,1984,2017,shutdown,48.51504,10.401564800000001
+BNA0382,Kernkraft Gundremmingen,C,Bayern,1288.0,1984,,operating,48.51608,10.39822
+BNA0607,Kernkraftwerk Emsland,KKE,Niedersachsen,1336.0,1988,,operating,52.481878,7.3066580000000005
+BNA0686,Gemeinschaftskernkraftwerk Neckarwestheim II,GKN II,Baden-Württemberg,1310.0,1989,,operating,49.041111,9.175
+BNA0802,Kernkraftwerk Philippsburg 2,KKP 2,Baden-Württemberg,1402.0,1985,2019,shutdown,49.252722,8.435436
