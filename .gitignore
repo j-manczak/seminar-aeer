@@ -5,3 +5,10 @@ weather_data.csv
 # Python cache files.
 __pycache__/
 *.py[cod]
+
+# Local OS/editor files.
+.DS_Store
+.idea/
+
+# Generated previews.
+data/processed/did_panel_preview.md
