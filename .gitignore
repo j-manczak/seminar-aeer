@@ -12,3 +12,6 @@ __pycache__/
 
 # Generated previews.
 data/processed/did_panel_preview.md
+
+# Large generated datasets
+data/processed/dwd_kl_daily_near_nuclear.csv

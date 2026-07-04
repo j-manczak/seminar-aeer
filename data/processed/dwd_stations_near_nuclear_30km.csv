@@ -1,0 +1,90 @@
+﻿Stations_id,von_datum,bis_datum,Stationshoehe,geoBreite,geoLaenge,Stationsname,Bundesland,Abgabe,distance_to_nearest_nuclear_km,nearest_nuclear_plant,nearest_nuclear_plant_id
+00172,19690501,19911130,395,52.2486,9.5056,Annaturm,Niedersachsen,Frei,24.5,Grohnde,BNA0251
+00191,19860401,20260702,217,49.9694,9.9114,Arnstein-Müdesheim,Bayern,Frei,19.405,Grafenrheinfeld,BNA0355
+00592,19460101,19621231,10,53.8634,9.7344,Bokel,Schleswig-Holstein,Frei,25.513,Brokdorf,BNA0157
+00648,19630501,20061231,9,53.8551,9.7152,Brande-Hörnerkirchen,Schleswig-Holstein,Frei,24.223,Brokdorf,BNA0157
+00748,19660101,20080930,5,53.8887,9.1411,Brunsbüttel (Schleuse),Schleswig-Holstein,,14.066,Brokdorf,BNA0157
+00982,19470501,20061130,420,48.5701,10.4985,Dillingen/Donau,Bayern,Frei,9.403,Kernkraft Gundremmingen,BNA0381
+00983,20061201,20260702,419,48.5562,10.56,Dillingen/Donau-Fristingen,Bayern,Frei,12.531,Kernkraft Gundremmingen,BNA0381
+01107,19630101,20260702,346,49.852,10.4991,Ebrach,Bayern,Frei,27.075,Grafenrheinfeld,BNA0355
+01254,19470701,20021130,210,49.1307,8.9165,Eppingen,Baden-Württemberg,Frei,21.298,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+01255,20021201,20260702,226,49.1661,8.8483,Eppingen-Elsenz,Baden-Württemberg,Frei,27.546,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+01428,19480101,19571231,230,49.2275,8.0585,Frankweiler,Rheinland-Pfalz,Frei,27.508,Kernkraftwerk Philippsburg 2,BNA0802
+01451,19701101,20260702,2,53.8277,9.2493,Freiburg/Elbe,Niedersachsen,Frei,6.854,Brokdorf,BNA0157
+01667,19480101,20061231,1,53.797,9.4295,Glückstadt,Schleswig-Holstein,Frei,8.14,Brokdorf,BNA0157
+01886,20091126,20260702,444,48.4878,10.2608,Günzburg,Bayern,Frei,10.602,Kernkraft Gundremmingen,BNA0382
+01993,19400101,20260702,68,52.0848,9.3896,Hameln,Niedersachsen,Frei,5.705,Grohnde,BNA0251
+02048,19510101,19591231,3,53.6342,9.6038,Haseldorf,Schleswig-Holstein,Frei,29.482,Brokdorf,BNA0157
+02055,19871113,20141228,292,50.0493,10.4947,Haßfurt,Bayern,Frei,23.495,Grafenrheinfeld,BNA0355
+02080,19350101,20120912,110,49.4206,8.6676,Heidelberg,Baden-Württemberg,Frei,25.128,Kernkraftwerk Philippsburg 2,BNA0802
+02081,19360101,19601231,561,49.3981,8.7252,Königstuhl,Baden-Württemberg,Frei,26.501,Kernkraftwerk Philippsburg 2,BNA0802
+02083,19490101,19581231,110,49.4192,8.6051,Heidelberg-Grenzhof,Baden-Württemberg,Frei,22.222,Kernkraftwerk Philippsburg 2,BNA0802
+02088,19470101,20050430,522,48.6849,10.142,Heidenheim/Brenz,Baden-Württemberg,Frei,26.596,Kernkraft Gundremmingen,BNA0382
+02095,19470701,20031031,167,49.1448,9.2333,Heilbronn,Baden-Württemberg,Frei,12.286,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+02122,19700101,20020531,2,53.9701,9.0095,"Helse, Kr. Dithmarschen",Schleswig-Holstein,Frei,25.705,Brokdorf,BNA0157
+02268,19490101,20061231,265,50.1351,10.5156,Hofheim,Bayern,Frei,29.132,Grafenrheinfeld,BNA0355
+02323,19510101,20260702,110,51.8529,9.4953,"Bevern, Kr. Holzminden",Niedersachsen,Frei,21.079,Grohnde,BNA0251
+02338,19740601,20051223,39,52.3333,7.55,Hopsten (Flugplatz),Nordrhein-Westfalen,Frei,23.354,Kernkraftwerk Emsland,BNA0607
+02429,19880301,20260702,20,53.9897,9.5697,Itzehoe,Schleswig-Holstein,Frei,21.266,Brokdorf,BNA0157
+02522,18760101,20081031,112,49.0373,8.3637,Karlsruhe,Baden-Württemberg,Frei,24.516,Kernkraftwerk Philippsburg 2,BNA0802
+02597,19460101,20260702,282,50.224,10.0792,"Kissingen, Bad",Bayern,Frei,27.625,Grafenrheinfeld,BNA0355
+02600,19821101,20260702,193,49.7363,10.1781,Kitzingen,Bayern,Frei,27.591,Grafenrheinfeld,BNA0355
+02703,19980101,20001010,493,51.855,9.3239,Köterberg,Nordrhein-Westfalen,Frei,21.004,Grohnde,BNA0251
+02761,19510101,19901031,520,48.251,10.4163,Krumbach-Edenhausen,Bayern,Frei,29.38,Kernkraft Gundremmingen,BNA0381
+02783,19660901,19920831,436,48.512,12.1528,Kumhausen,Bayern,Frei,14.685,Isar 2,BNA0263
+02831,19470111,20080331,393,48.5357,12.1132,Landshut,Bayern,Frei,15.42,Isar 2,BNA0263
+02920,19780901,19970630,365,48.7654,12.5121,Leiblfing,Bayern,Frei,23.949,Isar 2,BNA0263
+02926,19710101,19891231,477,48.4333,10.2333,Leipheim (Flugplatz),Bayern,Frei,15.249,Kernkraft Gundremmingen,BNA0382
+03007,19470101,19551231,96,49.4111,8.398,Limburgerhof,Rheinland-Pfalz,Frei,17.819,Kernkraftwerk Philippsburg 2,BNA0802
+03023,19510101,20161231,22,52.5181,7.3081,Lingen,Niedersachsen,Frei,4.029,Kernkraftwerk Emsland,BNA0607
+03076,19470101,19561231,95,49.4606,8.4246,Ludwigshafen-Mundenheim,Rheinland-Pfalz,Frei,23.128,Kernkraftwerk Philippsburg 2,BNA0802
+03135,19550501,19830331,473,49.0643,9.582,Mainhardt-Ziegelbronn,Baden-Württemberg,Frei,29.771,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+03147,19530101,20260702,390,48.7548,12.2118,Mallersdorf-Pfaffenberg-Oberli,Bayern,Frei,17.785,Isar 2,BNA0263
+03254,19730101,20260702,19,52.7155,7.3176,Meppen,Niedersachsen,Frei,25.988,Kernkraftwerk Emsland,BNA0607
+03362,19980101,20260702,243,48.9721,8.8735,Mühlacker,Baden-Württemberg,Frei,23.292,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+03425,19510101,20040531,344,48.9729,9.5712,Murrhardt,Baden-Württemberg,Frei,29.878,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+03485,19910601,20260702,487,48.3114,10.3773,Neuburg/Kammel-Langenhaslach,Bayern,Frei,22.714,Kernkraft Gundremmingen,BNA0381
+03486,19490101,20041231,212,49.2931,9.2722,Neudenau,Baden-Württemberg,Frei,28.897,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+03575,19510101,19821231,163,49.357,8.1405,Neustadt/Weinstraße,Rheinland-Pfalz,Frei,24.325,Kernkraftwerk Philippsburg 2,BNA0802
+03576,19760101,20021031,125,49.3478,8.1822,Neustadt/Weinstraße (Heidehof),Rheinland-Pfalz,Frei,21.188,Kernkraftwerk Philippsburg 2,BNA0802
+03605,19510101,19801031,451,48.5334,10.2427,Niederstotzingen,Baden-Württemberg,Frei,11.614,Kernkraft Gundremmingen,BNA0382
+03640,19360101,20061231,25,52.4123,7.064,Nordhorn-Blanke,Niedersachsen,Frei,18.175,Kernkraftwerk Emsland,BNA0607
+03734,20040701,20260702,232,49.128,9.3525,Obersulm-Willsbach,Baden-Württemberg,Frei,16.138,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+03929,19480101,19850930,100,49.2511,8.4415,Philippsburg,Baden-Württemberg,Frei,0.476,Kernkraftwerk Philippsburg 2,BNA0802
+04174,19710101,20171220,40,52.2887,7.3866,Rheine-Bentlage,Nordrhein-Westfalen,Frei,22.155,Kernkraftwerk Emsland,BNA0607
+04349,19871101,20260702,251,48.9569,9.0711,Sachsenheim,Baden-Württemberg,Frei,12.047,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+04367,19920401,20061231,175,52.0781,9.552,Salzhemmendorf-Lauenstein,Niedersachsen,Frei,10.581,Grohnde,BNA0251
+04391,19510401,19691031,3,53.9878,9.1125,Sankt Michaelisdonn,Schleswig-Holstein,Frei,21.558,Brokdorf,BNA0157
+04442,19810101,20071231,155,51.9119,9.1533,Schieder,Nordrhein-Westfalen,Frei,22.516,Grohnde,BNA0251
+04621,19580501,20031231,240,50.0575,10.216,Schweinfurt-Gartenstadt,Bayern,Frei,8.486,Grafenrheinfeld,BNA0355
+04886,19751101,20070526,3,53.8333,9.3667,Störsperrwerk,Schleswig-Holstein,,2.402,Brokdorf,BNA0157
+04926,19460101,20130514,224,48.7896,9.2167,Stuttgart (Neckartal),Baden-Württemberg,Frei,28.132,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+04928,19580101,20260702,314,48.8281,9.2,Stuttgart (Schnarrenberg),Baden-Württemberg,Frei,23.756,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+04929,19840901,19850531,311,48.8333,9.2,Stuttgart (Schnarrenberg Aero),Baden-Württemberg,Frei,23.18,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+05032,19860501,20031231,197,49.885,9.8469,Thüngersheim,Bayern,Frei,26.393,Grafenrheinfeld,BNA0355
+05252,19470101,19571231,100,52.103,9.5845,Voldagsen,Niedersachsen,Frei,13.882,Grohnde,BNA0251
+05275,19851001,20260702,105,49.2445,8.5374,Waghäusel-Kirrlach,Baden-Württemberg,Frei,7.457,Kernkraftwerk Philippsburg 2,BNA0802
+05284,19780101,19911231,224,48.8279,9.3228,Waiblingen,Baden-Württemberg,Frei,26.05,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+05426,19530101,20260702,553,49.3758,8.1212,Weinbiet,Rheinland-Pfalz,Frei,26.574,Kernkraftwerk Philippsburg 2,BNA0802
+05429,19530101,19840630,219,49.1512,9.292,Weinsberg,Baden-Württemberg,Frei,14.914,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+05488,19490101,19860331,216,49.9622,10.0482,"Mühlhausen, Kr. Schweinfurt",Bayern,Frei,9.865,Grafenrheinfeld,BNA0355
+05703,19510101,19860131,170,49.7964,9.8949,Würzburg/Main,Bayern,Frei,29.315,Grafenrheinfeld,BNA0355
+05705,19470101,20260702,268,49.7704,9.9576,Würzburg,Bayern,Frei,28.712,Grafenrheinfeld,BNA0355
+05707,18800101,19530131,175,49.7995,9.928,Würzburg (Physikalisches-Insti,Bayern,Frei,27.445,Grafenrheinfeld,BNA0355
+05898,19490301,19840630,287,48.8943,9.2058,Ludwigsburg,Baden-Württemberg,Frei,16.479,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+05906,17810101,20260702,98,49.5063,8.5584,Mannheim,Baden-Württemberg,Frei,29.568,Kernkraftwerk Philippsburg 2,BNA0802
+06108,20010627,20260702,7,53.7197,9.4192,Ruthenstrom,Niedersachsen,Frei,15.383,Brokdorf,BNA0157
+06182,20000401,20120327,404,48.7757,12.1743,Mallersdorf-Pfaffenberg,Bayern,Frei,20.989,Isar 2,BNA0263
+06197,20001011,20260702,258,51.8664,9.271,Lügde-Paenbruch,Nordrhein-Westfalen,Frei,21.202,Grohnde,BNA0251
+06243,20180712,20260702,96,49.2506,8.4422,Philippsburg KKW,Baden-Württemberg,,0.545,Kernkraftwerk Philippsburg 2,BNA0802
+06245,20180611,20260702,180,49.0423,9.1733,Neckarwestheim KKW,Baden-Württemberg,,0.181,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+06347,20050301,20260702,305,50.0579,10.2972,Schonungen-Mainberg,Bayern,Frei,11.609,Grafenrheinfeld,BNA0355
+07331,20050901,20260702,467,48.6099,10.2674,Hermaringen-Allewind,Baden-Württemberg,Frei,14.195,Kernkraft Gundremmingen,BNA0382
+07367,20071201,20260702,144,51.9643,9.8072,Alfeld,Niedersachsen,Frei,28.095,Grohnde,BNA0251
+07395,20071201,20260702,351,48.6595,12.5388,Gottfrieding,Bayern,Frei,18.923,Isar 2,BNA0263
+13675,20071101,20260702,75,52.0818,9.4077,Hameln-Hastenbeck,Niedersachsen,Frei,5.148,Grohnde,BNA0251
+13710,20080401,20250815,490,48.5734,12.2576,Landshut-Reithof,Bayern,Frei,4.431,Isar 2,BNA0263
+15547,20161001,20260702,214,49.1259,9.1428,Heilbronn/Neckar,Baden-Württemberg,Frei,9.715,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
+15813,20220301,20260702,40,52.5126,7.4131,Lingen-Baccum,Niedersachsen,Frei,7.974,Kernkraftwerk Emsland,BNA0607
+19172,20200901,20260702,48,54.0246,9.388,Wacken,Schleswig-Holstein,Frei,19.488,Brokdorf,BNA0157
+19985,19810101,20031231,455,48.8457,8.9073,Weissach/Strudelbach,Baden-Württemberg,Frei,29.23,Gemeinschaftskernkraftwerk Neckarwestheim II,BNA0686
