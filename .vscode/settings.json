@@ -1,0 +1,12 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^cd /Users/jakubmanczak/Desktop/Uni/SS26/AEER && python3 - <<'PY'\nimport csv\nfrom pathlib import Path\nroot=Path\\('data/raw/waterbase'\\)\nfor name in \\['Waterbase_v2020_1_T_WISE6_AggregatedData\\.csv','Waterbase_v2020_1_S_WISE6_SpatialObject_DerivedData\\.csv'\\]:\n    p=root/name\n    with p\\.open\\(encoding='utf-8-sig',newline=''\\) as f:\n        r=csv\\.reader\\(f\\)\n        hdr=next\\(r\\)\n    print\\('\\\\n'\\+name\\)\n    print\\('cols',len\\(hdr\\)\\)\n    print\\(hdr\\[:40\\]\\)\nPY$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^cd /Users/jakubmanczak/Desktop/Uni/SS26/AEER && python - <<'PY'\nimport csv\nfrom collections import Counter\npath='data/raw/power_plants/conventional_power_plants_DE\\.csv'\nwith open\\(path, encoding='utf-8-sig', newline=''\\) as f:\n    r=list\\(csv\\.DictReader\\(f\\)\\)\nprint\\('rows',len\\(r\\)\\)\nfor col in \\['country','status','energy_source_level_1','energy_source_level_2','energy_source_level_3','technology','type'\\]:\n    c=Counter\\(\\(row\\.get\\(col\\) or ''\\)\\.strip\\(\\) for row in r\\)\n    print\\('\\\\n',col,'unique',len\\(c\\)\\)\n    for k,v in c\\.most_common\\(12\\):\n        print\\(f'  \\{k!r\\}: \\{v\\}'\\)\n\n# basic completeness\nvalid_geo=sum\\(1 for row in r if \\(row\\.get\\('lat'\\) or ''\\)\\.strip\\(\\) and \\(row\\.get\\('lon'\\) or ''\\)\\.strip\\(\\)\\)\ncap=sum\\(1 for row in r if \\(row\\.get\\('capacity_net_bnetza'\\) or ''\\)\\.strip\\(\\)\\)\nprint\\('\\\\nvalid_geo',valid_geo,'capacity_present',cap\\)\nPY$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

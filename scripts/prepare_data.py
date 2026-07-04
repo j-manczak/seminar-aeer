@@ -43,6 +43,27 @@ WEATHER_FILE = raw_path(
     "weather_data.csv",
 )
 
+RELEVANT_CONVENTIONAL_LEVEL_1 = {
+    "Fossil fuels",
+    "Other",
+    "Other or unspecified energy sources",
+}
+
+RELEVANT_CONVENTIONAL_STATUSES = {
+    "operating",
+    "shutdown",
+    "shutdown_temporary",
+    "reserve",
+    "seasonal_conservation",
+}
+
+THERMAL_TECHNOLOGIES = {
+    "Steam turbine",
+    "Combined cycle",
+    "Gas turbine",
+    "Combustion Engine",
+}
+
 
 @dataclass(frozen=True)
 class Plant:
@@ -82,6 +103,33 @@ def parse_args() -> argparse.Namespace:
         type=int,
         default=20,
         help="Number of rows to include in the Markdown preview table.",
+    )
+    parser.add_argument(
+        "--conventional-min-capacity-mw",
+        type=float,
+        default=100.0,
+        help=(
+            "Minimum net capacity in MW for a conventional plant to be included "
+            "in conventional_plants_de_relevant_clean.csv."
+        ),
+    )
+    parser.add_argument(
+        "--conventional-max-distance-to-nuclear-km",
+        type=float,
+        default=50.0,
+        help=(
+            "Maximum distance to the nearest nuclear plant in km for conventional "
+            "plants in conventional_plants_de_relevant_clean.csv."
+        ),
+    )
+    parser.add_argument(
+        "--exclude-shutdown-before-year",
+        type=int,
+        default=2005,
+        help=(
+            "Exclude conventional plants that shut down before this year from "
+            "conventional_plants_de_relevant_clean.csv."
+        ),
     )
     return parser.parse_args()
 
@@ -162,6 +210,105 @@ def load_nuclear_plants() -> list[Plant]:
                 latitude=parse_float(row.get("lat")),
                 longitude=parse_float(row.get("lon")),
             )
+        )
+    return plants
+
+
+def distance_to_nearest_nuclear_km(
+    latitude: float,
+    longitude: float,
+    nuclear_plants: list[Plant],
+) -> float | None:
+    nearest_distance: float | None = None
+    for nuclear_plant in nuclear_plants:
+        if nuclear_plant.latitude is None or nuclear_plant.longitude is None:
+            continue
+        distance = haversine_km(
+            latitude,
+            longitude,
+            nuclear_plant.latitude,
+            nuclear_plant.longitude,
+        )
+        if nearest_distance is None or distance < nearest_distance:
+            nearest_distance = distance
+    return nearest_distance
+
+
+def load_relevant_conventional_plants(
+    nuclear_plants: list[Plant],
+    min_capacity_mw: float,
+    max_distance_to_nuclear_km: float,
+    exclude_shutdown_before_year: int,
+) -> list[dict[str, object]]:
+    plants: list[dict[str, object]] = []
+    for row in read_csv_rows(PLANTS_FILE):
+        country = clean_text(row.get("country"))
+        energy_source = clean_text(row.get("energy_source"))
+        energy_source_level_1 = clean_text(row.get("energy_source_level_1"))
+        technology = clean_text(row.get("technology"))
+        status = clean_text(row.get("status"))
+        capacity_mw = parse_float(row.get("capacity_net_bnetza"))
+        commissioned_year = parse_year(row.get("commissioned"))
+        shutdown_year = parse_year(row.get("shutdown"))
+        latitude = parse_float(row.get("lat"))
+        longitude = parse_float(row.get("lon"))
+
+        # Keep thermal non-nuclear plants with usable geolocation and meaningful size.
+        if country != "DE":
+            continue
+        if energy_source == "Nuclear":
+            continue
+        if energy_source_level_1 not in RELEVANT_CONVENTIONAL_LEVEL_1:
+            continue
+        if technology not in THERMAL_TECHNOLOGIES:
+            continue
+        if status not in RELEVANT_CONVENTIONAL_STATUSES:
+            continue
+        if capacity_mw is None or capacity_mw < min_capacity_mw:
+            continue
+        if latitude is None or longitude is None:
+            continue
+        if shutdown_year is not None and shutdown_year < exclude_shutdown_before_year:
+            continue
+        if (
+            commissioned_year is not None
+            and shutdown_year is not None
+            and commissioned_year > shutdown_year
+        ):
+            continue
+
+        nearest_nuclear_distance_km = distance_to_nearest_nuclear_km(
+            latitude,
+            longitude,
+            nuclear_plants,
+        )
+        if (
+            nearest_nuclear_distance_km is None
+            or nearest_nuclear_distance_km > max_distance_to_nuclear_km
+        ):
+            continue
+
+        plants.append(
+            {
+                "plant_id": clean_text(row.get("id")),
+                "plant_name": clean_text(row.get("name_bnetza")),
+                "block_name": clean_text(row.get("block_bnetza")),
+                "company": clean_text(row.get("company")),
+                "state": clean_text(row.get("state")),
+                "city": clean_text(row.get("city")),
+                "capacity_mw": capacity_mw,
+                "commissioned_year": commissioned_year,
+                "shutdown_year": shutdown_year,
+                "status": status,
+                "energy_source": energy_source,
+                "energy_source_level_1": energy_source_level_1,
+                "energy_source_level_2": clean_text(row.get("energy_source_level_2")),
+                "technology": technology,
+                "type": clean_text(row.get("type")),
+                "latitude": latitude,
+                "longitude": longitude,
+                "distance_to_nearest_nuclear_km": round(nearest_nuclear_distance_km, 3),
+            }
         )
     return plants
 
@@ -361,6 +508,12 @@ def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     nuclear_plants = load_nuclear_plants()
+    relevant_conventional_plants = load_relevant_conventional_plants(
+        nuclear_plants=nuclear_plants,
+        min_capacity_mw=args.conventional_min_capacity_mw,
+        max_distance_to_nuclear_km=args.conventional_max_distance_to_nuclear_km,
+        exclude_shutdown_before_year=args.exclude_shutdown_before_year,
+    )
     shutdown_plants = [plant for plant in nuclear_plants if plant.shutdown_year is not None]
     sites = load_german_monitoring_sites()
     air_rows = build_air_temperature_rows()
@@ -382,6 +535,30 @@ def main() -> None:
                 "status",
                 "latitude",
                 "longitude",
+            ],
+        ),
+        "relevant_conventional_plants": write_csv(
+            OUTPUT_DIR / "conventional_plants_de_relevant_clean.csv",
+            relevant_conventional_plants,
+            [
+                "plant_id",
+                "plant_name",
+                "block_name",
+                "company",
+                "state",
+                "city",
+                "capacity_mw",
+                "commissioned_year",
+                "shutdown_year",
+                "status",
+                "energy_source",
+                "energy_source_level_1",
+                "energy_source_level_2",
+                "technology",
+                "type",
+                "latitude",
+                "longitude",
+                "distance_to_nearest_nuclear_km",
             ],
         ),
         "monitoring_sites": write_csv(
