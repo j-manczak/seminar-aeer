@@ -36,8 +36,8 @@ DWD_HISTORICAL_INDEX_URL = (
     "climate/daily/kl/historical/"
 )
 
-LOCAL_STATIONS_TXT = SCRIPT_DIR / "KL_Tageswerte_Beschreibung_Stationen.txt"
-LOCAL_STATIONS_CSV = SCRIPT_DIR / "stacje_DWD.csv"
+LOCAL_STATIONS_TXT = PROJECT_ROOT / "data" / "raw" / "weather" / "KL_Tageswerte_Beschreibung_Stationen.txt"
+LOCAL_STATIONS_CSV = PROJECT_ROOT / "data" / "raw" / "weather" / "stations_DWD.csv"
 NUCLEAR_PLANTS_CSV = PROJECT_ROOT / "data" / "processed" / "nuclear_plants_de_clean.csv"
 OUTPUT_CSV = PROJECT_ROOT / "data" / "processed" / "dwd_kl_daily_near_nuclear.csv"
 

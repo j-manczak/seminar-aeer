@@ -6,7 +6,7 @@ The script:
 2) saves it in the same directory as the script,
 3) loads the data into pandas,
 4) prints basic dataset information,
-5) saves the result as stacje_DWD.csv in the same directory.
+5) saves the result as stations_DWD.csv in data/raw/weather.
 """
 
 from __future__ import annotations
@@ -22,9 +22,9 @@ DWD_URL = (
     "climate/daily/kl/recent/KL_Tageswerte_Beschreibung_Stationen.txt"
 )
 
-# Output file names saved in the script directory.
+# Output file names saved in data/raw/weather.
 TXT_FILENAME = "KL_Tageswerte_Beschreibung_Stationen.txt"
-CSV_FILENAME = "stacje_DWD.csv"
+CSV_FILENAME = "stations_DWD.csv"
 
 
 def download_station_file(url: str, output_path: Path, timeout_seconds: int = 30) -> None:
@@ -88,10 +88,11 @@ def load_stations_to_dataframe(txt_path: Path) -> pd.DataFrame:
 
 def main() -> None:
     """Main entry point that orchestrates the full workflow."""
-    # Script directory: all files are saved here.
-    script_dir = Path(__file__).resolve().parent
-    txt_path = script_dir / TXT_FILENAME
-    csv_path = script_dir / CSV_FILENAME
+    project_root = Path(__file__).resolve().parents[1]
+    weather_dir = project_root / "data" / "raw" / "weather"
+    weather_dir.mkdir(parents=True, exist_ok=True)
+    txt_path = weather_dir / TXT_FILENAME
+    csv_path = weather_dir / CSV_FILENAME
 
     # Handle download errors as required (try/except for requests).
     try:

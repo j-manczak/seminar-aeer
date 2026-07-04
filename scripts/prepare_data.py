@@ -27,7 +27,7 @@ def raw_path(preferred_path: Path, legacy_filename: str) -> Path:
 
 
 PLANTS_FILE = raw_path(
-    RAW_DIR / "power_plants" / "conventional_power_plants_DE.csv",
+    RAW_DIR / "conventional_power_plants" / "conventional_power_plants_DE.csv",
     "conventional_power_plants_DE.csv",
 )
 SPATIAL_FILE = raw_path(
@@ -42,6 +42,7 @@ WEATHER_FILE = raw_path(
     RAW_DIR / "weather" / "weather_data.csv",
     "weather_data.csv",
 )
+DWD_DAILY_FILE = OUTPUT_DIR / "dwd_kl_daily_near_nuclear.csv"
 
 RELEVANT_CONVENTIONAL_LEVEL_1 = {
     "Fossil fuels",
@@ -335,12 +336,25 @@ def load_german_monitoring_sites() -> dict[str, MonitoringSite]:
 
 def build_air_temperature_rows() -> list[dict[str, object]]:
     yearly_values: dict[int, list[float]] = defaultdict(list)
-    for row in read_csv_rows(WEATHER_FILE):
-        timestamp = clean_text(row.get("utc_timestamp"))
-        temperature = parse_float(row.get("DE_temperature"))
-        if len(timestamp) < 4 or temperature is None:
-            continue
-        yearly_values[int(timestamp[:4])].append(temperature)
+
+    if DWD_DAILY_FILE.exists():
+        for row in read_csv_rows(DWD_DAILY_FILE):
+            date_value = clean_text(row.get("date")) or clean_text(row.get("MESS_DATUM"))
+            temperature = parse_float(row.get("temperature_celsius"))
+            if temperature is None:
+                temperature = parse_float(row.get("TMK"))
+            if len(date_value) < 4 or temperature is None:
+                continue
+            yearly_values[int(date_value[:4])].append(temperature)
+    elif WEATHER_FILE.exists():
+        for row in read_csv_rows(WEATHER_FILE):
+            timestamp = clean_text(row.get("utc_timestamp"))
+            temperature = parse_float(row.get("DE_temperature"))
+            if len(timestamp) < 4 or temperature is None:
+                continue
+            yearly_values[int(timestamp[:4])].append(temperature)
+    else:
+        return []
 
     rows = []
     for year, values in sorted(yearly_values.items()):
@@ -573,11 +587,6 @@ def main() -> None:
                 "latitude",
                 "longitude",
             ],
-        ),
-        "air_temperature_years": write_csv(
-            OUTPUT_DIR / "air_temperature_de_annual_clean.csv",
-            air_rows,
-            ["year", "air_temperature_de_mean_c", "air_temperature_observations"],
         ),
         "water_temperature_rows": write_csv(
             OUTPUT_DIR / "water_temperature_de_annual_clean.csv",
