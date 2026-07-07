@@ -1,0 +1,8 @@
+# Dataset: gelöster Sauerstoff (dissolved oxygen) an Gewässer-Messstellen -- PLACEHOLDER, NO SOURCE DATA PRESENT IN THE REPOSITORY.
+# Expected source: EEA Waterbase v2020_1 T_WISE6 AggregatedData, determinand 'Dissolved oxygen' (same raw file as water temperature; not committed to the repo because of GitHub's size limit).
+# Intended filter (once data is available): monitoring stations within 50 km of a
+#           study reactor site, observation years 2006-2018 (inclusive).
+# This file intentionally contains no data rows. It fixes the target schema and the filter
+# definition so the group can drop in the raw dataset later without changing the pipeline.
+# See METHODS.md, section on dissolved oxygen / discharge, for details.
+site_id,site_name,water_body_name,site_latitude,site_longitude,year,dissolved_oxygen_mean_mg_l,dissolved_oxygen_min_mg_l,dissolved_oxygen_max_mg_l,observations,nearest_study_reactor,nearest_study_group,distance_to_study_reactor_km
