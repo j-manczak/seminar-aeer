@@ -1,24 +1,24 @@
-# Analyse-Eingabedateien (Fenster 2006–2018, Studienstandorte)
+# Analysis inputs (2006–2018 window, study sites)
 
-Alle Dateien in diesem Ordner werden reproduzierbar durch
+Every file here is produced by
 
 ```
-python scripts/build_group_assignment_and_filters.py
+python scripts/build_all.py
 ```
 
-erzeugt und sind auf die Studienstandorte (≤ 50 km zu einem Studienreaktor) und
-das Fenster 2006–2018 gefiltert. Jede Datei trägt in ihren `#`-Kopfzeilen die
-angewandten Filter. Die vollständige Methodik steht in `../METHODS.md`.
+and is filtered to the study sites (within the site radius of a study reactor)
+and to the years 2006–2018. Each file starts with `#` comment lines that record
+the exact filter. The full methodology is in [`../METHODS.md`](../METHODS.md).
 
-| Datei | Inhalt | Status im Repo |
+| File | Content | In git? |
 |---|---|---|
-| `power_plants_2006_2018_study_sites.csv` | konventionelle Wärmekraftwerke (Confounder) | versioniert |
-| `dissolved_oxygen_2006_2018_study_sites.PLACEHOLDER.csv` | gelöster Sauerstoff – Schema/Platzhalter, keine Quelldaten im Repo | versioniert |
-| `discharge_2006_2018_study_sites.PLACEHOLDER.csv` | Abfluss – Schema/Platzhalter, keine Quelldaten im Repo | versioniert |
-| `water_temperature_2006_2018_study_sites.csv` | Wassertemperatur-Jahreswerte (642 Zeilen) | **wird beim Skriptlauf erzeugt** |
-| `weather_2006_2018_study_sites.csv` | Wetter, Station-Monat-Aggregate (3 379 Zeilen) | **wird beim Skriptlauf erzeugt** |
+| `power_plants_2006_2018.csv` | conventional thermal plants (confounders) | committed |
+| `weather_2006_2018.csv` | DWD weather, station–month aggregates | committed |
+| `water_temperature_2006_2018.csv` | Waterbase annual water temperature | built locally from raw Waterbase |
+| `dissolved_oxygen_2006_2018.csv` | Waterbase annual dissolved oxygen | built locally from raw Waterbase |
+| `discharge_2006_2018.csv` | GRDC annual river discharge | built locally from raw GRDC |
 
-Die beiden zuletzt genannten Tabellen sind in dieser Web-Session nicht direkt
-committet, weil der Git-Push-Pfad des Sandkastens schreibgesperrt ist und die
-Dateien für die GitHub-API-Übertragung zu groß sind. Ein einmaliger Lauf des
-Skripts stellt sie identisch wieder her.
+The last three need the raw inputs in `data/raw/waterbase/` and
+`data/raw/discharge/`. Those inputs are large and kept out of git (see
+`.gitignore`); once they are in place, `build_all.py` regenerates the three
+files. If the raw inputs are missing, those steps skip themselves with a hint.

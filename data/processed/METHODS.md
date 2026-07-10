@@ -1,320 +1,206 @@
-# Methodendokumentation
+# Methods
 
-Diese Datei dokumentiert fortlaufend und nachvollziehbar das Vorgehen bei der
-Aufbereitung der Daten für unsere Differenz-von-Differenzen-Analyse (DiD) zum
-deutschen Atom-Moratorium von 2011. Sie ist so geschrieben, dass einzelne
-Absätze direkt als Textbausteine für den Methodenteil des Papers übernommen
-werden können. Jeder Arbeitsschritt nennt die Datenquelle mit Abrufdatum, die
-Filter- und Aggregationsentscheidungen mit Begründung, die Ausschlüsse von
-Stationen oder Reaktoren sowie die offenen Annahmen.
+This document records, step by step, how we turn the raw inputs into the
+analysis tables for our difference-in-differences (DiD) study of the March 2011
+German nuclear moratorium. It names each data source with its retrieval date and
+gives the reason for every filtering, aggregation and exclusion decision, so the
+text can feed directly into the paper's methods section.
 
-*Bearbeitungsstand: 7. Juli 2026.*
+*Last updated: 9 July 2026.*
 
----
+## 1. Question and study window
 
-## 1. Fragestellung und Untersuchungsfenster
+We ask whether removing the thermal cooling load of the reactors shut down in
+2011 changed the temperature and dissolved-oxygen regime of the affected rivers.
+The observation window is **2006–2018 (inclusive)** — five years before and
+seven years after the shock, kept symmetric where the data allow. Every filter
+below uses this window.
 
-Wir untersuchen, ob der Wegfall der thermischen Kühllast durch die im März 2011
-abgeschalteten Kernkraftwerke die Wassertemperatur (und perspektivisch den
-gelösten Sauerstoff) der betroffenen Flüsse messbar verändert hat. Als
-Beobachtungsfenster legen wir die Jahre **2006 bis 2018 (einschließlich)** fest.
-Das Fenster umfasst fünf Vorjahre und sieben Nachjahre um den Schock von 2011
-und ist damit annähernd symmetrisch. Alle nachfolgenden Filter verwenden dieses
-Fenster einheitlich.
+## 2. Data sources and retrieval dates
 
----
-
-## 2. Datenquellen und Abrufdaten
-
-| Datensatz | Datei im Repository | Ursprungsquelle | Abruf-/Standdatum |
+| Dataset | File(s) | Origin | Retrieved |
 |---|---|---|---|
-| Reaktoren (Standort, Fluss) | `data/Plants-River-Treatment.xlsx` | Projekt-Arbeitsblatt der Gruppe | im Repo vorliegend, gelesen 07.07.2026 |
-| Kernkraftwerke (Stammdaten) | `data/processed/nuclear_plants_de_clean.csv` | Open Power System Data, `conventional_power_plants_DE` (Teilmenge `energy_source = Nuclear`) | im Repo vorliegend, gelesen 07.07.2026 |
-| Konventionelle Wärmekraftwerke | `data/processed/conventional_plants_de_relevant_clean.csv` | Open Power System Data, `conventional_power_plants_DE` | im Repo vorliegend, gelesen 07.07.2026 |
-| Wassertemperatur (Jahreswerte) | `data/processed/water_temperature_de_annual_clean.csv` | EEA Waterbase v2020_1, `T_WISE6_AggregatedData` (Determinand *Water temperature*) | im Repo vorliegend, gelesen 07.07.2026 |
-| Gewässer-Messstellen (Stammdaten) | `data/processed/water_monitoring_sites_de_clean.csv` | EEA Waterbase v2020_1, `S_WISE6_SpatialObject_DerivedData` | im Repo vorliegend, gelesen 07.07.2026 |
-| Wetter (Tageswerte) | `data/processed/dwd_kl_daily_near_nuclear.csv` | Deutscher Wetterdienst (DWD), Climate Data Center, Tageswerte KL | im Repo vorliegend, gelesen 07.07.2026 |
-| DWD-Stationsstammdaten | `data/processed/dwd_stations_near_nuclear_30km.csv` | DWD Climate Data Center, Stationsliste | im Repo vorliegend, gelesen 07.07.2026 |
+| Reactor sites and rivers | `data/Plants-River-Treatment.xlsx` | group worksheet | 7 Jul 2026 |
+| Nuclear plant master data | `data/processed/nuclear_plants_de_clean.csv` | Open Power System Data, `conventional_power_plants_DE` (nuclear subset) | 7 Jul 2026 |
+| Conventional thermal plants | `data/processed/conventional_plants_de_relevant_clean.csv` | Open Power System Data | 7 Jul 2026 |
+| Water temperature, dissolved oxygen | `data/raw/waterbase/Waterbase_v2020_1_T_WISE6_AggregatedData.csv` (+ `…_S_WISE6_SpatialObject_DerivedData.csv`) | EEA Waterbase v2020_1 | 9 Jul 2026 |
+| River discharge | `data/raw/discharge/*.txt` | GRDC (Global Runoff Data Centre, BfG) | 9 Jul 2026 |
+| Weather | `data/processed/dwd_kl_daily_near_nuclear.csv` | DWD Climate Data Center, daily KL | 7 Jul 2026 |
 
-Ergänzend haben wir für die Gruppenzuordnung reaktorspezifische Angaben
-(Stilllegungsjahr, Kühlungstyp) aus öffentlichen Quellen recherchiert, weil
-diese Angaben in den obigen Rohdaten nicht oder nur unvollständig enthalten
-sind. Diese Quellen wurden am **7. Juli 2026** abgerufen:
+Shutdown years and cooling types are not in these raw files. We compiled them
+from public documentation, retrieved **7 Jul 2026**:
 
-- Bundesamt für die Sicherheit der nuklearen Entsorgung (BASE): „Der Atomausstieg in Deutschland" — Stilllegungsdaten der Blöcke. <https://www.base.bund.de/en/nuclear-safety/nuclear-phase-out/nuclear-phase-out_content.html>
-- World Nuclear News, „Three German reactors cease operation" (Abschaltungen 31.12.2021 und 15.04.2023). <https://www.world-nuclear-news.org/Articles/Three-German-reactors-cease-operation>
-- Betreiber- und Fachdokumentation zum Kühlungstyp: PreussenElektra-Standortbroschüre Isar (Durchlaufkühlung KKI 1 vs. Naturzug-Nasskühlturm KKI 2); BASE-Standortseite Brokdorf (Frischwasserkühlung aus der Elbe); Wikipedia-Artikel „Kernkraftwerk Grohnde" (Naturzug-Nasskühlturm).
+- BASE (Bundesamt für die Sicherheit der nuklearen Entsorgung), nuclear phase-out pages — shutdown dates.
+- World Nuclear News, "Three German reactors cease operation" — the 2021 and 2023 shutdowns.
+- Operator/authority documents for cooling type: PreussenElektra site brochure Isar (once-through KKI 1 vs. cooling tower KKI 2), BASE Brokdorf page (once-through from the Elbe), Wikipedia "Kernkraftwerk Grohnde" (cooling tower).
 
-**Offene Annahme (Abrufdatum Rohdaten):** Die exakten Download-Daten der
-EEA-Waterbase-, OPSD- und DWD-Rohdateien sind im Repository nicht protokolliert.
-Wir dokumentieren die jeweilige Datenversion (Waterbase **v2020_1**, OPSD
-`conventional_power_plants_DE`, DWD KL-Tageswerte) und tragen das exakte
-Bezugsdatum nach, sobald es aus den ursprünglichen Download-Skripten rekonstruiert
-ist.
+**Open assumption.** The exact download dates of the EEA, OPSD and DWD raw files
+are not logged in the repository. We record the dataset versions (Waterbase
+v2020_1, OPSD `conventional_power_plants_DE`, DWD daily KL) and will add the
+precise dates once recovered from the original download scripts.
 
----
+## 3. Reactor group assignment
 
-## 3. Gruppenzuordnung der Reaktoren
+The assignment lives in `data/processed/group_assignment.csv` (columns
+`reactor, block, group, river, cooling_type, commissioned_year, shutdown_year,
+rationale`) and is generated from the master table in
+`scripts/pipeline/reactors.py`.
 
-### 3.1 Prüfung der durchgehenden Netzverfügbarkeit im Fenster 2006–2018
+### 3.1 Full-window operation check (2006–2018)
 
-Für jede potenzielle Kontrollanlage haben wir explizit geprüft, ob der Reaktor
-über das **gesamte** Fenster 2006–2018 durchgehend am Netz war. Kriterium: Der
-Block muss vor 2006 in Betrieb gegangen und darf frühestens 2019 (also nach dem
-Fenster) stillgelegt worden sein; zusätzlich darf er nicht bereits vor 2011
-faktisch dauerhaft vom Netz gewesen sein. Grundlage ist das **Stilllegungsjahr
-je Reaktor**.
+For every control candidate we checked explicitly whether it ran on-grid across
+the whole window, using its shutdown year: it must have started before 2006, not
+have shut down before the window ended (shutdown after 2018), and not have been
+effectively offline before 2011. Two nominal "still operating" plants fail:
 
-Zwei nominelle „Weiterbetrieb"-Anlagen bestehen diese Prüfung **nicht** und sind
-daher **keine gültigen Vollzeit-Kontrollen**:
+- **Grafenrheinfeld** shut down at the end of **2015**, inside the window.
+- **Gundremmingen B** shut down at the end of **2017**, inside the window.
 
-- **Grafenrheinfeld (KKG)** wurde Ende **2015** stillgelegt, also mitten im
-  Fenster.
-- **Gundremmingen B (KRB B)** wurde Ende **2017** stillgelegt, also ebenfalls
-  mitten im Fenster.
+Both are removed from the control group and relabelled as
+**`staggered_treatment`**, because their shutdown is itself a (later) removal of
+cooling load. For a clean design they should be dropped or modelled with a
+reactor-specific treatment time.
 
-Beide werden aus der Kontrollgruppe ausgeschlossen und stattdessen als **spätere,
-gestaffelte Treatments** markiert (Gruppe `Gestaffeltes Treatment`), weil ihre
-Abschaltung selbst einen — nur zeitlich versetzten — Wegfall der Kühllast
-darstellt. Für ein bereinigtes DiD sollten sie entweder ganz ausgeschlossen oder
-in einem gestaffelten („staggered") Design mit reaktorspezifischem
-Behandlungszeitpunkt geführt werden.
+### 3.2 Group logic
 
-Alle übrigen Kontrollkandidaten (Grohnde 2021, Emsland 2023, Brokdorf 2021,
-Isar 2 2023, Neckarwestheim 2 2023, Philippsburg 2 2019, Gundremmingen C 2021)
-liefen 2006–2018 durchgehend und bestehen die Prüfung.
+- **`treatment`** — the site went fully off-grid in 2011, removing the whole
+  cooling load: **Biblis A**, **Biblis B**, **Unterweser**.
+- **`partial`** — a block went off-grid in 2011 while its sister block at the
+  same site kept running, removing only part of the load: **Isar 1**,
+  **Neckarwestheim 1**, **Philippsburg 1**.
+- **`control`** — ran continuously 2006–2018: **Grohnde**, **Emsland**,
+  **Brokdorf**, **Isar 2**, **Neckarwestheim 2**, **Philippsburg 2**,
+  **Gundremmingen C**.
 
-### 3.2 Zuordnungslogik der drei Hauptgruppen
+The continuing sister blocks (Isar 2, Neckarwestheim 2, Philippsburg 2) are
+controls **at reactor level** because the block itself ran throughout; the
+`rationale` column notes that their **site** still saw a partial load cut in
+2011. Whoever models at site rather than reactor level must treat these blocks
+accordingly. The same caveat applies to Gundremmingen C, whose sister block B
+was shut down in 2017.
 
-Jeder Reaktor wird begründet genau einer Gruppe zugeordnet; die Begründung steht
-zeilenweise in `data/processed/group_assignment.csv`.
+### 3.3 Exclusions
 
-- **Treatment** — Standorte, die 2011 **vollständig** abgeschaltet wurden, so
-  dass die **gesamte** Kühllast wegfiel: **Biblis A**, **Biblis B**
-  (beide Blöcke desselben Standorts) und **Unterweser**.
-- **Partial** — 2011 abgeschaltete Blöcke, deren **Schwesterblock am selben
-  Standort weiterlief**, so dass nur ein Teil der Kühllast entfiel:
-  **Isar 1**, **Neckarwestheim 1**, **Philippsburg 1**.
-- **Kontrolle** — Reaktoren, die 2006–2018 durchgehend liefen: **Grohnde**,
-  **Emsland**, **Brokdorf**, **Isar 2**, **Neckarwestheim 2**,
-  **Philippsburg 2**, **Gundremmingen C**.
+**Brunsbüttel** and **Krümmel** were formally disconnected in 2011 but had been
+effectively offline since 2007 (Brunsbüttel after an incident; Krümmel after the
+2007 transformer fire, fully offline from 2009). They deliver no real 2011 shock
+and are neither valid treatments nor valid controls, so we exclude them
+(`excluded`).
 
-Die weiterlaufenden Schwesterblöcke (Isar 2, Neckarwestheim 2, Philippsburg 2)
-ordnen wir **auf Reaktorebene** der Kontrollgruppe zu, weil der Block selbst
-durchgehend in Betrieb war. Wir vermerken jedoch in der Begründungsspalte
-ausdrücklich, dass an ihrem **Standort** 2011 eine partielle Lastreduktion
-stattfand (der jeweilige Block 1 wurde abgeschaltet). Analog liegt am Standort
-Gundremmingen mit der Abschaltung von Block B (2017) eine gestaffelte
-Standort-Behandlung vor, während Block C weiterlief. Wer auf Standortebene
-statt auf Reaktorebene modelliert, muss diese Blöcke folglich als teil- bzw.
-gestaffelt behandelt führen. Diese Designentscheidung ist bewusst getroffen und
-transparent dokumentiert.
+### 3.4 Result
 
-### 3.3 Ausgeschlossene Reaktoren
+17 reactors: 3 treatment, 3 partial, 7 control, 2 staggered_treatment, 2 excluded.
 
-- **Brunsbüttel (KKB)** und **Krümmel (KKK)** wurden zwar mit dem Moratorium 2011
-  formal vom Netz genommen, waren aber faktisch schon **vor 2011** dauerhaft
-  außer Betrieb (Brunsbüttel seit einem Störfall 2007; Krümmel nach dem
-  Transformatorbrand 2007 nur noch kurz und ab 2009 gar nicht mehr am Netz). Sie
-  liefern damit **keinen echten Kühllast-Schock im Jahr 2011** und werden aus
-  der Analyse ausgeschlossen (Gruppe `Ausgeschlossen`). Wir schlagen ihren
-  vollständigen Ausschluss vor, weil sie weder als Treatment (kein 2011-Schock)
-  noch als Kontrolle (nicht durchgehend am Netz) taugen.
+### 3.5 Cooling type
 
-### 3.4 Ergebnis
+Cooling type matters for interpretation: **once-through** plants (fresh
+river/estuary water, no tower) discharge waste heat straight into the river and
+leave a stronger downstream signal, whereas **cooling-tower** plants release most
+heat to the air. Classification:
 
-`data/processed/group_assignment.csv` enthält 17 Reaktoren mit den Spalten
-`Reaktor, Gruppe, Fluss, Kühlungstyp, Stilllegungsjahr, Begründung`. Die
-Gruppengrößen:
+- **once_through:** Unterweser, Brokdorf, Krümmel, Brunsbüttel, Isar 1 (with
+  auxiliary cell coolers).
+- **cooling_tower:** Biblis A/B, Neckarwestheim 1/2, Philippsburg 1/2,
+  Grafenrheinfeld, Grohnde, Gundremmingen B/C, Emsland, Isar 2.
 
-| Gruppe | n | Reaktoren |
+**Open assumption.** This is literature-based, not from the project data. The
+clearly documented cases (Isar 1 vs. Isar 2, Brokdorf, Grohnde, Unterweser) are
+solid; the remaining blocks should be checked against a primary source before
+publication.
+
+## 4. Filtered analysis outputs
+
+Each dataset yields exactly one filtered file in `data/processed/analysis/`,
+restricted to the study sites and to 2006–2018. "Study sites" means within
+`SITE_RADIUS_KM` (50 km, matching `scripts/prepare_data.py`) of one of the 15
+study reactors (all except the excluded Krümmel and Brunsbüttel); distance is a
+haversine distance to the nearest study reactor. Every file carries a `#` comment
+header with its filter. All files are produced by `python scripts/build_all.py`.
+
+### 4.1 Water temperature — `water_temperature_2006_2018.csv`
+
+From the EEA Waterbase `AggregatedData` table (annual value per site), joined to
+the site coordinates in `SpatialObject_DerivedData`, kept for German sites within
+the radius and inside the window. **No extra aggregation** is applied — Waterbase
+already provides annual mean/min/max per site. Coverage note: Waterbase has no
+rows for 2006, 2007 and 2015 at these sites, so the window materialises as
+2008–2014 plus 2016–2018.
+
+### 4.2 Dissolved oxygen — `dissolved_oxygen_2006_2018.csv`
+
+Same source, join and filter as water temperature, but for the determinand
+`Dissolved oxygen` (configurable in `scripts/pipeline/config.py`, in case a newer
+Waterbase release renames it). Dissolved oxygen is a second water-quality outcome
+and is physically coupled to temperature.
+
+### 4.3 River discharge — `discharge_2006_2018.csv`
+
+From the GRDC daily export files in `data/raw/discharge/`. Each gauge file's
+`#` header supplies its coordinates; the daily values (with `-999` treated as
+missing) are aggregated per station and year to mean/min/max discharge plus
+`days_observed`, then restricted to gauges within the radius and to the window.
+We requested the Rhine (incl. Neckar and Main), Danube (incl. Isar), Weser, Elbe
+and Ems sub-regions. Discharge is a key covariate: water temperature and the
+dilution of thermal discharges depend strongly on streamflow.
+
+### 4.4 Weather — `weather_2006_2018.csv`
+
+From the DWD daily extract, kept for stations within the radius and inside the
+window, then **aggregated per station and calendar month** (mean/min/max air
+temperature, precipitation sum, mean wind speed, and `days_observed`). Monthly
+matches the resolution of the water outcomes and keeps the file small; finer
+resolution can be regenerated from the same source. Coverage note: the daily
+extract only spans 2005–2015, so the window is 2006–2015 here, and there is no
+station within the radius of the treatment site Unterweser (Biblis is covered).
+
+### 4.5 Power plants — `power_plants_2006_2018.csv`
+
+Conventional thermal plants from OPSD, kept within the radius and with an
+operating life overlapping the window (commissioned by 2018, not shut down before
+2006). These are potential thermal confounders near the study rivers; the study
+reactors themselves are documented in `group_assignment.csv`.
+
+## 5. Summary of exclusion / flagging decisions
+
+| Unit | Decision | Reason |
 |---|---|---|
-| Treatment | 3 | Biblis A, Biblis B, Unterweser |
-| Partial | 3 | Isar 1, Neckarwestheim 1, Philippsburg 1 |
-| Kontrolle | 7 | Grohnde, Emsland, Brokdorf, Isar 2, Neckarwestheim 2, Philippsburg 2, Gundremmingen C |
-| Gestaffeltes Treatment | 2 | Grafenrheinfeld (2015), Gundremmingen B (2017) |
-| Ausgeschlossen | 2 | Krümmel, Brunsbüttel |
+| Grafenrheinfeld | out of control, flagged `staggered_treatment` | shutdown 2015, inside the window |
+| Gundremmingen B | out of control, flagged `staggered_treatment` | shutdown 2017, inside the window |
+| Krümmel | excluded | effectively offline since 2007/2009, no 2011 shock |
+| Brunsbüttel | excluded | effectively offline since 2007, no 2011 shock |
+| Isar 2 / Neckarwestheim 2 / Philippsburg 2 | control, with a site-level 2011 partial-load note | block ran throughout; sister block shut in 2011 |
+| Sites/stations/plants > radius | filtered out | outside the spatial study area |
 
-### 3.5 Kühlungstyp
+## 6. Open assumptions and next steps
 
-Der Kühlungstyp ist in keinem der Rohdatensätze enthalten; er ist aber für die
-Interpretation zentral, weil Anlagen mit **Durchlaufkühlung** (Frischwasser,
-kein Kühlturm) ihre Abwärme direkt in den Fluss einleiten und daher ein
-stärkeres, unmittelbar flussabwärts messbares Temperatursignal hinterlassen als
-Anlagen mit **Kreislaufkühlung über Nasskühlturm**, die den Großteil der Abwärme
-an die Luft abgeben. Wir haben den Kühlungstyp aus öffentlicher
-Betreiber- und Behördendokumentation zusammengetragen (siehe Abschnitt 2):
+1. Raw-file download dates are not logged; versions are recorded, exact dates to follow (§2).
+2. Cooling type is literature-based; verify the non-obvious blocks against a primary source (§3.5).
+3. Coverage gaps: water temperature has no 2006/2007/2015; weather ends in 2015. Decide before estimation whether to extend the series to 2018 or adjust the window.
+4. Modelling level: reactor vs. site is a deliberate choice (§3.2); fix and justify it in the analysis.
 
-- **Durchlaufkühlung (Frischwasser):** Unterweser, Brokdorf, Krümmel,
-  Brunsbüttel, Isar 1 (mit ergänzenden Zellenkühlern).
-- **Kreislaufkühlung (Nasskühlturm):** Biblis A/B, Neckarwestheim 1/2,
-  Philippsburg 1/2, Grafenrheinfeld, Grohnde, Gundremmingen B/C, Emsland,
-  Isar 2.
+## 7. Reproducibility
 
-**Offene Annahme (Kühlungstyp):** Die Klassifikation stützt sich auf
-Literaturangaben, nicht auf die Projektdaten. Sie ist für die eindeutig
-belegten Fälle (Isar 1 vs. Isar 2, Brokdorf, Grohnde, Unterweser) gesichert; für
-die übrigen Blöcke sollte sie vor der Veröffentlichung noch einmal gegen eine
-Primärquelle (z. B. Sicherheitsberichte der Betreiber) geprüft werden.
-
----
-
-## 4. Gefilterte Analyse-Ausgabedateien
-
-Für jeden verfügbaren Datensatz erzeugen wir genau **eine** gefilterte Datei in
-`data/processed/analysis/`. Alle Dateien sind auf **unsere Standorte** (die 15
-Studienreaktoren ohne die ausgeschlossenen Anlagen Krümmel und Brunsbüttel) und
-auf das **Fenster 2006–2018** beschränkt. Als räumliches Kriterium für „unsere
-Standorte" verwenden wir einen Radius von **50 km** um einen Studienreaktor;
-dieser Wert entspricht dem in `scripts/prepare_data.py` genutzten
-Behandlungsradius. Jede Datei trägt in den führenden, mit `#` beginnenden
-Kopfzeilen die vollständige Filterbeschreibung, so dass die Provenienz mit der
-Datei mitwandert. Erzeugt werden die Dateien reproduzierbar durch
-`scripts/build_group_assignment_and_filters.py`.
-
-### 4.1 Wassertemperatur — `water_temperature_2006_2018_study_sites.csv`
-
-- **Quelle:** `data/processed/water_temperature_de_annual_clean.csv`.
-- **Filter 1 (Standort):** nur Messstellen innerhalb von 50 km zu einem
-  Studienreaktor. Wir berechnen die Distanz jeder Messstelle zu allen 15
-  Studienreaktoren (Haversine) und behalten die Stelle, wenn die kleinste
-  Distanz ≤ 50 km ist. Der nächste Studienreaktor, seine Gruppe, sein Fluss und
-  die Distanz werden als Zusatzspalten angehängt.
-- **Filter 2 (Fenster):** nur Beobachtungsjahre 2006–2018.
-- **Aggregationsentscheidung:** Es findet **keine weitere** Aggregation statt;
-  die Waterbase-Quelle liegt bereits als **Jahreswert je Messstelle** vor
-  (Mittel-, Minimal- und Maximalwert der Wassertemperatur). Wir übernehmen diese
-  Jahresauflösung unverändert.
-- **Datenlücken:** Die Waterbase liefert für unsere Stellen **keine** Werte für
-  2006, 2007 und 2015; das Fenster materialisiert sich daher als 2008–2014 sowie
-  2016–2018. Die Jahresabdeckung ist unausgewogen (wenige Stellen 2013/2014,
-  viele 2018). Diese Lücke ist bei der Modellierung (z. B. durch Jahres-Fixed-
-  Effects und stellenbezogene Gewichtung) zu berücksichtigen.
-
-### 4.2 Gelöster Sauerstoff — `dissolved_oxygen_2006_2018_study_sites.PLACEHOLDER.csv`
-
-- **Status:** **Platzhalter ohne Datenzeilen.** Für den gelösten Sauerstoff
-  liegt im Repository **keine** Quelldatei vor. Der Determinand *Dissolved
-  oxygen* stammt aus derselben EEA-Waterbase-Datei `T_WISE6_AggregatedData` wie
-  die Wassertemperatur; diese Rohdatei ist wegen der GitHub-Größenbeschränkung
-  nicht eingecheckt (siehe `.gitignore`, `Waterbase_v2020_1_*`).
-- **Vorgesehener Filter (sobald die Rohdaten vorliegen):** identisch zur
-  Wassertemperatur — Messstellen ≤ 50 km zu einem Studienreaktor, Jahre
-  2006–2018, Jahreswerte je Stelle.
-- **Zweck des Platzhalters:** Er fixiert das Zielschema und die Filterdefinition,
-  so dass die Rohdaten später ohne Änderung der Pipeline eingespielt werden
-  können. **Offener Punkt:** EEA-Waterbase v2020_1 herunterladen, den
-  Determinand *Dissolved oxygen* extrahieren und durch dieselbe Filterfunktion
-  laufen lassen.
-
-### 4.3 Abfluss — `discharge_2006_2018_study_sites.PLACEHOLDER.csv`
-
-- **Status:** **Platzhalter ohne Datenzeilen.** Für den Abfluss (Q in m³/s)
-  liegt im Repository **überhaupt keine** Quelldatei vor.
-- **Empfohlene Quelle:** deutsche Pegel-Abflussdaten, z. B. GRDC (Global Runoff
-  Data Centre) oder BfG/PEGELONLINE, als Tages- oder Jahreswerte.
-- **Vorgesehener Filter (sobald die Rohdaten vorliegen):** Pegel ≤ 50 km zu
-  einem Studienreaktor, Jahre 2006–2018.
-- **Begründung der Aufnahme:** Der Abfluss ist ein zentraler Kovariat, weil die
-  flussbürtige Temperatur stark vom Wasserführungsvolumen abhängt und die
-  Verdünnung der Wärmeeinleitung bestimmt. **Offener Punkt:** Pegel den
-  Studienflüssen zuordnen und Abflussreihen beschaffen.
-
-### 4.4 Wetter — `weather_2006_2018_study_sites.csv`
-
-- **Quelle:** `data/processed/dwd_kl_daily_near_nuclear.csv` (DWD-Tageswerte:
-  Mittel-/Min-/Max-Temperatur, Niederschlag, Windgeschwindigkeit).
-- **Filter 1 (Standort):** nur Stationen ≤ 50 km zu einem Studienreaktor;
-  nächster Reaktor, Gruppe und Distanz werden angehängt.
-- **Filter 2 (Fenster):** nur Tage in 2006–2018.
-- **Aggregationsentscheidung:** Wir aggregieren die über 100 000 Tageswerte je
-  **Station und Kalendermonat** zu Monatskennwerten (Mittel-/Min-/Max-
-  Lufttemperatur, Niederschlagssumme, mittlere Windgeschwindigkeit) und führen
-  die Zahl der beobachteten Tage (`days_observed`) mit. Die Monatsauflösung
-  entspricht der Auflösung der Zielgröße (Jahres-/Monatswerte der Wasser-
-  temperatur), hält die Datei kompakt und lässt sich über `days_observed` weiter
-  gewichten oder ausdünnen. Wer feiner rechnen will, kann die Tageswerte jederzeit
-  über dasselbe Skript reproduzieren.
-- **Abdeckungsgrenzen:** Der DWD-Tagesextrakt umfasst nur die Jahre **2005–2015**;
-  das Fenster materialisiert sich daher als **2006–2015**. Für die Treatment-
-  Seite ist **Biblis** durch Stationen der mittleren Rheinschiene abgedeckt,
-  **Unterweser** hingegen **nicht** (keine Station innerhalb von 50 km im
-  Extrakt). **Offener Punkt:** DWD-Tageswerte bis 2018 nachladen und eine Station
-  nahe Unterweser ergänzen.
-
-### 4.5 Kraftwerke — `power_plants_2006_2018_study_sites.csv`
-
-- **Quelle:** `data/processed/conventional_plants_de_relevant_clean.csv`
-  (konventionelle Wärmekraftwerke aus OPSD).
-- **Filter 1 (Standort):** nur Kraftwerke ≤ 50 km zu einem Studienreaktor.
-- **Filter 2 (Fenster):** nur Kraftwerke, deren Betriebszeit das Fenster
-  überlappt (Inbetriebnahme spätestens 2018 und Stilllegung nicht vor 2006).
-- **Zweck:** Diese thermischen Anlagen sind **potenzielle Störgrößen
-  (Confounder)**: Ihre eigene Abwärmeeinleitung bzw. ihre An-/Abschaltungen im
-  Fenster können die Wassertemperatur der Studienflüsse unabhängig vom Atom-
-  Moratorium beeinflussen und sollten im Modell kontrolliert werden.
-- **Abgrenzung:** Die **Kern**kraftwerke der Studie selbst sind nicht in dieser
-  Datei, sondern vollständig in `data/processed/group_assignment.csv`
-  dokumentiert; „die Kraftwerke" meint hier die konventionellen
-  Confounder-Anlagen.
-
----
-
-## 5. Zusammenfassung der Ausschluss- und Kennzeichnungsentscheidungen
-
-| Einheit | Entscheidung | Begründung |
-|---|---|---|
-| Grafenrheinfeld | aus Kontrolle entfernt, als `Gestaffeltes Treatment` markiert | Stilllegung 2015 mitten im Fenster |
-| Gundremmingen B | aus Kontrolle entfernt, als `Gestaffeltes Treatment` markiert | Stilllegung 2017 mitten im Fenster |
-| Krümmel | vollständig ausgeschlossen | faktisch seit 2007/2009 vom Netz, kein 2011-Schock |
-| Brunsbüttel | vollständig ausgeschlossen | faktisch seit 2007 vom Netz, kein 2011-Schock |
-| Isar 2 / Neckarwestheim 2 / Philippsburg 2 | als Kontrolle geführt, aber Standort-Teilbehandlung 2011 vermerkt | Block lief durchgehend, Schwesterblock 2011 abgeschaltet |
-| Wassertemperatur-Stellen > 50 km | herausgefiltert | außerhalb des räumlichen Studienbereichs |
-| Wetterstationen (nur bis 2015; keine nahe Unterweser) | verbleibende genutzt, Lücke dokumentiert | Grenze des vorliegenden DWD-Extrakts |
-
----
-
-## 6. Offene Annahmen und nächste Schritte
-
-1. **Abrufdaten der Rohdaten** sind nicht protokolliert; Datenversionen sind
-   dokumentiert, exakte Download-Daten werden nachgetragen (Abschnitt 2).
-2. **Kühlungstyp** ist literaturbasiert; für die nicht eindeutig belegten Blöcke
-   ist eine Primärquellenprüfung offen (Abschnitt 3.5).
-3. **Gelöster Sauerstoff** und **Abfluss** liegen noch nicht als Rohdaten vor;
-   Schema und Filter sind als Platzhalter fixiert (Abschnitte 4.2, 4.3).
-4. **Zeitliche Abdeckung:** Wassertemperatur ohne 2006/2007/2015, Wetter nur bis
-   2015. Vor der finalen Schätzung ist zu klären, ob die Reihen bis 2018
-   vervollständigt werden können oder ob das Fenster angepasst wird.
-5. **Modellierungsebene:** Reaktor- vs. Standortebene ist eine bewusste
-   Designentscheidung (Abschnitt 3.2); die endgültige Wahl ist im Analyseteil zu
-   fixieren und zu begründen.
-
----
-
-## 7. Reproduzierbarkeit
-
-Sämtliche in Abschnitt 3 und 4 beschriebenen Artefakte werden durch ein einziges
-Skript erzeugt:
+The pipeline is a small package of single-purpose modules under
+`scripts/pipeline/`, orchestrated by `scripts/build_all.py`:
 
 ```
-python scripts/build_group_assignment_and_filters.py
+scripts/
+  build_all.py            entry point; runs every step
+  pipeline/
+    config.py             window, radius, paths, determinand labels
+    geo.py                haversine distance, nearest reactor
+    io_tables.py          CSV read/write with a comment header, parsing helpers
+    reactors.py           reactor master table + group logic (single source of truth)
+    sites.py              match an observation to the nearest study reactor
+    group_assignment.py   writes group_assignment.csv
+    waterbase.py          water temperature + dissolved oxygen from raw Waterbase
+    discharge.py          annual discharge from raw GRDC files
+    weather.py            DWD monthly aggregation
+    power_plants.py       conventional-plant confounders
+    tests/test_parsers.py checks the GRDC and Waterbase parsers on small fixtures
 ```
 
-Das Skript nutzt ausschließlich die Python-Standardbibliothek (wie
-`scripts/prepare_data.py`), liest die unter Abschnitt 2 genannten Dateien und
-schreibt `data/processed/group_assignment.csv` sowie die Dateien in
-`data/processed/analysis/`. Der 50-km-Radius und das Fenster 2006–2018 sind als
-Konstanten `SITE_RADIUS_KM`, `WINDOW_START` und `WINDOW_END` am Kopf des Skripts
-zentral einstellbar.
-
-**Hinweis zu den versionierten Dateien.** Eingecheckt sind das Skript, diese
-Dokumentation, `group_assignment.csv` sowie die kompakten Analyse-Dateien
-`power_plants_2006_2018_study_sites.csv` und die beiden Platzhalter (gelöster
-Sauerstoff, Abfluss). Die beiden größeren Tabellen
-`water_temperature_2006_2018_study_sites.csv` (642 Zeilen) und
-`weather_2006_2018_study_sites.csv` (3 379 Station-Monat-Zeilen) werden durch
-den Aufruf des Skripts **deterministisch neu erzeugt**; ein einmaliger Lauf
-stellt sie vollständig wieder her. In dieser Web-Session konnten sie nicht direkt
-über die GitHub-API committet werden, weil der Git-Push-Pfad des Sandkastens
-schreibgesperrt ist und die Dateien für die API-Übertragung zu groß sind – die
-`analysis/README.md` verweist ausdrücklich darauf.
+Run everything with `python scripts/build_all.py`; steps whose raw inputs are
+absent skip themselves with a hint. Run the parser checks with
+`python scripts/pipeline/tests/test_parsers.py`. The window and radius are the
+constants `WINDOW_START`, `WINDOW_END` and `SITE_RADIUS_KM` in `config.py`.

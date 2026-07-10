@@ -1,0 +1,14 @@
+# Title:                 GRDC STATION DATA FILE
+# GRDC-No.:              6337100
+# River:                 WESER
+# Station:               GROHNDE-TEST
+# Latitude (DD):         52.0400
+# Longitude (DD):        9.4100
+# Unit of measure:       m3/s
+#
+YYYY-MM-DD;hh:mm; Value
+2005-12-31;--:--;   100.000
+2010-06-01;--:--;   250.500
+2010-06-02;--:--;   -999.000
+2010-06-03;--:--;   150.250
+2019-01-01;--:--;   200.000

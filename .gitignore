@@ -1,6 +1,8 @@
-# Raw data files that exceed GitHub's regular file size limits.
+# Raw data files that exceed GitHub's regular file size limits (keep local only).
 Waterbase_v2020_1_*.csv
 weather_data.csv
+data/raw/waterbase/
+data/raw/discharge/
 
 # Python cache files.
 __pycache__/

@@ -1,8 +1,0 @@
-# Dataset: Abfluss (river discharge) an Pegeln -- PLACEHOLDER, NO SOURCE DATA PRESENT IN THE REPOSITORY.
-# Expected source: German gauging-station discharge, e.g. GRDC or BfG/PEGELONLINE daily/annual discharge (Q in m3/s); no such raw file is present in the repository yet.
-# Intended filter (once data is available): monitoring stations within 50 km of a
-#           study reactor site, observation years 2006-2018 (inclusive).
-# This file intentionally contains no data rows. It fixes the target schema and the filter
-# definition so the group can drop in the raw dataset later without changing the pipeline.
-# See METHODS.md, section on dissolved oxygen / discharge, for details.
-gauge_id,gauge_name,river,latitude,longitude,year,discharge_mean_m3_s,discharge_min_m3_s,discharge_max_m3_s,nearest_study_reactor,nearest_study_group,distance_to_study_reactor_km
