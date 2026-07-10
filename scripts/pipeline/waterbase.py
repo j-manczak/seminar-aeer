@@ -9,12 +9,13 @@ The AggregatedData table is already one annual value per site and determinand,
 so no further aggregation is needed here -- we only join coordinates, restrict
 to the study sites and the window, and label each row with its nearest reactor.
 
-If the raw files are missing (they are large and kept out of git), the two
-builders print a hint and skip, so the rest of the pipeline still runs.
+That table is large (>1 GB), so we stream it once and pick up both determinands
+in a single pass instead of reading it per determinand. If the raw files are
+missing (they are large and kept out of git), the builder prints a hint and
+skips, so the rest of the pipeline still runs.
 """
 
-from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from pipeline.config import (
     ANALYSIS_DIR,
@@ -24,11 +25,17 @@ from pipeline.config import (
     WINDOW_END,
     WINDOW_START,
 )
-from pipeline.io_tables import read_rows, to_float, to_int, write_table
+from pipeline.io_tables import stream_rows, to_float, to_int, write_table
 from pipeline import sites
 
 AGGREGATED_FILE = WATERBASE_DIR / "Waterbase_v2020_1_T_WISE6_AggregatedData.csv"
 SPATIAL_FILE = WATERBASE_DIR / "Waterbase_v2020_1_S_WISE6_SpatialObject_DerivedData.csv"
+
+# Determinand label -> (variable name for the header, output file name).
+DETERMINANDS = {
+    WATER_TEMPERATURE_LABEL: ("water temperature", "water_temperature_2006_2018.csv"),
+    DISSOLVED_OXYGEN_LABEL: ("dissolved oxygen", "dissolved_oxygen_2006_2018.csv"),
+}
 
 OUTPUT_FIELDS = [
     "site_id",
@@ -51,7 +58,7 @@ OUTPUT_FIELDS = [
 def _load_site_coordinates() -> Dict[str, dict]:
     """Map monitoringSiteIdentifier -> {name, water_body, lat, lon} for Germany."""
     coordinates: Dict[str, dict] = {}
-    for row in read_rows(SPATIAL_FILE):
+    for row in stream_rows(SPATIAL_FILE):
         if row.get("countryCode", "").strip() != "DE":
             continue
         site_id = row.get("monitoringSiteIdentifier", "").strip()
@@ -68,17 +75,17 @@ def _load_site_coordinates() -> Dict[str, dict]:
     return coordinates
 
 
-def _filter_determinand(label: str, coordinates: Dict[str, dict]) -> List[dict]:
-    """Rows for one determinand, joined to coordinates and restricted to the
-    study sites and the window."""
-    output: List[dict] = []
-    for row in read_rows(AGGREGATED_FILE):
-        if row.get("observedPropertyDeterminandLabel", "").strip() != label:
+def _collect(coordinates: Dict[str, dict]) -> Dict[str, List[dict]]:
+    """Stream the aggregated table once and gather rows per wanted determinand,
+    joined to coordinates and restricted to the study sites and the window."""
+    results: Dict[str, List[dict]] = {label: [] for label in DETERMINANDS}
+    for row in stream_rows(AGGREGATED_FILE):
+        label = row.get("observedPropertyDeterminandLabel", "").strip()
+        if label not in results:
             continue
-        site_id = row.get("monitoringSiteIdentifier", "").strip()
+        site = coordinates.get(row.get("monitoringSiteIdentifier", "").strip())
         year = to_int(row.get("phenomenonTimeReferenceYear"))
         mean_value = to_float(row.get("resultMeanValue"))
-        site = coordinates.get(site_id)
         if site is None or year is None or mean_value is None:
             continue
         if not (WINDOW_START <= year <= WINDOW_END):
@@ -87,9 +94,9 @@ def _filter_determinand(label: str, coordinates: Dict[str, dict]) -> List[dict]:
         if matched is None:
             continue
         reactor, distance = matched
-        output.append(
+        results[label].append(
             {
-                "site_id": site_id,
+                "site_id": row.get("monitoringSiteIdentifier", "").strip(),
                 "site_name": site["name"],
                 "water_body_name": site["water_body"],
                 "latitude": site["lat"],
@@ -105,24 +112,17 @@ def _filter_determinand(label: str, coordinates: Dict[str, dict]) -> List[dict]:
                 "distance_km": round(distance, 3),
             }
         )
-    return output
+    return results
 
 
 def _header(variable: str, label: str) -> List[str]:
     return [
         f"Dataset: annual {variable} at German monitoring sites (EEA Waterbase v2020_1).",
         f"Source: data/raw/waterbase/ Aggregated + Spatial files, determinand '{label}'.",
-        f"Site filter: monitoring sites within the study radius of a study reactor.",
+        "Site filter: monitoring sites within the study radius of a study reactor.",
         f"Window filter: observation years {WINDOW_START}-{WINDOW_END} (inclusive).",
         "Added columns: nearest study reactor, its group and the distance in km.",
     ]
-
-
-def _build(variable: str, label: str, out_name: str, coordinates: Dict[str, dict]) -> None:
-    rows = _filter_determinand(label, coordinates)
-    count = write_table(ANALYSIS_DIR / out_name, _header(variable, label), OUTPUT_FIELDS, rows)
-    years = sorted({r["year"] for r in rows})
-    print(f"{out_name}: {count} rows; years {years[:1] and (years[0], years[-1])}")
 
 
 def build() -> None:
@@ -130,9 +130,15 @@ def build() -> None:
         print("waterbase: raw files not found in data/raw/waterbase/, skipping "
               "water temperature and dissolved oxygen.")
         return
+
     coordinates = _load_site_coordinates()
-    _build("water temperature", WATER_TEMPERATURE_LABEL, "water_temperature_2006_2018.csv", coordinates)
-    _build("dissolved oxygen", DISSOLVED_OXYGEN_LABEL, "dissolved_oxygen_2006_2018.csv", coordinates)
+    results = _collect(coordinates)
+    for label, (variable, out_name) in DETERMINANDS.items():
+        rows = results[label]
+        count = write_table(ANALYSIS_DIR / out_name, _header(variable, label), OUTPUT_FIELDS, rows)
+        years = sorted({r["year"] for r in rows})
+        span = (years[0], years[-1]) if years else "no rows"
+        print(f"{out_name}: {count} rows; years {span}")
 
 
 if __name__ == "__main__":

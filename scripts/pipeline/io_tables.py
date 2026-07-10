@@ -7,7 +7,7 @@ helpers keep that behaviour in one place.
 
 import csv
 from pathlib import Path
-from typing import Iterable, List, Optional
+from typing import Iterable, Iterator, List, Optional
 
 
 def read_rows(path: Path) -> List[dict]:
@@ -15,6 +15,16 @@ def read_rows(path: Path) -> List[dict]:
     with path.open(newline="", encoding="utf-8-sig") as handle:
         lines = [line for line in handle if not line.startswith("#")]
     return list(csv.DictReader(lines))
+
+
+def stream_rows(path: Path) -> Iterator[dict]:
+    """Yield rows one at a time without loading the whole file into memory.
+
+    Use this for very large inputs (e.g. the 1+ GB Waterbase table). Assumes a
+    plain CSV with a header on the first line and no ``#`` comment lines.
+    """
+    with path.open(newline="", encoding="utf-8-sig") as handle:
+        yield from csv.DictReader(handle)
 
 
 def write_table(path: Path, header_comments: List[str], fieldnames: List[str], rows: Iterable[dict]) -> int:

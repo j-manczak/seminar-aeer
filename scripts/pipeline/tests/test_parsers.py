@@ -40,13 +40,16 @@ def test_waterbase_filter():
     assert "DE_SITE_1" in coordinates
     assert "FR_SITE" not in coordinates  # non-German sites are dropped
 
-    temperature = waterbase._filter_determinand("Water temperature", coordinates)
+    # A single streaming pass returns both determinands.
+    results = waterbase._collect(coordinates)
+
+    temperature = results["Water temperature"]
     # DE_SITE_1/2010 kept; 2019 out of window; FAR site out of radius; FR dropped.
     assert len(temperature) == 1, temperature
     assert temperature[0]["site_id"] == "DE_SITE_1"
     assert temperature[0]["nearest_reactor"] == "Brokdorf"
 
-    oxygen = waterbase._filter_determinand("Dissolved oxygen", coordinates)
+    oxygen = results["Dissolved oxygen"]
     assert len(oxygen) == 1 and oxygen[0]["mean_value"] == 9.8
     print("waterbase filter: OK")
 
