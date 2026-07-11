@@ -234,3 +234,11 @@ Run everything with `python scripts/build_all.py`; steps whose raw inputs are
 absent skip themselves with a hint. Run the parser checks with
 `python scripts/pipeline/tests/test_parsers.py`. The window and radius are the
 constants `WINDOW_START`, `WINDOW_END` and `SITE_RADIUS_KM` in `config.py`.
+
+## 8. Figures
+
+`scripts/make_study_map.py` draws `figures/study_map.png`: a map of Germany with
+the reactor sites coloured and shaped by group, the water-quality monitoring
+sites (downstream ones highlighted) and a per-site river-flow arrow. All
+coordinates are read from the same project data, so the figure matches the
+analysis exactly. It needs `matplotlib` and downloads the Germany outline once.
