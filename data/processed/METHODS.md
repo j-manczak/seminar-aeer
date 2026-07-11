@@ -237,8 +237,20 @@ constants `WINDOW_START`, `WINDOW_END` and `SITE_RADIUS_KM` in `config.py`.
 
 ## 8. Figures
 
-`scripts/make_study_map.py` draws `figures/study_map.png`: a map of Germany with
-the reactor sites coloured and shaped by group, the water-quality monitoring
-sites (downstream ones highlighted) and a per-site river-flow arrow. All
-coordinates are read from the same project data, so the figure matches the
-analysis exactly. It needs `matplotlib` and downloads the Germany outline once.
+Two maps show the study area; both read their geometry and data through
+`scripts/mapdata.py` (Germany outline and the eight study-river centre-lines from
+Natural Earth, reactor sites from `pipeline.reactors`, monitoring sites from the
+enriched analysis files), so they match the analysis exactly. Only the **used**
+water sites are shown — those on a study river (downstream in green, upstream on
+the same river in amber); off-river sites within the radius are hidden.
+
+- `scripts/make_study_map.py` → `figures/study_map.png`, a static figure for the
+  paper: reactor sites coloured and shaped by group, the study rivers, the used
+  monitoring sites and a per-site flow arrow. Needs `matplotlib`.
+- `scripts/make_study_map_interactive.py` → `figures/study_map.html`, a
+  self-contained zoomable/clickable map: clicking a monitoring site or discharge
+  gauge shows which data it contributes (years covered, value ranges, nearest
+  upstream reactor, distance band). No external assets, so it works under a
+  strict CSP.
+
+Both download the outline and river geometry once from public sources.
