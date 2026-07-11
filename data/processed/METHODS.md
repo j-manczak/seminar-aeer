@@ -25,7 +25,7 @@ below uses this window.
 | Conventional thermal plants | `data/processed/conventional_plants_de_relevant_clean.csv` | Open Power System Data | 7 Jul 2026 |
 | Water temperature, dissolved oxygen | `data/raw/waterbase/Waterbase_v2020_1_T_WISE6_AggregatedData.csv` (+ `…_S_WISE6_SpatialObject_DerivedData.csv`) | EEA Waterbase v2020_1 | 9 Jul 2026 |
 | River discharge | `data/raw/discharge/*.txt` | GRDC (Global Runoff Data Centre, BfG) | 9 Jul 2026 |
-| Weather | `data/processed/dwd_kl_daily_near_nuclear.csv` | DWD Climate Data Center, daily KL | 7 Jul 2026 |
+| Weather | `data/processed/dwd_kl_daily_near_nuclear.csv` (built by `weather_download.py`) | DWD Climate Data Center, daily KL (historical) | 11 Jul 2026 |
 
 Shutdown years and cooling types are not in these raw files. We compiled them
 from public documentation, retrieved **7 Jul 2026**:
@@ -145,13 +145,18 @@ dilution of thermal discharges depend strongly on streamflow.
 
 ### 4.4 Weather — `weather_2006_2018.csv`
 
-From the DWD daily extract, kept for stations within the radius and inside the
-window, then **aggregated per station and calendar month** (mean/min/max air
-temperature, precipitation sum, mean wind speed, and `days_observed`). Monthly
-matches the resolution of the water outcomes and keeps the file small; finer
-resolution can be regenerated from the same source. Coverage note: the daily
-extract only spans 2005–2015, so the window is 2006–2015 here, and there is no
-station within the radius of the treatment site Unterweser (Biblis is covered).
+`weather_download.py` pulls the DWD daily climate (KL) *historical* archive live
+for every station within `WEATHER_RADIUS_KM` (50 km) of a study reactor and
+writes the daily intermediate `dwd_kl_daily_near_nuclear.csv`. Weather is a
+regional covariate rather than a local treatment, so a station radius equal to
+the site radius is generous enough — every study site, including Unterweser (its
+nearest station is ~9 km away), is covered by several stations. `weather.py` then
+keeps the window and **aggregates per station and calendar month** (mean/min/max
+air temperature, precipitation sum, mean wind speed, `days_observed`); monthly
+matches the resolution of the water outcomes and keeps the file small. The daily
+intermediate is large (~80 MB) and reproducible, so it is git-ignored; run
+`python scripts/pipeline/weather_download.py` to rebuild it. The result now spans
+the full 2006–2018 window (the earlier 2015 cut-off came from an older extract).
 
 ### 4.5 Power plants — `power_plants_2006_2018.csv`
 
@@ -196,8 +201,10 @@ small, which the analysis must acknowledge.
 
 1. Raw-file download dates are not logged; versions are recorded, exact dates to follow (§2).
 2. Cooling type is literature-based; verify the non-obvious blocks against a primary source (§3.5).
-3. Coverage gaps: water temperature has no 2006/2007/2015; weather ends in 2015. Decide before estimation whether to extend the series to 2018 or adjust the window.
+3. Coverage gaps: water temperature (Waterbase annual) has no 2006/2007/2015 and is sparse; weather now spans the full window. The small downstream sample (§4.6) is the binding constraint.
 4. Modelling level: reactor vs. site is a deliberate choice (§3.2); fix and justify it in the analysis.
+5. Flow direction for the up/downstream split is a per-river heuristic (§4.6); replace it with true river kilometres from a river network for the final version.
+6. Statistical power: after same-river/downstream matching, only single digits of stations sit downstream of a full treatment. Consider (a) a graded "downstream-of-shutdown" treatment pooling treatment/partial/staggered with distance or discharge as the dose, and (b) the Waterbase *disaggregated* data (Part 1) for many more observations and a summer/low-flow analysis, where the thermal effect is largest.
 
 ## 7. Reproducibility
 
@@ -217,6 +224,7 @@ scripts/
     waterbase.py          water temperature + dissolved oxygen from raw Waterbase
     discharge.py          annual discharge from raw GRDC files
     river_position.py     same-river up/downstream position + distance bands
+    weather_download.py   downloads DWD daily KL (historical) for the study sites
     weather.py            DWD monthly aggregation
     power_plants.py       conventional-plant confounders
     tests/test_parsers.py checks the parsers and river-position logic on fixtures

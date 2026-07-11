@@ -9,7 +9,7 @@ the resolution of the water outcomes and keeps the file small.
 from collections import defaultdict
 from typing import Dict, List
 
-from pipeline.config import ANALYSIS_DIR, PROCESSED_DIR, WINDOW_END, WINDOW_START
+from pipeline.config import ANALYSIS_DIR, PROCESSED_DIR, WEATHER_RADIUS_KM, WINDOW_END, WINDOW_START
 from pipeline.io_tables import read_rows, to_float, write_table
 from pipeline import sites
 
@@ -63,7 +63,7 @@ def build() -> None:
         year = int(date[:4])
         if not (WINDOW_START <= year <= WINDOW_END):
             continue
-        matched = sites.match(lat, lon)
+        matched = sites.match(lat, lon, WEATHER_RADIUS_KM)
         if matched is None:
             continue
         reactor, distance = matched
@@ -115,11 +115,10 @@ def build() -> None:
 
     header = [
         "Dataset: DWD daily climate observations, aggregated to station-month summaries.",
-        "Source: data/processed/dwd_kl_daily_near_nuclear.csv",
-        "Site filter: stations within the study radius of a study reactor.",
+        "Source: data/processed/dwd_kl_daily_near_nuclear.csv (built by weather_download.py).",
+        f"Site filter: stations within {WEATHER_RADIUS_KM:.0f} km of a study reactor (weather is a",
+        "         regional covariate, so a wider radius than the outcomes is used).",
         f"Window filter: dates in {WINDOW_START}-{WINDOW_END} (inclusive).",
-        "Note: the daily extract only spans 2005-2015, so the window is 2006-2015 here.",
-        "Note: no station within the radius of the treatment site Unterweser (Biblis is covered).",
         "Added columns: nearest study reactor, its group and the distance in km.",
     ]
     count = write_table(ANALYSIS_DIR / "weather_2006_2018.csv", header, OUTPUT_FIELDS, rows)

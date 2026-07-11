@@ -4,6 +4,9 @@ weather_data.csv
 data/raw/waterbase/
 data/raw/discharge/
 
+# Large reproducible intermediate: rebuilt by scripts/pipeline/weather_download.py.
+data/processed/dwd_kl_daily_near_nuclear.csv
+
 # Python cache files.
 __pycache__/
 *.py[cod]
