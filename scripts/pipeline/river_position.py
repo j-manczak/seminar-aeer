@@ -92,8 +92,13 @@ def _band(distance_km: float) -> str:
     return ">50"
 
 
-def classify(lat: float, lon: float, river_name: str) -> dict:
-    """Position a monitoring point relative to the study reactors on its river."""
+def classify(lat: float, lon: float, river_name: str = "", river: Optional[str] = None) -> dict:
+    """Position a monitoring point relative to the study reactors on its river.
+
+    The river can be supplied directly (e.g. from a geometric match on the site
+    coordinates); otherwise it is inferred from ``river_name``. A geometric match
+    is more robust when the water-body name is missing or a placeholder.
+    """
     empty = {
         "study_river": "",
         "position": "off_river",
@@ -103,7 +108,8 @@ def classify(lat: float, lon: float, river_name: str) -> dict:
         "distance_band": "",
         "downstream_of_shock": 0,
     }
-    river = river_of(river_name or "")
+    if river is None:
+        river = river_of(river_name or "")
     if river is None:
         return empty
 

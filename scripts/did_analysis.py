@@ -1,20 +1,14 @@
-"""First difference-in-differences analysis of the 2011 nuclear moratorium on
-downstream river water temperature: treatment vs control only.
+"""Difference-in-differences groundwork for the 2011 nuclear moratorium on
+downstream summer river temperature -- and an honest look at where the data can
+and cannot identify an effect.
 
-Design
-------
-Outcome  annual mean water temperature at a monitoring site (EEA Waterbase).
-Sample   downstream sites within 50 km of a study reactor, on a study river,
-         whose nearest upstream reactor is a treatment or a control plant
-         (partial and staggered reactors are left out of this first pass).
-Treated  nearest upstream reactor was fully shut down in 2011 (Biblis, Unterweser)
-         -> its cooling load was removed.
-Post     year >= 2011.
-Model    two-way fixed effects: temp ~ treated*post + site FE + year FE,
-         standard errors clustered by site. An event study replaces post with
-         year dummies interacted with treated (reference year 2010).
+Outcome  summer (Jun-Sep) mean water temperature per site and year, built from
+         the Waterbase v2025_1 disaggregated data (waterbase_disaggregated.py).
+Sample   downstream sites within 50 km of a study reactor, on a study river
+         (river matched geometrically from the coordinates).
 
-The sample is small, so the results are exploratory; see the caveats block.
+The script first maps the coverage by group and year (the binding constraint),
+then attempts the strict treatment-vs-control 2011 DiD.
 
     python scripts/did_analysis.py
 """
@@ -36,57 +30,61 @@ FIGS = ROOT / "figures"
 RESULTS = ANALYSIS / "did_water_temperature_results.md"
 
 NEAR_BANDS = {"0-10", "10-25", "25-50"}
-REFERENCE_YEAR = 2010
-TREAT_COLOR, CTRL_COLOR = "#e34948", "#2a78d6"
-INK, MUTED = "#0b0b0b", "#898781"
+GROUPS = ["treatment", "partial", "staggered_treatment", "control"]
+GROUP_DE = {"treatment": "Treatment", "partial": "Partial",
+            "staggered_treatment": "Gestaffelt", "control": "Control"}
+DID_WINDOW = (2008, 2020)
+TREAT_COLOR, CTRL_COLOR, INK, MUTED = "#e34948", "#2a78d6", "#0b0b0b", "#898781"
 
 
-def load_panel() -> pd.DataFrame:
-    df = pd.read_csv(ANALYSIS / "water_temperature_2006_2018.csv", comment="#")
-    df = df[(df["position"] == "downstream")
-            & (df["distance_band"].isin(NEAR_BANDS))
-            & (df["nearest_upstream_group"].isin(["treatment", "control"]))].copy()
-    df["treated"] = (df["nearest_upstream_group"] == "treatment").astype(int)
-    df["post"] = (df["year"] >= 2011).astype(int)
-    df["did"] = df["treated"] * df["post"]
+def load_downstream() -> pd.DataFrame:
+    df = pd.read_csv(ANALYSIS / "water_quality_summer_by_site.csv", comment="#")
+    df = df[(df["determinand"] == "water_temperature")
+            & (df["position"] == "downstream")
+            & (df["distance_band"].isin(NEAR_BANDS))].copy()
     df["mean_value"] = pd.to_numeric(df["mean_value"], errors="coerce")
     return df.dropna(subset=["mean_value"])
 
 
-def two_by_two(df: pd.DataFrame) -> pd.DataFrame:
-    return df.pivot_table(index="treated", columns="post", values="mean_value", aggfunc="mean")
+def coverage_table(df: pd.DataFrame) -> pd.DataFrame:
+    piv = (df.groupby(["nearest_upstream_group", "year"])["site_id"].nunique()
+             .unstack("year").reindex(GROUPS).fillna(0).astype(int))
+    return piv
 
 
-def fit_did(df: pd.DataFrame):
-    model = smf.ols("mean_value ~ did + C(site_id) + C(year)", data=df)
-    return model.fit(cov_type="cluster", cov_kwds={"groups": df["site_id"]})
-
-
-def fit_event_study(df: pd.DataFrame):
-    df = df.copy()
-    years = sorted(y for y in df["year"].unique() if y != REFERENCE_YEAR)
-    terms = []
-    for y in years:
-        col = f"tx_{y}"
-        df[col] = df["treated"] * (df["year"] == y).astype(int)
-        terms.append(col)
-    formula = "mean_value ~ " + " + ".join(terms) + " + C(site_id) + C(year)"
-    res = smf.ols(formula, data=df).fit(cov_type="cluster", cov_kwds={"groups": df["site_id"]})
-    rows = [{"year": REFERENCE_YEAR, "coef": 0.0, "se": 0.0}]
-    for y in years:
-        rows.append({"year": y, "coef": res.params[f"tx_{y}"], "se": res.bse[f"tx_{y}"]})
-    return pd.DataFrame(rows).sort_values("year"), res
+def plot_coverage(cov: pd.DataFrame):
+    fig, ax = plt.subplots(figsize=(11, 3.2), dpi=170)
+    data = cov.values
+    ax.imshow(data, cmap="Blues", aspect="auto", vmin=0, vmax=max(1, data.max()))
+    ax.set_xticks(range(len(cov.columns)))
+    ax.set_xticklabels(cov.columns, fontsize=8)
+    ax.set_yticks(range(len(cov.index)))
+    ax.set_yticklabels([GROUP_DE[g] for g in cov.index], fontsize=9)
+    for i in range(data.shape[0]):
+        for j in range(data.shape[1]):
+            v = data[i, j]
+            ax.text(j, i, str(v), ha="center", va="center", fontsize=8,
+                    color="white" if v > data.max() * 0.55 else INK)
+    ax.axvline(list(cov.columns).index(2011) - 0.5, color="#e34948", lw=1.5)
+    ax.set_title("Datenabdeckung: Messstellen je Gruppe und Jahr (downstream Sommer-Temperatur ≤ 50 km)",
+                 fontsize=11, weight="bold", color=INK, pad=10)
+    fig.tight_layout(); fig.savefig(FIGS / "did_coverage.png", dpi=170, facecolor="white")
+    plt.close(fig)
 
 
 def plot_trends(df: pd.DataFrame):
-    means = df.groupby(["year", "treated"])["mean_value"].mean().unstack("treated")
+    tc = df[df["nearest_upstream_group"].isin(["treatment", "control"])]
+    tc = tc[tc["year"].between(*DID_WINDOW)]
+    tc = tc.assign(treated=(tc["nearest_upstream_group"] == "treatment").astype(int))
+    means = tc.groupby(["year", "treated"])["mean_value"].mean().unstack("treated")
     fig, ax = plt.subplots(figsize=(8, 5), dpi=170)
-    ax.plot(means.index, means[1], "-o", color=TREAT_COLOR, lw=2, ms=5, label="Treatment (Biblis, Unterweser)")
-    ax.plot(means.index, means[0], "-o", color=CTRL_COLOR, lw=2, ms=5, label="Control (Grohnde, Emsland, Brokdorf)")
+    if 1 in means:
+        ax.plot(means.index, means[1], "-o", color=TREAT_COLOR, lw=2, ms=5, label="Treatment (Biblis, Unterweser)")
+    if 0 in means:
+        ax.plot(means.index, means[0], "-o", color=CTRL_COLOR, lw=2, ms=5, label="Control (Grohnde, Emsland, Brokdorf)")
     ax.axvline(2010.5, color=MUTED, ls="--", lw=1)
-    ax.text(2010.6, ax.get_ylim()[1], "Abschaltung 2011", color=MUTED, fontsize=8, va="top")
-    ax.set_xlabel("Jahr"); ax.set_ylabel("Ø Wassertemperatur (°C)")
-    ax.set_title("Jahresmittel der Wassertemperatur: Treatment vs. Control (downstream ≤ 50 km)",
+    ax.set_xlabel("Jahr"); ax.set_ylabel("Ø Sommer-Wassertemperatur (°C)")
+    ax.set_title("Sommer-Wassertemperatur (Jun–Sep): Treatment vs. Control (downstream ≤ 50 km)",
                  fontsize=11.5, color=INK, weight="bold")
     ax.legend(frameon=False, fontsize=9)
     ax.grid(axis="y", color="#e1e0d9", lw=0.6)
@@ -96,106 +94,105 @@ def plot_trends(df: pd.DataFrame):
     plt.close(fig)
 
 
-def plot_event_study(es: pd.DataFrame):
-    fig, ax = plt.subplots(figsize=(8, 5), dpi=170)
-    ax.axhline(0, color=MUTED, lw=1)
-    ax.axvline(2010.5, color=MUTED, ls="--", lw=1)
-    ax.errorbar(es["year"], es["coef"], yerr=1.96 * es["se"], fmt="o", color=INK,
-                ecolor="#b4b3ac", elinewidth=1.4, capsize=3, ms=5)
-    ax.set_xlabel("Jahr"); ax.set_ylabel("Treatment-Effekt auf Ø Temp. (°C)")
-    ax.set_title("Event-Study: Temperatur-Differenz Treatment−Control (Referenz 2010)",
-                 fontsize=11.5, color=INK, weight="bold")
-    ax.grid(axis="y", color="#e1e0d9", lw=0.6)
-    for s in ax.spines.values():
-        s.set_edgecolor("#e1e0d9")
-    fig.tight_layout(); fig.savefig(FIGS / "did_event_study.png", dpi=170, facecolor="white")
-    plt.close(fig)
+def try_did(df: pd.DataFrame):
+    tc = df[df["nearest_upstream_group"].isin(["treatment", "control"])
+            & df["year"].between(*DID_WINDOW)].copy()
+    tc["treated"] = (tc["nearest_upstream_group"] == "treatment").astype(int)
+    tc["post"] = (tc["year"] >= 2011).astype(int)
+    tc["did"] = tc["treated"] * tc["post"]
+    cells = tc.pivot_table(index="treated", columns="post", values="mean_value", aggfunc="count").reindex(
+        index=[0, 1], columns=[0, 1]).fillna(0).astype(int)
+    estimable = (cells.values > 0).all()
+    result = {"tc": tc, "cells": cells, "estimable": estimable, "coef": None, "se": None, "p": None}
+    if estimable:
+        res = smf.ols("mean_value ~ did + C(site_id) + C(year)", data=tc).fit(
+            cov_type="cluster", cov_kwds={"groups": tc["site_id"]})
+        result.update(coef=res.params["did"], se=res.bse["did"], p=res.pvalues["did"])
+    return result
 
 
-def write_results(df, tbl, did, es):
-    n_sites = df.groupby("nearest_upstream_group")["site_id"].nunique()
-    b, se, p = did.params["did"], did.bse["did"], did.pvalues["did"]
-    coverage = df.pivot_table(index="year", columns="treated", values="mean_value",
-                              aggfunc="count").fillna(0).astype(int)
-    treated_post_years = sorted(int(y) for y in df[(df.treated == 1) & (df.post == 1)]["year"].unique())
+def write_results(df, cov, did):
+    tc = did["tc"]
     lines = [
-        "# DiD: 2011-Abschaltung und Wassertemperatur (Treatment vs. Control)",
+        "# DiD: 2011-Abschaltung und Sommer-Wassertemperatur",
         "",
-        "*Erster, explorativer Durchgang.*",
+        "*Quelle: Waterbase v2025_1 Einzelmessungen → Sommer (Jun–Sep) je Messstelle/Jahr, "
+        "downstream ≤ 50 km, Fluss geometrisch zugeordnet.*",
         "",
-        "## Kernbefund (ehrlich)",
-        "Mit den **jährlichen** Waterbase-Daten ist die Analyse **nicht belastbar**: Die "
-        f"Treatment-Gruppe hat nach 2011 praktisch nur die Jahre {treated_post_years} — "
-        "eine echte Nachher-Periode fehlt, und der 2×2-/Event-Study-Schätzer wird von "
-        "Kompositionswechseln (unterschiedliche Messstellen je Jahr) getrieben, nicht von einem "
-        "Effekt. Für eine belastbare DiD brauchen wir **Waterbase Part 1 (Disaggregated)** — "
-        "Einzelmessungen für ein dichtes, balanciertes Monats-/Saison-Panel.",
+        "## Kernbefund",
+        "Mit den dichten Einzelmessungen ist die Abdeckung 2008–2024 durchgehend — aber sie ist "
+        "**stark ungleich über die Gruppen verteilt**. Die sauberen **Treatment**- (Biblis, Unterweser) "
+        "und **Control**-Reaktoren (Grohnde, Emsland, Brokdorf) sind downstream **kaum gemessen, "
+        "besonders vor 2011**; die Abdeckung liegt bei **Partial** (Philippsburg, Neckarwestheim; 9 Stellen) "
+        "und **Gestaffelt** (Grafenrheinfeld 2015, Gundremmingen 2017; 5 Stellen). Eine strikte "
+        "Treatment-vs-Control-DiD für 2011 ist deshalb "
+        + ("**schätzbar, aber sehr dünn**." if did["estimable"] else "**nicht identifiziert** "
+           "(die Control-Gruppe hat vor 2011 keine Beobachtung).")
+        + " Das gut abgedeckte Experiment sind die **Partial- und gestaffelten Abschaltungen**.",
         "",
-        "## Datenabdeckung (Messstellen × Jahr, Anzahl Beobachtungen)",
+        "## Datenabdeckung (Messstellen je Gruppe × Jahr)",
         "",
-        "| Jahr | Control | Treatment |",
-        "|---|---|---|",
-    ] + [f"| {y} | {coverage.loc[y].get(0,0)} | {coverage.loc[y].get(1,0)} |" for y in coverage.index] + [
+        "| Gruppe | " + " | ".join(str(y) for y in cov.columns) + " |",
+        "|" + "---|" * (len(cov.columns) + 1),
+    ]
+    for g in cov.index:
+        lines.append(f"| {GROUP_DE[g]} | " + " | ".join(str(v) for v in cov.loc[g]) + " |")
+    lines += [
         "",
-        "## Stichprobe",
-        f"- Treatment-Standorte (downstream ≤ 50 km): {int(n_sites.get('treatment', 0))} Messstellen",
-        f"- Control-Standorte (downstream ≤ 50 km): {int(n_sites.get('control', 0))} Messstellen",
-        f"- Beobachtungen (Messstelle × Jahr): {len(df)}",
-        f"- Jahre: {df['year'].min()}–{df['year'].max()} (ohne 2006/2007/2015)",
-        f"- Cluster (Messstellen): {df['site_id'].nunique()}",
+        "Figur: `figures/did_coverage.png` (rote Linie = 2011).",
         "",
-        "## 2×2-Mittelwerte (°C)",
+        "## Versuch: Treatment vs. Control (2×2, Fenster 2008–2020)",
+        "",
+        "Zellbesetzung (Beobachtungen):",
         "",
         "| | vor 2011 | ab 2011 |",
         "|---|---|---|",
-        f"| Control | {tbl.loc[0,0]:.2f} | {tbl.loc[0,1]:.2f} |",
-        f"| Treatment | {tbl.loc[1,0]:.2f} | {tbl.loc[1,1]:.2f} |",
+        f"| Control | {did['cells'].loc[0,0]} | {did['cells'].loc[0,1]} |",
+        f"| Treatment | {did['cells'].loc[1,0]} | {did['cells'].loc[1,1]} |",
         "",
-        f"Roher 2×2-DiD: **{(tbl.loc[1,1]-tbl.loc[1,0])-(tbl.loc[0,1]-tbl.loc[0,0]):+.3f} °C**",
-        "",
-        "## Two-Way-Fixed-Effects (Messstellen- + Jahres-FE, SE geclustert je Messstelle)",
-        "",
-        f"- Treatment-Effekt (treated×post): **{b:+.3f} °C**  (SE {se:.3f}, p = {p:.3f})",
-        f"- 95%-KI: [{b-1.96*se:+.3f}, {b+1.96*se:+.3f}] °C",
-        "",
-        "## Event-Study (Referenz 2010)",
-        "",
-        "| Jahr | Effekt (°C) | SE |",
-        "|---|---|---|",
     ]
-    for _, r in es.iterrows():
-        lines.append(f"| {int(r['year'])} | {r['coef']:+.3f} | {r['se']:.3f} |")
+    if did["estimable"]:
+        lines.append(f"Two-Way-FE-Schätzer (treated×post): **{did['coef']:+.3f} °C** "
+                     f"(SE {did['se']:.3f}, p {did['p']:.3f}) — mit äußerster Vorsicht zu lesen.")
+    else:
+        lines.append("**Nicht schätzbar:** mindestens eine Zelle ist leer (keine Control-Vorperiode). "
+                     "Der 2×2-DiD ist für dieses Standort-Set nicht definiert.")
     lines += [
         "",
-        "## Vorbehalte",
-        "- Sehr kleine Stichprobe und wenige Cluster → Standardfehler nur näherungsweise; "
-        "p-Werte vorsichtig interpretieren (idealerweise Wild-Cluster-Bootstrap).",
-        "- Nur wenige Vorjahre (2008–2010) → Parallel-Trend-Annahme kaum testbar.",
-        "- Jahresmittel; der thermische Effekt ist im Sommer/Niedrigwasser am größten "
-        "(Waterbase Part 1 nötig).",
-        "- Unterweser/Brokdorf sind tidebeeinflusst; Abfluss noch nicht als Kovariate drin.",
+        "## Empfehlung (welche DiD die Daten tragen)",
+        "1. **Gestaffelte / generalisierte DiD** über alle Abschaltungen: jede Downstream-Stelle wird ab "
+        "dem Stilllegungsjahr ihres nächsten Oberlieger-AKW behandelt (2011 Partial/Treatment, 2015 "
+        "Grafenrheinfeld, 2017 Gundremmingen); noch laufende Reaktoren sind die (noch-nicht-)Kontrollen. "
+        "Nutzt die gesamte Abdeckung (Callaway–Sant'Anna gegen die TWFE-Verzerrung).",
+        "2. **Within-River downstream vs. upstream** je Abschaltung (upstream als Kontrolle desselben Flusses).",
+        "3. Abfluss als Kovariate/Intensität; Sommer-Fokus (hier schon) beibehalten.",
         "",
-        "Figuren: `figures/did_trends.png`, `figures/did_event_study.png`.",
+        "## Vorbehalte",
+        "- Kleine, wachsende Stichprobe; Site- + Jahres-FE; wenige Cluster → SE nur näherungsweise.",
+        "- Tide-Standorte (Unterweser, Brokdorf) und Kompositionswechsel beachten.",
+        "",
+        "Figuren: `figures/did_coverage.png`, `figures/did_trends.png`.",
     ]
     RESULTS.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main() -> None:
-    df = load_panel()
-    tbl = two_by_two(df)
-    did = fit_did(df)
-    es, _ = fit_event_study(df)
+    df = load_downstream()
+    cov = coverage_table(df[df["year"].between(2008, 2024)])
+    did = try_did(df)
 
     FIGS.mkdir(exist_ok=True)
+    plot_coverage(cov)
     plot_trends(df)
-    plot_event_study(es)
-    write_results(df, tbl, did, es)
+    write_results(df, cov, did)
 
-    print(f"obs {len(df)} | sites {df['site_id'].nunique()} "
-          f"(treat {df[df.treated==1]['site_id'].nunique()}, ctrl {df[df.treated==0]['site_id'].nunique()})")
-    print(f"DiD treated x post: {did.params['did']:+.3f} C "
-          f"(SE {did.bse['did']:.3f}, p {did.pvalues['did']:.3f})")
-    print(f"wrote {RESULTS.name}, did_trends.png, did_event_study.png")
+    print("coverage by group (distinct downstream sites):",
+          {GROUP_DE[g]: int(df[df.nearest_upstream_group == g]["site_id"].nunique()) for g in GROUPS})
+    if did["estimable"]:
+        print(f"treatment-vs-control DiD: {did['coef']:+.3f} C (SE {did['se']:.3f}, p {did['p']:.3f})")
+    else:
+        print("treatment-vs-control DiD: not estimable (empty control pre-period)")
+    print("wrote did_coverage.png, did_trends.png, did_water_temperature_results.md")
 
 
 if __name__ == "__main__":

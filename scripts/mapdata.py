@@ -126,6 +126,26 @@ def study_rivers() -> Dict[str, List[List[List[float]]]]:
     return rivers
 
 
+def river_matcher(threshold_km: float = 2.5):
+    """Return a function mapping (lat, lon) -> study river within threshold_km of
+    its centre-line, or None. Coordinate-based, so it is robust to missing or
+    placeholder water-body names in the source data."""
+    from pipeline.geo import haversine_km
+    rivers = study_rivers()
+    points = {r: [(lat, lon) for line in lines for lon, lat in line] for r, lines in rivers.items()}
+
+    def match(lat: float, lon: float):
+        best, best_d = None, threshold_km
+        for river, pts in points.items():
+            for plat, plon in pts:
+                d = haversine_km(lat, lon, plat, plon)
+                if d < best_d:
+                    best_d, best = d, river
+        return best
+
+    return match
+
+
 def _site_short_name(reactor_name: str) -> str:
     import re
     return re.sub(r"\s+(A|B|C|1|2|I|II)$", "", reactor_name)

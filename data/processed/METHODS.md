@@ -23,7 +23,8 @@ below uses this window.
 | Reactor sites and rivers | `data/Plants-River-Treatment.xlsx` | group worksheet | 7 Jul 2026 |
 | Nuclear plant master data | `data/processed/nuclear_plants_de_clean.csv` | Open Power System Data, `conventional_power_plants_DE` (nuclear subset) | 7 Jul 2026 |
 | Conventional thermal plants | `data/processed/conventional_plants_de_relevant_clean.csv` | Open Power System Data | 7 Jul 2026 |
-| Water temperature, dissolved oxygen | `data/raw/waterbase/Waterbase_v2020_1_T_WISE6_AggregatedData.csv` (+ `…_S_WISE6_SpatialObject_DerivedData.csv`) | EEA Waterbase v2020_1 | 9 Jul 2026 |
+| Water temperature, dissolved oxygen (annual) | `data/raw/waterbase/Waterbase_v2020_1_T_WISE6_AggregatedData.csv` (+ `…_S_WISE6_SpatialObject_DerivedData.csv`) | EEA Waterbase v2020_1 | 9 Jul 2026 |
+| Water temperature, dissolved oxygen (individual samples) | `data/raw/waterbase/Waterbase_v2025_1_WISE6_DisaggregatedData.sqlite` | EEA Waterbase v2025_1 (Part 1, DisaggregatedData) | 12 Jul 2026 |
 | River discharge | `data/raw/discharge/*.txt` | GRDC (Global Runoff Data Centre, BfG) | 9 Jul 2026 |
 | Weather | `data/processed/dwd_kl_daily_near_nuclear.csv` (built by `weather_download.py`) | DWD Climate Data Center, daily KL (historical) | 11 Jul 2026 |
 
@@ -222,7 +223,8 @@ scripts/
     reactors.py           reactor master table + group logic (single source of truth)
     sites.py              match an observation to the nearest study reactor
     group_assignment.py   writes group_assignment.csv
-    waterbase.py          water temperature + dissolved oxygen from raw Waterbase
+    waterbase.py          water temperature + dissolved oxygen (annual, v2020_1)
+    waterbase_disaggregated.py  dense monthly/summer panel from the v2025_1 SQLite
     discharge.py          annual discharge from raw GRDC files
     river_position.py     same-river up/downstream position + distance bands
     weather_download.py   downloads DWD daily KL (historical) for the study sites
@@ -248,11 +250,6 @@ the same river in amber); off-river sites within the radius are hidden.
 - `scripts/make_study_map.py` → `figures/study_map.png`, a static figure for the
   paper: reactor sites coloured and shaped by group, the study rivers, the used
   monitoring sites and a per-site flow arrow. Needs `matplotlib`.
-- `scripts/make_study_map_interactive.py` → `figures/study_map.html`, a
-  self-contained zoomable/clickable map: clicking a monitoring site or discharge
-  gauge shows which data it contributes (years covered, value ranges, nearest
-  upstream reactor, distance band). No external assets, so it works under a
-  strict CSP.
 - `scripts/make_sites_by_reactor.py` → `figures/study_sites_by_reactor.png`, a
   small-multiple map (one panel per reactor) that makes the site-to-reactor
   assignment explicit. It shows only the **core** groups (treatment / partial /
@@ -262,3 +259,35 @@ the same river in amber); off-river sites within the radius are hidden.
   direction. Optional dependency `adjustText` de-overlaps the labels.
 
 The maps download the outline and river geometry once from public sources.
+
+## 9. Analysis: first difference-in-differences pass
+
+**Dense outcome panel.** The annual AggregatedData is too sparse for a DiD, so
+we switched the water outcomes to the **Waterbase v2025_1 disaggregated
+(individual-sample) data**. `scripts/pipeline/waterbase_disaggregated.py` reads
+the ~97 M-row SQLite, keeps German water-temperature and dissolved-oxygen samples
+within 50 km of a study reactor, and aggregates them to a **monthly** and a
+**summer (Jun–Sep)** panel per site
+(`water_quality_{monthly,summer}_by_site.csv`). Because the disaggregated table's
+`waterBodyName` is frequently the placeholder `"NAME"`, the river is matched
+**geometrically** from the coordinates (`mapdata.river_matcher`, ≤ 2.5 km to a
+Natural-Earth centre-line) rather than by name; this recovered continuous
+2008–2024 coverage that name matching missed.
+
+**Coverage is the binding constraint.** `scripts/did_analysis.py` maps the
+downstream summer-temperature coverage by group and year
+(`figures/did_coverage.png`). The result: the clean **treatment** (Biblis,
+Unterweser) and **control** reactors (Grohnde, Emsland, Brokdorf) are barely
+monitored downstream — the control group has **no observation before 2011** — so
+a strict treatment-vs-control 2011 DiD is **not identified**. The coverage sits
+with the **partial** (Philippsburg, Neckarwestheim; 9 sites) and **staggered**
+(Grafenrheinfeld 2015, Gundremmingen 2017; 5 sites) reactors.
+
+**Recommended design (data-driven).** Use a **generalised / staggered DiD**: a
+downstream site becomes treated in the year its nearest upstream reactor shut
+down (2011 partial/treatment, 2015 Grafenrheinfeld, 2017 Gundremmingen), with
+still-running reactors as (not-yet-)controls — estimated with Callaway–Sant'Anna
+to avoid the two-way-FE bias. A within-river **downstream-vs-upstream** contrast
+per shutdown is a complementary clean identification. Full write-up and figures:
+`data/processed/analysis/did_water_temperature_results.md`,
+`figures/did_coverage.png`, `figures/did_trends.png`.
