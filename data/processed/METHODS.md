@@ -204,7 +204,8 @@ small, which the analysis must acknowledge.
 3. Coverage gaps: water temperature (Waterbase annual) has no 2006/2007/2015 and is sparse; weather now spans the full window. The small downstream sample (§4.6) is the binding constraint.
 4. Modelling level: reactor vs. site is a deliberate choice (§3.2); fix and justify it in the analysis.
 5. Flow direction for the up/downstream split is a per-river heuristic (§4.6); replace it with true river kilometres from a river network for the final version.
-6. Statistical power: after same-river/downstream matching, only single digits of stations sit downstream of a full treatment. Consider (a) a graded "downstream-of-shutdown" treatment pooling treatment/partial/staggered with distance or discharge as the dose, and (b) the Waterbase *disaggregated* data (Part 1) for many more observations and a summer/low-flow analysis, where the thermal effect is largest.
+6. Staggered sites (Grafenrheinfeld 2015, Gundremmingen 2017) are **excluded from the core 2011 DiD**: they are neither a clean 2011 treatment nor a full-window control, and dropping them removes the Main and Danube reaches, which carry no other study reactor. They are kept in `group_assignment.csv` and can serve a separate staggered/event-study robustness check.
+7. Statistical power: after same-river/downstream matching (≤ 50 km, core groups only) the used sample is small — 22 downstream sites across 8 reactors, and single digits per site. Consider (a) the Waterbase *disaggregated* data (Part 1) for many more observations and a summer/low-flow analysis, where the thermal effect is largest, and (b) discharge as a continuous exposure/intensity term.
 
 ## 7. Reproducibility
 
@@ -254,9 +255,10 @@ the same river in amber); off-river sites within the radius are hidden.
   strict CSP.
 - `scripts/make_sites_by_reactor.py` → `figures/study_sites_by_reactor.png`, a
   small-multiple map (one panel per reactor) that makes the site-to-reactor
-  assignment explicit: each downstream site (≤ 50 km) is attributed to the
-  reactor immediately upstream of it and labelled in that reactor's panel;
-  upstream same-river sites are shown faintly for context. Optional dependency
-  `adjustText` de-overlaps the labels.
+  assignment explicit. It shows only the **core** groups (treatment / partial /
+  control) and, per reactor, only the monitoring sites the analysis actually
+  uses: the downstream sites within 50 km attributed to the reactor immediately
+  upstream of them. The river is named and carries small arrows for flow
+  direction. Optional dependency `adjustText` de-overlaps the labels.
 
 The maps download the outline and river geometry once from public sources.
