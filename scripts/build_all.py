@@ -15,13 +15,21 @@ from pathlib import Path
 # Make the `pipeline` package importable when run as a plain script.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from pipeline import discharge, group_assignment, power_plants, waterbase, weather  # noqa: E402
+from pipeline import (  # noqa: E402
+    discharge,
+    group_assignment,
+    power_plants,
+    river_position,
+    waterbase,
+    weather,
+)
 
 
 def main() -> None:
     group_assignment.build()
     waterbase.build()
     discharge.build()
+    river_position.build()  # adds same-river up/downstream position to the above
     weather.build()
     power_plants.build()
 

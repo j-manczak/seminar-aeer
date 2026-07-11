@@ -160,6 +160,27 @@ operating life overlapping the window (commissioned by 2018, not shut down befor
 2006). These are potential thermal confounders near the study rivers; the study
 reactors themselves are documented in `group_assignment.csv`.
 
+### 4.6 River position (upstream / downstream)
+
+A straight-line radius alone is too coarse for a thermal design: a plant's
+waste-heat plume only reaches monitoring points that are on the *same* river and
+*downstream* of it, and it decays with distance. `river_position.py` therefore
+enriches the water-temperature, dissolved-oxygen and discharge files with, per
+site: the matched `study_river`, its `position` (downstream / upstream /
+off_river), the `nearest_upstream_plant` and its group, an approximate
+`along_river_km`, a `distance_band` (0–10 / 10–25 / 25–50 / >50 km) and
+`downstream_of_shock` (1 below a 2011/staggered shutdown). River membership comes
+from the water-body / GRDC river name (with the REMS≠EMS and canal traps
+handled); up/downstream comes from a per-river downstream flow vector. The
+along-flow *sign* is robust; the exact distance is approximate and should later
+be replaced by true river kilometres from a river network.
+
+This step is decisive for sample size. Of 245 water-temperature stations inside
+the 50 km radius, only 41 are downstream of a study reactor (187 are off-river,
+17 upstream), and just **6** lie downstream of a full-shutdown *treatment* plant
+(3 of them within 0–10 km). The plume-relevant treatment sample is therefore
+small, which the analysis must acknowledge.
+
 ## 5. Summary of exclusion / flagging decisions
 
 | Unit | Decision | Reason |
@@ -195,9 +216,10 @@ scripts/
     group_assignment.py   writes group_assignment.csv
     waterbase.py          water temperature + dissolved oxygen from raw Waterbase
     discharge.py          annual discharge from raw GRDC files
+    river_position.py     same-river up/downstream position + distance bands
     weather.py            DWD monthly aggregation
     power_plants.py       conventional-plant confounders
-    tests/test_parsers.py checks the GRDC and Waterbase parsers on small fixtures
+    tests/test_parsers.py checks the parsers and river-position logic on fixtures
 ```
 
 Run everything with `python scripts/build_all.py`; steps whose raw inputs are

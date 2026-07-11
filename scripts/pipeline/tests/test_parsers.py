@@ -12,9 +12,27 @@ from pathlib import Path
 # Make the `pipeline` package importable.
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from pipeline import discharge, waterbase  # noqa: E402
+from pipeline import discharge, river_position, waterbase  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
+
+
+def test_river_position():
+    # River name matching, including German prefixes and the REMS/EMS trap.
+    assert river_position.river_of("TIDEELBE") == "Elbe"
+    assert river_position.river_of("MITTELWESER ZWISCHEN ALLER UND BREMEN") == "Weser"
+    assert river_position.river_of("REMS") is None          # Neckar tributary, not Ems
+    assert river_position.river_of("MAIN-DONAU-KANAL") is None  # a canal, not the river
+
+    # A point due north of Biblis on the Rhine is downstream (Rhine flows north).
+    north_of_biblis = river_position.classify(49.90, 8.42, "RHEIN")
+    assert north_of_biblis["position"] == "downstream"
+    assert north_of_biblis["nearest_upstream_group"] == "treatment"
+    # A point due south (upstream) is not treated.
+    south_of_biblis = river_position.classify(49.40, 8.42, "RHEIN")
+    assert south_of_biblis["position"] in {"upstream", "downstream"}
+    assert south_of_biblis.get("nearest_upstream_plant") != "Biblis A"
+    print("river position: OK")
 
 
 def test_discharge_parser():
@@ -57,4 +75,5 @@ def test_waterbase_filter():
 if __name__ == "__main__":
     test_discharge_parser()
     test_waterbase_filter()
+    test_river_position()
     print("all parser tests passed")
