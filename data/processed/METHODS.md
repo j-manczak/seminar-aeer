@@ -252,5 +252,11 @@ the same river in amber); off-river sites within the radius are hidden.
   gauge shows which data it contributes (years covered, value ranges, nearest
   upstream reactor, distance band). No external assets, so it works under a
   strict CSP.
+- `scripts/make_sites_by_reactor.py` → `figures/study_sites_by_reactor.png`, a
+  small-multiple map (one panel per reactor) that makes the site-to-reactor
+  assignment explicit: each downstream site (≤ 50 km) is attributed to the
+  reactor immediately upstream of it and labelled in that reactor's panel;
+  upstream same-river sites are shown faintly for context. Optional dependency
+  `adjustText` de-overlaps the labels.
 
-Both download the outline and river geometry once from public sources.
+The maps download the outline and river geometry once from public sources.
