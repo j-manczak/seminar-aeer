@@ -1,0 +1,293 @@
+# Methods
+
+This document records, step by step, how we turn the raw inputs into the
+analysis tables for our difference-in-differences (DiD) study of the March 2011
+German nuclear moratorium. It names each data source with its retrieval date and
+gives the reason for every filtering, aggregation and exclusion decision, so the
+text can feed directly into the paper's methods section.
+
+*Last updated: 9 July 2026.*
+
+## 1. Question and study window
+
+We ask whether removing the thermal cooling load of the reactors shut down in
+2011 changed the temperature and dissolved-oxygen regime of the affected rivers.
+The observation window is **2006–2018 (inclusive)** — five years before and
+seven years after the shock, kept symmetric where the data allow. Every filter
+below uses this window.
+
+## 2. Data sources and retrieval dates
+
+| Dataset | File(s) | Origin | Retrieved |
+|---|---|---|---|
+| Reactor sites and rivers | `data/Plants-River-Treatment.xlsx` | group worksheet | 7 Jul 2026 |
+| Nuclear plant master data | `data/processed/nuclear_plants_de_clean.csv` | Open Power System Data, `conventional_power_plants_DE` (nuclear subset) | 7 Jul 2026 |
+| Conventional thermal plants | `data/processed/conventional_plants_de_relevant_clean.csv` | Open Power System Data | 7 Jul 2026 |
+| Water temperature, dissolved oxygen (annual) | `data/raw/waterbase/Waterbase_v2020_1_T_WISE6_AggregatedData.csv` (+ `…_S_WISE6_SpatialObject_DerivedData.csv`) | EEA Waterbase v2020_1 | 9 Jul 2026 |
+| Water temperature, dissolved oxygen (individual samples) | `data/raw/waterbase/Waterbase_v2025_1_WISE6_DisaggregatedData.sqlite` | EEA Waterbase v2025_1 (Part 1, DisaggregatedData) | 12 Jul 2026 |
+| River discharge | `data/raw/discharge/*.txt` | GRDC (Global Runoff Data Centre, BfG) | 9 Jul 2026 |
+| Weather | `data/processed/dwd_kl_daily_near_nuclear.csv` (built by `weather_download.py`) | DWD Climate Data Center, daily KL (historical) | 11 Jul 2026 |
+
+Shutdown years and cooling types are not in these raw files. We compiled them
+from public documentation, retrieved **7 Jul 2026**:
+
+- BASE (Bundesamt für die Sicherheit der nuklearen Entsorgung), nuclear phase-out pages — shutdown dates.
+- World Nuclear News, "Three German reactors cease operation" — the 2021 and 2023 shutdowns.
+- Operator/authority documents for cooling type: PreussenElektra site brochure Isar (once-through KKI 1 vs. cooling tower KKI 2), BASE Brokdorf page (once-through from the Elbe), Wikipedia "Kernkraftwerk Grohnde" (cooling tower).
+
+**Open assumption.** The exact download dates of the EEA, OPSD and DWD raw files
+are not logged in the repository. We record the dataset versions (Waterbase
+v2020_1, OPSD `conventional_power_plants_DE`, DWD daily KL) and will add the
+precise dates once recovered from the original download scripts.
+
+## 3. Reactor group assignment
+
+The assignment lives in `data/processed/group_assignment.csv` (columns
+`reactor, block, group, river, cooling_type, commissioned_year, shutdown_year,
+rationale`) and is generated from the master table in
+`scripts/pipeline/reactors.py`.
+
+### 3.1 Full-window operation check (2006–2018)
+
+For every control candidate we checked explicitly whether it ran on-grid across
+the whole window, using its shutdown year: it must have started before 2006, not
+have shut down before the window ended (shutdown after 2018), and not have been
+effectively offline before 2011. Two nominal "still operating" plants fail:
+
+- **Grafenrheinfeld** shut down at the end of **2015**, inside the window.
+- **Gundremmingen B** shut down at the end of **2017**, inside the window.
+
+Both are removed from the control group and relabelled as
+**`staggered_treatment`**, because their shutdown is itself a (later) removal of
+cooling load. For a clean design they should be dropped or modelled with a
+reactor-specific treatment time.
+
+### 3.2 Group logic
+
+- **`treatment`** — the site went fully off-grid in 2011, removing the whole
+  cooling load: **Biblis A**, **Biblis B**, **Unterweser**.
+- **`partial`** — a block went off-grid in 2011 while its sister block at the
+  same site kept running, removing only part of the load: **Isar 1**,
+  **Neckarwestheim 1**, **Philippsburg 1**.
+- **`control`** — ran continuously 2006–2018: **Grohnde**, **Emsland**,
+  **Brokdorf**, **Isar 2**, **Neckarwestheim 2**, **Philippsburg 2**,
+  **Gundremmingen C**.
+
+The continuing sister blocks (Isar 2, Neckarwestheim 2, Philippsburg 2) are
+controls **at reactor level** because the block itself ran throughout; the
+`rationale` column notes that their **site** still saw a partial load cut in
+2011. Whoever models at site rather than reactor level must treat these blocks
+accordingly. The same caveat applies to Gundremmingen C, whose sister block B
+was shut down in 2017.
+
+### 3.3 Exclusions
+
+**Brunsbüttel** and **Krümmel** were formally disconnected in 2011 but had been
+effectively offline since 2007 (Brunsbüttel after an incident; Krümmel after the
+2007 transformer fire, fully offline from 2009). They deliver no real 2011 shock
+and are neither valid treatments nor valid controls, so we exclude them
+(`excluded`).
+
+### 3.4 Result
+
+17 reactors: 3 treatment, 3 partial, 7 control, 2 staggered_treatment, 2 excluded.
+
+### 3.5 Cooling type
+
+Cooling type matters for interpretation: **once-through** plants (fresh
+river/estuary water, no tower) discharge waste heat straight into the river and
+leave a stronger downstream signal, whereas **cooling-tower** plants release most
+heat to the air. Classification:
+
+- **once_through:** Unterweser, Brokdorf, Krümmel, Brunsbüttel, Isar 1 (with
+  auxiliary cell coolers).
+- **cooling_tower:** Biblis A/B, Neckarwestheim 1/2, Philippsburg 1/2,
+  Grafenrheinfeld, Grohnde, Gundremmingen B/C, Emsland, Isar 2.
+
+**Open assumption.** This is literature-based, not from the project data. The
+clearly documented cases (Isar 1 vs. Isar 2, Brokdorf, Grohnde, Unterweser) are
+solid; the remaining blocks should be checked against a primary source before
+publication.
+
+## 4. Filtered analysis outputs
+
+Each dataset yields exactly one filtered file in `data/processed/analysis/`,
+restricted to the study sites and to 2006–2018. "Study sites" means within
+`SITE_RADIUS_KM` (50 km, matching `scripts/prepare_data.py`) of one of the 15
+study reactors (all except the excluded Krümmel and Brunsbüttel); distance is a
+haversine distance to the nearest study reactor. Every file carries a `#` comment
+header with its filter. All files are produced by `python scripts/build_all.py`.
+
+### 4.1 Water temperature — `water_temperature_2006_2018.csv`
+
+From the EEA Waterbase `AggregatedData` table (annual value per site), joined to
+the site coordinates in `SpatialObject_DerivedData`, kept for German sites within
+the radius and inside the window. **No extra aggregation** is applied — Waterbase
+already provides annual mean/min/max per site. Coverage note: Waterbase has no
+rows for 2006, 2007 and 2015 at these sites, so the window materialises as
+2008–2014 plus 2016–2018.
+
+### 4.2 Dissolved oxygen — `dissolved_oxygen_2006_2018.csv`
+
+Same source, join and filter as water temperature, but for the determinand
+`Dissolved oxygen` (configurable in `scripts/pipeline/config.py`, in case a newer
+Waterbase release renames it). Dissolved oxygen is a second water-quality outcome
+and is physically coupled to temperature.
+
+### 4.3 River discharge — `discharge_2006_2018.csv`
+
+From the GRDC daily export files in `data/raw/discharge/`. Each gauge file's
+`#` header supplies its coordinates; the daily values (with `-999` treated as
+missing) are aggregated per station and year to mean/min/max discharge plus
+`days_observed`, then restricted to gauges within the radius and to the window.
+We requested the Rhine (incl. Neckar and Main), Danube (incl. Isar), Weser, Elbe
+and Ems sub-regions. Discharge is a key covariate: water temperature and the
+dilution of thermal discharges depend strongly on streamflow.
+
+### 4.4 Weather — `weather_2006_2018.csv`
+
+`weather_download.py` pulls the DWD daily climate (KL) *historical* archive live
+for every station within `WEATHER_RADIUS_KM` (50 km) of a study reactor and
+writes the daily intermediate `dwd_kl_daily_near_nuclear.csv`. Weather is a
+regional covariate rather than a local treatment, so a station radius equal to
+the site radius is generous enough — every study site, including Unterweser (its
+nearest station is ~9 km away), is covered by several stations. `weather.py` then
+keeps the window and **aggregates per station and calendar month** (mean/min/max
+air temperature, precipitation sum, mean wind speed, `days_observed`); monthly
+matches the resolution of the water outcomes and keeps the file small. The daily
+intermediate is large (~80 MB) and reproducible, so it is git-ignored; run
+`python scripts/pipeline/weather_download.py` to rebuild it. The result now spans
+the full 2006–2018 window (the earlier 2015 cut-off came from an older extract).
+
+### 4.5 Power plants — `power_plants_2006_2018.csv`
+
+Conventional thermal plants from OPSD, kept within the radius and with an
+operating life overlapping the window (commissioned by 2018, not shut down before
+2006). These are potential thermal confounders near the study rivers; the study
+reactors themselves are documented in `group_assignment.csv`.
+
+### 4.6 River position (upstream / downstream)
+
+A straight-line radius alone is too coarse for a thermal design: a plant's
+waste-heat plume only reaches monitoring points that are on the *same* river and
+*downstream* of it, and it decays with distance. `river_position.py` therefore
+enriches the water-temperature, dissolved-oxygen and discharge files with, per
+site: the matched `study_river`, its `position` (downstream / upstream /
+off_river), the `nearest_upstream_plant` and its group, an approximate
+`along_river_km`, a `distance_band` (0–10 / 10–25 / 25–50 / >50 km) and
+`downstream_of_shock` (1 below a 2011/staggered shutdown). River membership comes
+from the water-body / GRDC river name (with the REMS≠EMS and canal traps
+handled); up/downstream comes from a per-river downstream flow vector. The
+along-flow *sign* is robust; the exact distance is approximate and should later
+be replaced by true river kilometres from a river network.
+
+This step is decisive for sample size. Of 245 water-temperature stations inside
+the 50 km radius, only 41 are downstream of a study reactor (187 are off-river,
+17 upstream), and just **6** lie downstream of a full-shutdown *treatment* plant
+(3 of them within 0–10 km). The plume-relevant treatment sample is therefore
+small, which the analysis must acknowledge.
+
+## 5. Summary of exclusion / flagging decisions
+
+| Unit | Decision | Reason |
+|---|---|---|
+| Grafenrheinfeld | out of control, flagged `staggered_treatment` | shutdown 2015, inside the window |
+| Gundremmingen B | out of control, flagged `staggered_treatment` | shutdown 2017, inside the window |
+| Krümmel | excluded | effectively offline since 2007/2009, no 2011 shock |
+| Brunsbüttel | excluded | effectively offline since 2007, no 2011 shock |
+| Isar 2 / Neckarwestheim 2 / Philippsburg 2 | control, with a site-level 2011 partial-load note | block ran throughout; sister block shut in 2011 |
+| Sites/stations/plants > radius | filtered out | outside the spatial study area |
+
+## 6. Open assumptions and next steps
+
+1. Raw-file download dates are not logged; versions are recorded, exact dates to follow (§2).
+2. Cooling type is literature-based; verify the non-obvious blocks against a primary source (§3.5).
+3. Coverage gaps: water temperature (Waterbase annual) has no 2006/2007/2015 and is sparse; weather now spans the full window. The small downstream sample (§4.6) is the binding constraint.
+4. Modelling level: reactor vs. site is a deliberate choice (§3.2); fix and justify it in the analysis.
+5. Flow direction for the up/downstream split is a per-river heuristic (§4.6); replace it with true river kilometres from a river network for the final version.
+6. Staggered sites (Grafenrheinfeld 2015, Gundremmingen 2017) are **excluded from the core 2011 DiD**: they are neither a clean 2011 treatment nor a full-window control, and dropping them removes the Main and Danube reaches, which carry no other study reactor. They are kept in `group_assignment.csv` and can serve a separate staggered/event-study robustness check.
+7. Statistical power: after same-river/downstream matching (≤ 50 km, core groups only) the used sample is small — 22 downstream sites across 8 reactors, and single digits per site. Consider (a) the Waterbase *disaggregated* data (Part 1) for many more observations and a summer/low-flow analysis, where the thermal effect is largest, and (b) discharge as a continuous exposure/intensity term.
+
+## 7. Reproducibility
+
+The pipeline is a small package of single-purpose modules under
+`scripts/pipeline/`, orchestrated by `scripts/build_all.py`:
+
+```
+scripts/
+  build_all.py            entry point; runs every step
+  pipeline/
+    config.py             window, radius, paths, determinand labels
+    geo.py                haversine distance, nearest reactor
+    io_tables.py          CSV read/write with a comment header, parsing helpers
+    reactors.py           reactor master table + group logic (single source of truth)
+    sites.py              match an observation to the nearest study reactor
+    group_assignment.py   writes group_assignment.csv
+    waterbase.py          water temperature + dissolved oxygen (annual, v2020_1)
+    waterbase_disaggregated.py  dense monthly/summer panel from the v2025_1 SQLite
+    discharge.py          annual discharge from raw GRDC files
+    river_position.py     same-river up/downstream position + distance bands
+    weather_download.py   downloads DWD daily KL (historical) for the study sites
+    weather.py            DWD monthly aggregation
+    power_plants.py       conventional-plant confounders
+    tests/test_parsers.py checks the parsers and river-position logic on fixtures
+```
+
+Run everything with `python scripts/build_all.py`; steps whose raw inputs are
+absent skip themselves with a hint. Run the parser checks with
+`python scripts/pipeline/tests/test_parsers.py`. The window and radius are the
+constants `WINDOW_START`, `WINDOW_END` and `SITE_RADIUS_KM` in `config.py`.
+
+## 8. Figures
+
+Two maps show the study area; both read their geometry and data through
+`scripts/mapdata.py` (Germany outline and the eight study-river centre-lines from
+Natural Earth, reactor sites from `pipeline.reactors`, monitoring sites from the
+enriched analysis files), so they match the analysis exactly. Only the **used**
+water sites are shown — those on a study river (downstream in green, upstream on
+the same river in amber); off-river sites within the radius are hidden.
+
+- `scripts/make_study_map.py` → `figures/study_map.png`, a static figure for the
+  paper: reactor sites coloured and shaped by group, the study rivers, the used
+  monitoring sites and a per-site flow arrow. Needs `matplotlib`.
+- `scripts/make_sites_by_reactor.py` → `figures/study_sites_by_reactor.png`, a
+  small-multiple map (one panel per reactor) that makes the site-to-reactor
+  assignment explicit. It shows only the **core** groups (treatment / partial /
+  control) and, per reactor, only the monitoring sites the analysis actually
+  uses: the downstream sites within 50 km attributed to the reactor immediately
+  upstream of them. The river is named and carries small arrows for flow
+  direction. Optional dependency `adjustText` de-overlaps the labels.
+
+The maps download the outline and river geometry once from public sources.
+
+## 9. Analysis: first difference-in-differences pass
+
+**Dense outcome panel.** The annual AggregatedData is too sparse for a DiD, so
+we switched the water outcomes to the **Waterbase v2025_1 disaggregated
+(individual-sample) data**. `scripts/pipeline/waterbase_disaggregated.py` reads
+the ~97 M-row SQLite, keeps German water-temperature and dissolved-oxygen samples
+within 50 km of a study reactor, and aggregates them to a **monthly** and a
+**summer (Jun–Sep)** panel per site
+(`water_quality_{monthly,summer}_by_site.csv`). Because the disaggregated table's
+`waterBodyName` is frequently the placeholder `"NAME"`, the river is matched
+**geometrically** from the coordinates (`mapdata.river_matcher`, ≤ 2.5 km to a
+Natural-Earth centre-line) rather than by name; this recovered continuous
+2008–2024 coverage that name matching missed.
+
+**Coverage is the binding constraint.** `scripts/did_analysis.py` maps the
+downstream summer-temperature coverage by group and year
+(`figures/did_coverage.png`). The result: the clean **treatment** (Biblis,
+Unterweser) and **control** reactors (Grohnde, Emsland, Brokdorf) are barely
+monitored downstream — the control group has **no observation before 2011** — so
+a strict treatment-vs-control 2011 DiD is **not identified**. The coverage sits
+with the **partial** (Philippsburg, Neckarwestheim; 9 sites) and **staggered**
+(Grafenrheinfeld 2015, Gundremmingen 2017; 5 sites) reactors.
+
+**Recommended design (data-driven).** Use a **generalised / staggered DiD**: a
+downstream site becomes treated in the year its nearest upstream reactor shut
+down (2011 partial/treatment, 2015 Grafenrheinfeld, 2017 Gundremmingen), with
+still-running reactors as (not-yet-)controls — estimated with Callaway–Sant'Anna
+to avoid the two-way-FE bias. A within-river **downstream-vs-upstream** contrast
+per shutdown is a complementary clean identification. Full write-up and figures:
+`data/processed/analysis/did_water_temperature_results.md`,
+`figures/did_coverage.png`, `figures/did_trends.png`.

@@ -1,0 +1,4 @@
+countryCode,monitoringSiteIdentifier,monitoringSiteName,waterBodyName,lat,lon
+DE,DE_SITE_1,ELBE-TEST,ELBE,53.8500,9.3460
+DE,DE_SITE_FAR,FAR-TEST,RHINE,48.0000,7.0000
+FR,FR_SITE,PARIS,SEINE,48.8500,2.3500
