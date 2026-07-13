@@ -16,6 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from pipeline import (  # noqa: E402
+    conventional_controls,
     discharge,
     group_assignment,
     power_plants,
@@ -32,6 +33,7 @@ def main() -> None:
     river_position.build()  # adds same-river up/downstream position to the above
     weather.build()
     power_plants.build()
+    conventional_controls.build()
 
 
 if __name__ == "__main__":

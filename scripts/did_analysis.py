@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ANALYSIS = ROOT / "data" / "processed" / "analysis"
 FIGS = ROOT / "figures"
 RESULTS = ANALYSIS / "did_water_temperature_results.md"
+CONV_CONTROLS = ANALYSIS / "conventional_controls_by_site_year.csv"
 
 NEAR_BANDS = {"0-10", "10-25", "25-50"}
 GROUPS = ["treatment", "partial", "staggered_treatment", "control"]
@@ -43,7 +44,31 @@ def load_downstream() -> pd.DataFrame:
             & (df["position"] == "downstream")
             & (df["distance_band"].isin(NEAR_BANDS))].copy()
     df["mean_value"] = pd.to_numeric(df["mean_value"], errors="coerce")
-    return df.dropna(subset=["mean_value"])
+    df["year"] = pd.to_numeric(df["year"], errors="coerce")
+
+    if CONV_CONTROLS.exists():
+        controls = pd.read_csv(CONV_CONTROLS, comment="#")
+        controls["year"] = pd.to_numeric(controls["year"], errors="coerce")
+        df = df.merge(
+            controls,
+            on=["site_id", "year"],
+            how="left",
+            validate="m:1",
+        )
+
+    for col in [
+        "conv_cap_0_10_mw",
+        "conv_cap_10_25_mw",
+        "conv_cap_25_50_mw",
+        "conv_cap_gt_50_mw",
+        "conv_cap_weighted_mw",
+        "nearby_thermal_plant_count",
+    ]:
+        if col not in df:
+            df[col] = 0.0
+        df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0.0)
+
+    return df.dropna(subset=["mean_value", "year"])
 
 
 def coverage_table(df: pd.DataFrame) -> pd.DataFrame:
@@ -103,11 +128,32 @@ def try_did(df: pd.DataFrame):
     cells = tc.pivot_table(index="treated", columns="post", values="mean_value", aggfunc="count").reindex(
         index=[0, 1], columns=[0, 1]).fillna(0).astype(int)
     estimable = (cells.values > 0).all()
-    result = {"tc": tc, "cells": cells, "estimable": estimable, "coef": None, "se": None, "p": None}
+    result = {
+        "tc": tc,
+        "cells": cells,
+        "estimable": estimable,
+        "coef": None,
+        "se": None,
+        "p": None,
+        "coef_ctrl": None,
+        "se_ctrl": None,
+        "p_ctrl": None,
+    }
     if estimable:
         res = smf.ols("mean_value ~ did + C(site_id) + C(year)", data=tc).fit(
             cov_type="cluster", cov_kwds={"groups": tc["site_id"]})
         result.update(coef=res.params["did"], se=res.bse["did"], p=res.pvalues["did"])
+
+        res_ctrl = smf.ols(
+            "mean_value ~ did + conv_cap_weighted_mw + conv_cap_0_10_mw + conv_cap_10_25_mw + "
+            "conv_cap_25_50_mw + nearby_thermal_plant_count + C(site_id) + C(year)",
+            data=tc,
+        ).fit(cov_type="cluster", cov_kwds={"groups": tc["site_id"]})
+        result.update(
+            coef_ctrl=res_ctrl.params.get("did"),
+            se_ctrl=res_ctrl.bse.get("did"),
+            p_ctrl=res_ctrl.pvalues.get("did"),
+        )
     return result
 
 
@@ -154,6 +200,11 @@ def write_results(df, cov, did):
     if did["estimable"]:
         lines.append(f"Two-way FE estimator (treated×post): **{did['coef']:+.3f} °C** "
                      f"(SE {did['se']:.3f}, p {did['p']:.3f}) — interpret with extreme caution.")
+        if did["coef_ctrl"] is not None:
+            lines.append(
+                f"Two-way FE + conventional thermal controls (treated×post): **{did['coef_ctrl']:+.3f} °C** "
+                f"(SE {did['se_ctrl']:.3f}, p {did['p_ctrl']:.3f})."
+            )
     else:
         lines.append("**Not estimable:** at least one cell is empty (no control pre-period). "
                      "The 2×2 DiD is not defined for this site set.")
@@ -190,6 +241,11 @@ def main() -> None:
             {GROUP_LABELS[g]: int(df[df.nearest_upstream_group == g]["site_id"].nunique()) for g in GROUPS})
     if did["estimable"]:
         print(f"treatment-vs-control DiD: {did['coef']:+.3f} C (SE {did['se']:.3f}, p {did['p']:.3f})")
+        if did["coef_ctrl"] is not None:
+            print(
+                f"treatment-vs-control DiD (+ conventional controls): {did['coef_ctrl']:+.3f} C "
+                f"(SE {did['se_ctrl']:.3f}, p {did['p_ctrl']:.3f})"
+            )
     else:
         print("treatment-vs-control DiD: not estimable (empty control pre-period)")
     print("wrote did_coverage.png, did_trends.png, did_water_temperature_results.md")
