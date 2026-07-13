@@ -31,8 +31,8 @@ RESULTS = ANALYSIS / "did_water_temperature_results.md"
 
 NEAR_BANDS = {"0-10", "10-25", "25-50"}
 GROUPS = ["treatment", "partial", "staggered_treatment", "control"]
-GROUP_DE = {"treatment": "Treatment", "partial": "Partial",
-            "staggered_treatment": "Gestaffelt", "control": "Control"}
+GROUP_LABELS = {"treatment": "Treatment", "partial": "Partial",
+                "staggered_treatment": "Staggered", "control": "Control"}
 DID_WINDOW = (2008, 2020)
 TREAT_COLOR, CTRL_COLOR, INK, MUTED = "#e34948", "#2a78d6", "#0b0b0b", "#898781"
 
@@ -59,14 +59,14 @@ def plot_coverage(cov: pd.DataFrame):
     ax.set_xticks(range(len(cov.columns)))
     ax.set_xticklabels(cov.columns, fontsize=8)
     ax.set_yticks(range(len(cov.index)))
-    ax.set_yticklabels([GROUP_DE[g] for g in cov.index], fontsize=9)
+    ax.set_yticklabels([GROUP_LABELS[g] for g in cov.index], fontsize=9)
     for i in range(data.shape[0]):
         for j in range(data.shape[1]):
             v = data[i, j]
             ax.text(j, i, str(v), ha="center", va="center", fontsize=8,
                     color="white" if v > data.max() * 0.55 else INK)
     ax.axvline(list(cov.columns).index(2011) - 0.5, color="#e34948", lw=1.5)
-    ax.set_title("Datenabdeckung: Messstellen je Gruppe und Jahr (downstream Sommer-Temperatur ≤ 50 km)",
+    ax.set_title("Data coverage: sites by group and year (downstream summer temperature ≤ 50 km)",
                  fontsize=11, weight="bold", color=INK, pad=10)
     fig.tight_layout(); fig.savefig(FIGS / "did_coverage.png", dpi=170, facecolor="white")
     plt.close(fig)
@@ -83,8 +83,8 @@ def plot_trends(df: pd.DataFrame):
     if 0 in means:
         ax.plot(means.index, means[0], "-o", color=CTRL_COLOR, lw=2, ms=5, label="Control (Grohnde, Emsland, Brokdorf)")
     ax.axvline(2010.5, color=MUTED, ls="--", lw=1)
-    ax.set_xlabel("Jahr"); ax.set_ylabel("Ø Sommer-Wassertemperatur (°C)")
-    ax.set_title("Sommer-Wassertemperatur (Jun–Sep): Treatment vs. Control (downstream ≤ 50 km)",
+    ax.set_xlabel("Year"); ax.set_ylabel("Mean summer water temperature (°C)")
+    ax.set_title("Summer water temperature (Jun-Sep): Treatment vs. Control (downstream ≤ 50 km)",
                  fontsize=11.5, color=INK, weight="bold")
     ax.legend(frameon=False, fontsize=9)
     ax.grid(axis="y", color="#e1e0d9", lw=0.6)
@@ -114,64 +114,64 @@ def try_did(df: pd.DataFrame):
 def write_results(df, cov, did):
     tc = did["tc"]
     lines = [
-        "# DiD: 2011-Abschaltung und Sommer-Wassertemperatur",
+        "# DiD: 2011 shutdown and summer water temperature",
         "",
-        "*Quelle: Waterbase v2025_1 Einzelmessungen → Sommer (Jun–Sep) je Messstelle/Jahr, "
-        "downstream ≤ 50 km, Fluss geometrisch zugeordnet.*",
+        "*Source: Waterbase v2025_1 individual measurements → summer (Jun-Sep) by site/year, "
+        "downstream ≤ 50 km, river matched geometrically.*",
         "",
-        "## Kernbefund",
-        "Mit den dichten Einzelmessungen ist die Abdeckung 2008–2024 durchgehend — aber sie ist "
-        "**stark ungleich über die Gruppen verteilt**. Die sauberen **Treatment**- (Biblis, Unterweser) "
-        "und **Control**-Reaktoren (Grohnde, Emsland, Brokdorf) sind downstream **kaum gemessen, "
-        "besonders vor 2011**; die Abdeckung liegt bei **Partial** (Philippsburg, Neckarwestheim; 9 Stellen) "
-        "und **Gestaffelt** (Grafenrheinfeld 2015, Gundremmingen 2017; 5 Stellen). Eine strikte "
-        "Treatment-vs-Control-DiD für 2011 ist deshalb "
-        + ("**schätzbar, aber sehr dünn**." if did["estimable"] else "**nicht identifiziert** "
-           "(die Control-Gruppe hat vor 2011 keine Beobachtung).")
-        + " Das gut abgedeckte Experiment sind die **Partial- und gestaffelten Abschaltungen**.",
+        "## Core finding",
+        "With dense individual measurements, coverage is continuous from 2008-2024, but it is "
+        "**highly uneven across groups**. The clean **Treatment** plants (Biblis, Unterweser) "
+        "and **Control** reactors (Grohnde, Emsland, Brokdorf) are downstream **barely measured, "
+        "especially before 2011**; coverage is concentrated in **Partial** (Philippsburg, Neckarwestheim; 9 sites) "
+        "and **Staggered** (Grafenrheinfeld 2015, Gundremmingen 2017; 5 sites). A strict "
+        "treatment-vs-control DiD for 2011 is therefore "
+        + ("**estimable, but very thin**." if did["estimable"] else "**not identified** "
+           "(the control group has no pre-2011 observations).")
+        + " The better-covered experiment is the **partial and staggered shutdowns**.",
         "",
-        "## Datenabdeckung (Messstellen je Gruppe × Jahr)",
+        "## Data coverage (sites by group × year)",
         "",
-        "| Gruppe | " + " | ".join(str(y) for y in cov.columns) + " |",
+        "| Group | " + " | ".join(str(y) for y in cov.columns) + " |",
         "|" + "---|" * (len(cov.columns) + 1),
     ]
     for g in cov.index:
-        lines.append(f"| {GROUP_DE[g]} | " + " | ".join(str(v) for v in cov.loc[g]) + " |")
+        lines.append(f"| {GROUP_LABELS[g]} | " + " | ".join(str(v) for v in cov.loc[g]) + " |")
     lines += [
         "",
-        "Figur: `figures/did_coverage.png` (rote Linie = 2011).",
+        "Figure: `figures/did_coverage.png` (red line = 2011).",
         "",
-        "## Versuch: Treatment vs. Control (2×2, Fenster 2008–2020)",
+        "## Attempt: Treatment vs. Control (2×2, window 2008-2020)",
         "",
-        "Zellbesetzung (Beobachtungen):",
+        "Cell counts (observations):",
         "",
-        "| | vor 2011 | ab 2011 |",
+        "| | pre-2011 | from 2011 |",
         "|---|---|---|",
         f"| Control | {did['cells'].loc[0,0]} | {did['cells'].loc[0,1]} |",
         f"| Treatment | {did['cells'].loc[1,0]} | {did['cells'].loc[1,1]} |",
         "",
     ]
     if did["estimable"]:
-        lines.append(f"Two-Way-FE-Schätzer (treated×post): **{did['coef']:+.3f} °C** "
-                     f"(SE {did['se']:.3f}, p {did['p']:.3f}) — mit äußerster Vorsicht zu lesen.")
+        lines.append(f"Two-way FE estimator (treated×post): **{did['coef']:+.3f} °C** "
+                     f"(SE {did['se']:.3f}, p {did['p']:.3f}) — interpret with extreme caution.")
     else:
-        lines.append("**Nicht schätzbar:** mindestens eine Zelle ist leer (keine Control-Vorperiode). "
-                     "Der 2×2-DiD ist für dieses Standort-Set nicht definiert.")
+        lines.append("**Not estimable:** at least one cell is empty (no control pre-period). "
+                     "The 2×2 DiD is not defined for this site set.")
     lines += [
         "",
-        "## Empfehlung (welche DiD die Daten tragen)",
-        "1. **Gestaffelte / generalisierte DiD** über alle Abschaltungen: jede Downstream-Stelle wird ab "
-        "dem Stilllegungsjahr ihres nächsten Oberlieger-AKW behandelt (2011 Partial/Treatment, 2015 "
-        "Grafenrheinfeld, 2017 Gundremmingen); noch laufende Reaktoren sind die (noch-nicht-)Kontrollen. "
-        "Nutzt die gesamte Abdeckung (Callaway–Sant'Anna gegen die TWFE-Verzerrung).",
-        "2. **Within-River downstream vs. upstream** je Abschaltung (upstream als Kontrolle desselben Flusses).",
-        "3. Abfluss als Kovariate/Intensität; Sommer-Fokus (hier schon) beibehalten.",
+        "## Recommendation (which DiD designs the data support)",
+        "1. **Staggered / generalized DiD** across all shutdowns: each downstream site is treated from "
+        "the shutdown year of its nearest upstream reactor (2011 partial/treatment, 2015 "
+        "Grafenrheinfeld, 2017 Gundremmingen); still-running reactors are the not-yet-treated controls. "
+        "This uses full coverage (Callaway-Sant'Anna to avoid TWFE bias).",
+        "2. **Within-river downstream vs. upstream** for each shutdown (upstream as control on the same river).",
+        "3. Include discharge as covariate/intensity; keep the summer focus (already done here).",
         "",
-        "## Vorbehalte",
-        "- Kleine, wachsende Stichprobe; Site- + Jahres-FE; wenige Cluster → SE nur näherungsweise.",
-        "- Tide-Standorte (Unterweser, Brokdorf) und Kompositionswechsel beachten.",
+        "## Caveats",
+        "- Small but growing sample; site + year FE; few clusters → SEs are only approximate.",
+        "- Watch tidal locations (Unterweser, Brokdorf) and composition changes.",
         "",
-        "Figuren: `figures/did_coverage.png`, `figures/did_trends.png`.",
+        "Figures: `figures/did_coverage.png`, `figures/did_trends.png`.",
     ]
     RESULTS.write_text("\n".join(lines), encoding="utf-8")
 
@@ -187,7 +187,7 @@ def main() -> None:
     write_results(df, cov, did)
 
     print("coverage by group (distinct downstream sites):",
-          {GROUP_DE[g]: int(df[df.nearest_upstream_group == g]["site_id"].nunique()) for g in GROUPS})
+            {GROUP_LABELS[g]: int(df[df.nearest_upstream_group == g]["site_id"].nunique()) for g in GROUPS})
     if did["estimable"]:
         print(f"treatment-vs-control DiD: {did['coef']:+.3f} C (SE {did['se']:.3f}, p {did['p']:.3f})")
     else:
