@@ -5,6 +5,16 @@
 # Aggregation: per station and year -- mean/min/max discharge and the
 # number of observed days (days_observed lets you drop sparse years).
 # Added columns: nearest study reactor, its group and the distance in km.
+# study river and classified upstream/downstream of the nearest reactor, with
+# an approximate along-flow distance and distance band. Flow direction is a
+# per-river heuristic (see the module); the up/down sign is robust, the distance
+# is approximate. Filter on position=downstream for the plume-exposed sample;
+# downstream_of_shock=1 marks sites below a 2011/staggered shutdown.
+# study river and classified upstream/downstream of the nearest reactor, with
+# an approximate along-flow distance and distance band. Flow direction is a
+# per-river heuristic (see the module); the up/down sign is robust, the distance
+# is approximate. Filter on position=downstream for the plume-exposed sample;
+# downstream_of_shock=1 marks sites below a 2011/staggered shutdown.
 # River position added by river_position.py: each site is matched to its
 # study river and classified upstream/downstream of the nearest reactor, with
 # an approximate along-flow distance and distance band. Flow direction is a
