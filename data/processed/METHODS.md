@@ -62,23 +62,29 @@ Both are removed from the control group and relabelled as
 cooling load. For a clean design they should be dropped or modelled with a
 reactor-specific treatment time.
 
-### 3.2 Group logic
+Groups are assigned at the **site level**. The outcome is the river temperature
+*downstream* of a site, which responds to the site's **total** cooling load, so
+all blocks that share a site share a group. A block that keeps running next to
+one that shut down is **not** a clean control — its river still lost heat.
 
-- **`treatment`** — the site went fully off-grid in 2011, removing the whole
-  cooling load: **Biblis A**, **Biblis B**, **Unterweser**.
-- **`partial`** — a block went off-grid in 2011 while its sister block at the
-  same site kept running, removing only part of the load: **Isar 1**,
-  **Neckarwestheim 1**, **Philippsburg 1**.
-- **`control`** — ran continuously 2006–2018: **Grohnde**, **Emsland**,
-  **Brokdorf**, **Isar 2**, **Neckarwestheim 2**, **Philippsburg 2**,
-  **Gundremmingen C**.
+- **`treatment`** — the whole site went off-grid in 2011: **Biblis A**,
+  **Biblis B**, **Unterweser**.
+- **`partial`** — the site lost one block in 2011 while a sister block kept
+  running; **both blocks** are partial: **Isar 1 + Isar 2**,
+  **Neckarwestheim 1 + 2**, **Philippsburg 1 + 2**.
+- **`control`** — single-block sites that ran continuously 2006–2018:
+  **Grohnde**, **Emsland**, **Brokdorf**.
 
-The continuing sister blocks (Isar 2, Neckarwestheim 2, Philippsburg 2) are
-controls **at reactor level** because the block itself ran throughout; the
-`rationale` column notes that their **site** still saw a partial load cut in
-2011. Whoever models at site rather than reactor level must treat these blocks
-accordingly. The same caveat applies to Gundremmingen C, whose sister block B
-was shut down in 2017.
+This is a deliberate change from an earlier reactor-level labelling, where the
+continuing blocks (Isar 2, Neckarwestheim 2, Philippsburg 2) were called
+controls. That was inconsistent: because the two blocks of a site sit at the
+same coordinates, the downstream attribution (nearest upstream reactor in
+`river_position.py`) could assign a partial-site observation to either group.
+Grouping at the site level removes that ambiguity and leaves only the three
+clean single-block sites as controls. In practice the summer panel already
+attributed every downstream control site to Grohnde/Emsland/Brokdorf, so the
+headline coverage and trend figures are unchanged; the fix corrects the group
+labels and the straight-line group columns in the other tables.
 
 ### 3.3 Exclusions
 
@@ -90,7 +96,7 @@ and are neither valid treatments nor valid controls, so we exclude them
 
 ### 3.4 Result
 
-17 reactors: 3 treatment, 3 partial, 7 control, 2 staggered_treatment, 2 excluded.
+17 reactors: 3 treatment, 6 partial, 3 control, 3 staggered_treatment, 2 excluded.
 
 ### 3.5 Cooling type
 
