@@ -26,7 +26,7 @@ BNA0646b,GKM,Block 9,Grosskraftwerk Mannheim AG,Baden-Württemberg,Mannheim,843.
 BNA0793,Heyden,4,Uniper Kraftwerke GmbH,Nordrhein-Westfalen,Petershagen,875.0,1987,,operating,Hard coal,Fossil fuels,Hard coal,Steam turbine,,52.38279238,8.996004114,47.951,Grohnde,control,47.955
 BNA0813,Kraftwerk Veltheim,3,Uniper Kraftwerke GmbH,Nordrhein-Westfalen,Porta Westfalica,303.0,1970,2015,shutdown,Hard coal,Fossil fuels,Hard coal,Steam turbine,,52.19004,8.93318,37.02,Grohnde,control,37.023
 BNA1006,Kraftwerk Walheim,WAL 2,EnBW Energie Baden-Württemberg AG,Baden-Württemberg,Walheim,148.0,1967,,operating,Hard coal,Fossil fuels,Hard coal,Steam turbine,,49.017472,9.157389,2.925,Neckarwestheim 1,partial,2.924
-BNA1093,Zolling,Zolling Block 5,ENGIE Deutschland AG,Bayern,Zolling,472.0,1985,,operating,Hard coal,Fossil fuels,Hard coal,Steam turbine,CHP,48.455353,11.799456,40.091,Isar 2,control,40.093
+BNA1093,Zolling,Zolling Block 5,ENGIE Deutschland AG,Bayern,Zolling,472.0,1985,,operating,Hard coal,Fossil fuels,Hard coal,Steam turbine,CHP,48.455353,11.799456,40.091,Isar 2,partial,40.093
 BNA0418,GKL,GKL,enercity AG,Niedersachsen,Hannover,230.0,1998,,operating,Natural gas,Fossil fuels,Natural gas,Combined cycle,,52.372917,9.714194,42.736,Grohnde,control,42.74
 BNA0419,KWH,B,enercity AG,Niedersachsen,Hannover,102.0,1975,,shutdown_temporary,Natural gas,Fossil fuels,Natural gas,Steam turbine,,52.42,9.648611,45.64,Grohnde,control,45.644
 BNA0514,Rheinhafen-Dampfkraftwerk,RDK 4S,EnBW Energie Baden-Württemberg AG,Baden-Württemberg,Karlsruhe,353.0,1998,,operating,Natural gas,Fossil fuels,Natural gas,Combined cycle,,49.0125,8.302778,28.402,Philippsburg 1,partial,28.399

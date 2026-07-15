@@ -5,16 +5,6 @@
 # Aggregation: per station and year -- mean/min/max discharge and the
 # number of observed days (days_observed lets you drop sparse years).
 # Added columns: nearest study reactor, its group and the distance in km.
-# study river and classified upstream/downstream of the nearest reactor, with
-# an approximate along-flow distance and distance band. Flow direction is a
-# per-river heuristic (see the module); the up/down sign is robust, the distance
-# is approximate. Filter on position=downstream for the plume-exposed sample;
-# downstream_of_shock=1 marks sites below a 2011/staggered shutdown.
-# study river and classified upstream/downstream of the nearest reactor, with
-# an approximate along-flow distance and distance band. Flow direction is a
-# per-river heuristic (see the module); the up/down sign is robust, the distance
-# is approximate. Filter on position=downstream for the plume-exposed sample;
-# downstream_of_shock=1 marks sites below a 2011/staggered shutdown.
 # River position added by river_position.py: each site is matched to its
 # study river and classified upstream/downstream of the nearest reactor, with
 # an approximate along-flow distance and distance band. Flow direction is a
@@ -588,19 +578,19 @@ grdc_no,river,station,latitude,longitude,year,discharge_mean_m3_s,discharge_min_
 6335695,FILS,PLOCHINGEN,48.712581,9.418433,2016,8.948,1.78,80.0,366,Neckarwestheim 1,partial,40.637,,off_river,,,,,0
 6335695,FILS,PLOCHINGEN,48.712581,9.418433,2017,9.756,1.84,77.7,365,Neckarwestheim 1,partial,40.637,,off_river,,,,,0
 6335695,FILS,PLOCHINGEN,48.712581,9.418433,2018,7.491,1.23,93.2,365,Neckarwestheim 1,partial,40.637,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2006,2.295,0.471,16.9,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2007,2.761,0.612,19.1,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2008,2.289,0.395,13.4,366,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2009,2.684,0.384,13.5,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2010,3.115,0.726,19.7,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2011,1.956,0.374,22.5,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2012,2.39,0.35,20.0,366,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2013,3.337,0.396,55.9,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2014,1.881,0.3,10.6,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2015,1.957,0.193,20.9,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2016,2.02,0.294,7.75,366,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2017,2.567,0.295,15.6,365,Gundremmingen C,control,42.801,,off_river,,,,,0
-6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2018,1.701,0.204,18.7,365,Gundremmingen C,control,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2006,2.295,0.471,16.9,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2007,2.761,0.612,19.1,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2008,2.289,0.395,13.4,366,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2009,2.684,0.384,13.5,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2010,3.115,0.726,19.7,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2011,1.956,0.374,22.5,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2012,2.39,0.35,20.0,366,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2013,3.337,0.396,55.9,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2014,1.881,0.3,10.6,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2015,1.957,0.193,20.9,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2016,2.02,0.294,7.75,366,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2017,2.567,0.295,15.6,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
+6335696,FILS,GEISLINGEN FILS,48.622759,9.83928,2018,1.701,0.204,18.7,365,Gundremmingen C,staggered_treatment,42.801,,off_river,,,,,0
 6335700,AICH,OBERENSINGEN,48.67,9.39,2006,1.134,0.381,15.2,365,Neckarwestheim 1,partial,44.161,,off_river,,,,,0
 6335700,AICH,OBERENSINGEN,48.67,9.39,2007,1.074,0.365,7.6,365,Neckarwestheim 1,partial,44.161,,off_river,,,,,0
 6335700,AICH,OBERENSINGEN,48.67,9.39,2008,1.133,0.385,10.6,366,Neckarwestheim 1,partial,44.161,,off_river,,,,,0
@@ -908,32 +898,32 @@ grdc_no,river,station,latitude,longitude,year,discharge_mean_m3_s,discharge_min_
 6340215,TARPENBEK,KELLERBLEEK,53.60511,9.967144,2015,0.674,0.254,4.39,365,Brokdorf,control,49.177,,off_river,,,,,0
 6340215,TARPENBEK,KELLERBLEEK,53.60511,9.967144,2016,0.7,0.308,5.59,366,Brokdorf,control,49.177,,off_river,,,,,0
 6340215,TARPENBEK,KELLERBLEEK,53.60511,9.967144,2017,0.862,0.315,5.8,365,Brokdorf,control,49.177,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2006,3.365,1.888,26.072,364,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2007,3.146,1.785,18.589,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2008,2.813,1.889,21.564,366,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2009,2.961,1.726,10.443,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2010,3.663,1.888,34.098,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2011,3.106,1.892,17.689,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2012,3.473,1.711,12.934,366,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2013,4.095,2.175,27.65,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2014,2.967,1.73,11.807,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2015,3.296,1.64,27.698,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2016,3.903,1.959,17.657,366,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2017,3.27,1.729,13.802,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2018,2.976,1.46,19.742,365,Gundremmingen C,control,46.562,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2006,12.365,6.55,85.0,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2007,11.786,6.79,65.9,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2008,10.415,6.62,61.2,366,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2009,9.318,5.1,35.8,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2010,12.373,6.8,79.8,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2011,10.79,6.03,35.4,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2012,11.327,5.34,40.2,366,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2013,14.467,7.63,109.0,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2014,9.558,4.72,34.9,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2015,12.937,6.4,71.2,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2016,13.263,7.8,41.0,366,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2017,10.993,6.21,40.0,365,Gundremmingen C,control,4.563,,off_river,,,,,0
-6342110,MINDEL,OFFINGEN,48.482578,10.362487,2018,10.581,4.8,65.5,365,Gundremmingen C,control,4.563,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2006,3.365,1.888,26.072,364,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2007,3.146,1.785,18.589,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2008,2.813,1.889,21.564,366,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2009,2.961,1.726,10.443,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2010,3.663,1.888,34.098,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2011,3.106,1.892,17.689,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2012,3.473,1.711,12.934,366,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2013,4.095,2.175,27.65,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2014,2.967,1.73,11.807,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2015,3.296,1.64,27.698,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2016,3.903,1.959,17.657,366,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2017,3.27,1.729,13.802,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342105,BAIERZER ROT,ACHSTETTEN,48.260693,9.898501,2018,2.976,1.46,19.742,365,Gundremmingen C,staggered_treatment,46.562,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2006,12.365,6.55,85.0,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2007,11.786,6.79,65.9,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2008,10.415,6.62,61.2,366,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2009,9.318,5.1,35.8,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2010,12.373,6.8,79.8,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2011,10.79,6.03,35.4,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2012,11.327,5.34,40.2,366,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2013,14.467,7.63,109.0,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2014,9.558,4.72,34.9,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2015,12.937,6.4,71.2,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2016,13.263,7.8,41.0,366,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2017,10.993,6.21,40.0,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
+6342110,MINDEL,OFFINGEN,48.482578,10.362487,2018,10.581,4.8,65.5,365,Gundremmingen C,staggered_treatment,4.563,,off_river,,,,,0
 6342120,ZUSAM,PFAFFENHOFEN,48.610767,10.710914,2006,4.618,2.42,35.7,365,Gundremmingen B,staggered_treatment,25.13,,off_river,,,,,0
 6342120,ZUSAM,PFAFFENHOFEN,48.610767,10.710914,2007,4.421,2.45,23.1,365,Gundremmingen B,staggered_treatment,25.13,,off_river,,,,,0
 6342120,ZUSAM,PFAFFENHOFEN,48.610767,10.710914,2008,4.309,2.88,15.0,366,Gundremmingen B,staggered_treatment,25.13,,off_river,,,,,0
@@ -973,19 +963,19 @@ grdc_no,river,station,latitude,longitude,year,discharge_mean_m3_s,discharge_min_
 6342130,WORNITZ,HARBURG,48.783235,10.692384,2016,9.449,1.14,49.5,366,Gundremmingen B,staggered_treatment,36.687,,off_river,,,,,0
 6342130,WORNITZ,HARBURG,48.783235,10.692384,2017,9.243,0.623,60.2,365,Gundremmingen B,staggered_treatment,36.687,,off_river,,,,,0
 6342130,WORNITZ,HARBURG,48.783235,10.692384,2018,11.75,0.893,139.0,365,Gundremmingen B,staggered_treatment,36.687,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2006,51.476,6.06,265.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2007,50.023,10.2,231.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2008,44.562,8.11,210.0,366,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2009,42.512,5.94,250.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2010,54.717,9.04,359.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2011,41.284,8.34,312.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2012,54.778,13.2,282.0,366,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2013,55.082,10.2,532.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2014,41.396,7.96,212.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2015,46.889,6.55,293.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2016,59.065,8.56,332.0,366,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2017,56.774,5.04,342.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
-6342201,ILLER,WIBLINGEN,48.370895,9.987702,2018,50.641,4.89,391.0,365,Gundremmingen C,control,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2006,51.476,6.06,265.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2007,50.023,10.2,231.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2008,44.562,8.11,210.0,366,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2009,42.512,5.94,250.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2010,54.717,9.04,359.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2011,41.284,8.34,312.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2012,54.778,13.2,282.0,366,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2013,55.082,10.2,532.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2014,41.396,7.96,212.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2015,46.889,6.55,293.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2016,59.065,8.56,332.0,366,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2017,56.774,5.04,342.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
+6342201,ILLER,WIBLINGEN,48.370895,9.987702,2018,50.641,4.89,391.0,365,Gundremmingen C,staggered_treatment,34.315,,off_river,,,,,0
 6342501,DANUBE RIVER,DILLINGEN,48.568397,10.50053,2006,169.859,61.1,726.0,365,Gundremmingen B,staggered_treatment,9.397,Danube,downstream,Gundremmingen B,staggered_treatment,9.1,0-10,1
 6342501,DANUBE RIVER,DILLINGEN,48.568397,10.50053,2007,153.053,62.2,585.0,365,Gundremmingen B,staggered_treatment,9.397,Danube,downstream,Gundremmingen B,staggered_treatment,9.1,0-10,1
 6342501,DANUBE RIVER,DILLINGEN,48.568397,10.50053,2008,145.677,63.7,602.0,366,Gundremmingen B,staggered_treatment,9.397,Danube,downstream,Gundremmingen B,staggered_treatment,9.1,0-10,1
@@ -1038,32 +1028,32 @@ grdc_no,river,station,latitude,longitude,year,discharge_mean_m3_s,discharge_min_
 6342640,GROSSE LABER,SCHOENACH,48.911651,12.423123,2016,2.4,1.35,21.3,366,Isar 1,partial,35.38,,off_river,,,,,0
 6342640,GROSSE LABER,SCHOENACH,48.911651,12.423123,2017,2.244,1.36,5.55,365,Isar 1,partial,35.38,,off_river,,,,,0
 6342640,GROSSE LABER,SCHOENACH,48.911651,12.423123,2018,2.077,0.912,16.6,365,Isar 1,partial,35.38,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2006,44.631,23.4,178.0,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2007,41.548,19.8,97.0,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2008,40.596,24.5,88.0,366,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2009,42.836,23.6,97.5,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2010,52.69,26.3,161.0,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2011,45.204,24.6,106.0,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2012,47.325,28.2,110.0,366,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2013,55.044,29.1,232.0,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2014,36.73,18.1,88.5,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2015,43.405,22.1,130.0,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2016,50.722,26.3,87.9,366,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2017,44.404,23.8,112.0,365,Isar 2,control,35.468,,off_river,,,,,0
-6342650,AMPER,INKOFEN,48.460684,11.865229,2018,34.984,15.8,115.0,365,Isar 2,control,35.468,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2006,1.403,0.4,17.3,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2007,1.16,0.47,8.99,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2008,0.957,0.43,4.71,366,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2009,1.324,0.53,11.0,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2010,1.758,0.688,24.8,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2011,1.272,0.567,10.4,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2012,1.585,0.663,10.2,366,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2013,1.966,0.701,38.5,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2014,1.173,0.658,9.69,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2015,1.296,0.526,13.1,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2016,1.171,0.585,8.82,366,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2017,1.018,0.539,6.11,365,Isar 2,control,31.493,,off_river,,,,,0
-6342660,STROGEN,APPOLDING,48.413618,11.979419,2018,0.993,0.395,11.2,365,Isar 2,control,31.493,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2006,44.631,23.4,178.0,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2007,41.548,19.8,97.0,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2008,40.596,24.5,88.0,366,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2009,42.836,23.6,97.5,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2010,52.69,26.3,161.0,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2011,45.204,24.6,106.0,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2012,47.325,28.2,110.0,366,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2013,55.044,29.1,232.0,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2014,36.73,18.1,88.5,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2015,43.405,22.1,130.0,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2016,50.722,26.3,87.9,366,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2017,44.404,23.8,112.0,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342650,AMPER,INKOFEN,48.460684,11.865229,2018,34.984,15.8,115.0,365,Isar 2,partial,35.468,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2006,1.403,0.4,17.3,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2007,1.16,0.47,8.99,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2008,0.957,0.43,4.71,366,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2009,1.324,0.53,11.0,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2010,1.758,0.688,24.8,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2011,1.272,0.567,10.4,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2012,1.585,0.663,10.2,366,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2013,1.966,0.701,38.5,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2014,1.173,0.658,9.69,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2015,1.296,0.526,13.1,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2016,1.171,0.585,8.82,366,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2017,1.018,0.539,6.11,365,Isar 2,partial,31.493,,off_river,,,,,0
+6342660,STROGEN,APPOLDING,48.413618,11.979419,2018,0.993,0.395,11.2,365,Isar 2,partial,31.493,,off_river,,,,,0
 6342670,VILS,ROTTERSDORF,48.606248,12.693803,2006,6.595,2.16,76.8,365,Isar 1,partial,29.286,,off_river,,,,,0
 6342670,VILS,ROTTERSDORF,48.606248,12.693803,2007,4.815,2.04,36.2,365,Isar 1,partial,29.286,,off_river,,,,,0
 6342670,VILS,ROTTERSDORF,48.606248,12.693803,2008,4.307,2.26,17.3,366,Isar 1,partial,29.286,,off_river,,,,,0
@@ -1077,19 +1067,19 @@ grdc_no,river,station,latitude,longitude,year,discharge_mean_m3_s,discharge_min_
 6342670,VILS,ROTTERSDORF,48.606248,12.693803,2016,4.622,1.79,31.9,366,Isar 1,partial,29.286,,off_river,,,,,0
 6342670,VILS,ROTTERSDORF,48.606248,12.693803,2017,3.676,1.04,27.0,365,Isar 1,partial,29.286,,off_river,,,,,0
 6342670,VILS,ROTTERSDORF,48.606248,12.693803,2018,3.525,0.714,36.8,365,Isar 1,partial,29.286,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2006,2.992,0.84,50.5,365,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2007,2.146,0.57,19.9,365,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2008,1.959,0.94,8.55,366,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2009,2.575,0.99,29.3,365,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2010,3.054,1.47,38.6,365,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2011,2.057,0.621,41.6,365,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2012,2.586,0.929,19.7,366,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2013,3.175,1.13,75.4,365,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2014,2.012,0.777,16.6,365,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2015,2.111,0.641,18.0,365,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2016,2.012,0.208,15.2,366,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2017,1.912,0.468,9.43,364,Isar 2,control,17.449,,off_river,,,,,0
-6342675,VILS,VILSBIBURG,48.45296,12.356043,2018,1.53,0.235,20.3,365,Isar 2,control,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2006,2.992,0.84,50.5,365,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2007,2.146,0.57,19.9,365,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2008,1.959,0.94,8.55,366,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2009,2.575,0.99,29.3,365,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2010,3.054,1.47,38.6,365,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2011,2.057,0.621,41.6,365,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2012,2.586,0.929,19.7,366,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2013,3.175,1.13,75.4,365,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2014,2.012,0.777,16.6,365,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2015,2.111,0.641,18.0,365,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2016,2.012,0.208,15.2,366,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2017,1.912,0.468,9.43,364,Isar 2,partial,17.449,,off_river,,,,,0
+6342675,VILS,VILSBIBURG,48.45296,12.356043,2018,1.53,0.235,20.3,365,Isar 2,partial,17.449,,off_river,,,,,0
 6342910,DANUBE RIVER,OBERNDORF,48.946957,12.014935,2006,346.268,136.0,1370.0,365,Isar 1,partial,43.246,Danube,downstream,Gundremmingen B,staggered_treatment,128.6,>50,1
 6342910,DANUBE RIVER,OBERNDORF,48.946957,12.014935,2007,324.537,148.0,926.0,365,Isar 1,partial,43.246,Danube,downstream,Gundremmingen B,staggered_treatment,128.6,>50,1
 6342910,DANUBE RIVER,OBERNDORF,48.946957,12.014935,2008,311.068,144.0,845.0,366,Isar 1,partial,43.246,Danube,downstream,Gundremmingen B,staggered_treatment,128.6,>50,1
