@@ -1,0 +1,6 @@
+observedPropertyDeterminandLabel,monitoringSiteIdentifier,phenomenonTimeReferenceYear,resultMeanValue,resultMinimumValue,resultMaximumValue,resultNumberOfSamples,resultUom
+Water temperature,DE_SITE_1,2010,12.5,2.0,22.0,12,Cel
+Dissolved oxygen,DE_SITE_1,2010,9.8,7.0,13.0,12,mg/L
+Water temperature,DE_SITE_1,2019,13.0,3.0,23.0,12,Cel
+Water temperature,DE_SITE_FAR,2010,11.0,1.0,20.0,10,Cel
+Water temperature,FR_SITE,2010,15.0,5.0,25.0,8,Cel
