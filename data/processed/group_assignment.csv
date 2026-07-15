@@ -2,17 +2,17 @@ reactor,block,group,river,cooling_type,commissioned_year,shutdown_year,rationale
 Biblis A,KWB A,treatment,Rhine,cooling_tower,1974,2011,"Shut down in 2011. Both Biblis blocks stopped together, so the whole cooling load at the site was removed."
 Biblis B,KWB B,treatment,Rhine,cooling_tower,1976,2011,Shut down in 2011 together with Biblis A; the full site cooling load was removed.
 Unterweser,KKU,treatment,Weser,once_through,1978,2011,Single-block site with once-through cooling from the tidal lower Weser; the entire thermal discharge stopped in 2011.
-Isar 1,KKI 1,partial,Isar,once_through,1977,2011,Shut down in 2011 while Isar 2 kept running; only block 1's once-through load was removed.
-Neckarwestheim 1,GKN I,partial,Neckar,cooling_tower,1976,2011,Shut down in 2011 while Neckarwestheim 2 kept running; only block 1's load was removed.
-Philippsburg 1,KKP 1,partial,Rhine,cooling_tower,1979,2011,Shut down in 2011 while Philippsburg 2 kept running; only block 1's load was removed.
-Grohnde,KWG,control,Weser,cooling_tower,1985,2021,"On-grid through the whole window (shut down only end of 2021). Clean single-load site, no block change in the window."
-Emsland,KKE,control,Ems,cooling_tower,1988,2023,"On-grid through the whole window (shut down only 2023). Single-block site, no cooling-load change in the window."
-Brokdorf,KBR,control,Elbe,once_through,1986,2021,"On-grid through the whole window (shut down only end of 2021). Single-block site, once-through cooling from the Elbe."
-Isar 2,KKI 2,control,Isar,cooling_tower,1988,2023,On-grid through the whole window (shut down 2023). Control at reactor level; note the site saw a partial load cut in 2011 (Isar 1).
-Neckarwestheim 2,GKN II,control,Neckar,cooling_tower,1989,2023,On-grid through the whole window (shut down 2023). Control at reactor level; the site saw a partial load cut in 2011 (Neckarwestheim 1).
-Philippsburg 2,KKP 2,control,Rhine,cooling_tower,1985,2019,"On-grid through the whole window (shut down end of 2019, after the window). Control at reactor level; the site saw a partial load cut in 2011 (Philippsburg 1)."
-Gundremmingen C,KRB C,control,Danube,cooling_tower,1984,2021,On-grid through the whole window (shut down end of 2021). No 2011 shutdown; the sister block Gundremmingen B went off-grid end of 2017.
-Grafenrheinfeld,KKG,staggered_treatment,Main,cooling_tower,1982,2015,"Shut down end of 2015, i.e. INSIDE the 2006-2018 window. Not a valid full-window control; treat as a later, staggered treatment (load removed in 2015)."
-Gundremmingen B,KRB B,staggered_treatment,Danube,cooling_tower,1984,2017,"Shut down end of 2017, i.e. INSIDE the window. Not a valid full-window control; treat as a staggered treatment (load removed in 2017). Sister block Gundremmingen C kept running."
+Isar 1,KKI 1,partial,Isar,once_through,1977,2011,Isar site partially treated in 2011: block 1 shut down while Isar 2 kept running (once-through load cut).
+Isar 2,KKI 2,partial,Isar,cooling_tower,1988,2023,"Isar site partially treated in 2011: sister block Isar 1 shut down; Isar 2 ran on to 2023. Grouped with its site (partial), not as a clean control."
+Neckarwestheim 1,GKN I,partial,Neckar,cooling_tower,1976,2011,Neckarwestheim site partially treated in 2011: block 1 shut down while Neckarwestheim 2 kept running.
+Neckarwestheim 2,GKN II,partial,Neckar,cooling_tower,1989,2023,Neckarwestheim site partially treated in 2011: sister block 1 shut down; block 2 ran on to 2023. Grouped with its site (partial).
+Philippsburg 1,KKP 1,partial,Rhine,cooling_tower,1979,2011,Philippsburg site partially treated in 2011: block 1 shut down while Philippsburg 2 kept running.
+Philippsburg 2,KKP 2,partial,Rhine,cooling_tower,1985,2019,Philippsburg site partially treated in 2011: sister block 1 shut down; block 2 ran on to 2019. Grouped with its site (partial).
+Grohnde,KWG,control,Weser,cooling_tower,1985,2021,"Single-block site, on-grid through the whole window (shut down only end of 2021). No cooling-load change -- a clean control."
+Emsland,KKE,control,Ems,cooling_tower,1988,2023,"Single-block site, on-grid through the whole window (shut down only 2023). No cooling-load change -- a clean control."
+Brokdorf,KBR,control,Elbe,once_through,1986,2021,"Single-block site with once-through cooling from the Elbe, on-grid through the whole window (shut down only end of 2021) -- a clean control."
+Grafenrheinfeld,KKG,staggered_treatment,Main,cooling_tower,1982,2015,"Single-block site shut down end of 2015, i.e. INSIDE the window. Not a valid full-window control; a later, staggered treatment (load removed 2015)."
+Gundremmingen B,KRB B,staggered_treatment,Danube,cooling_tower,1984,2017,Gundremmingen site treated in a staggered way: block B shut down end of 2017 (inside the window).
+Gundremmingen C,KRB C,staggered_treatment,Danube,cooling_tower,1984,2021,"Same site as Gundremmingen B (staggered): block B shut 2017, block C ran on to 2021. Grouped with its site (staggered), not a clean control."
 Krümmel,KKK,excluded,Elbe,once_through,1984,2011,"Formal grid disconnection in 2011, but effectively off-grid since the 2007 transformer fire and fully offline from 2009. No real 2011 shock, so excluded."
 Brunsbüttel,KKB,excluded,Elbe,once_through,1976,2011,"Formal grid disconnection in 2011, but effectively offline since a 2007 incident. No real 2011 shock, so excluded."
