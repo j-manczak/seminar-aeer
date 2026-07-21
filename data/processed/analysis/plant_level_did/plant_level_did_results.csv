@@ -1,0 +1,181 @@
+plant,shutdown_year,outcome,model,distance_threshold_km,estimable,message,upstream_pre_n,upstream_post_n,downstream_pre_n,downstream_post_n,coefficient,standard_error,ci_low,ci_high,p_value,n_obs
+Biblis A,2011,water_temperature,simple_did,all,True,,2,38,3,8,2.112574561403496,2.440206361518708,-2.6701420220186987,6.895291144825691,0.38663493816643846,51
+Biblis A,2011,water_temperature,twfe_did,all,True,,2,38,3,8,3.834683013453407,0.11533278170259097,3.6086349150795085,4.060731111827305,2.1205519363026333e-242,51
+Biblis A,2011,dissolved_oxygen,simple_did,all,True,,2,33,3,8,-1.7381287878787928,2.2769033891438264,-6.20077742687788,2.724519851120294,0.44524039694579987,46
+Biblis A,2011,dissolved_oxygen,twfe_did,all,True,,2,33,3,8,3.8001012962745464,0.1266716872893624,3.551829351326476,4.048373241222617,9.92886003383946e-198,46
+Biblis A,2011,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis A,2011,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis A,2011,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,3,0,,,,,,43
+Biblis A,2011,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,3,0,,,,,,43
+Biblis A,2011,water_temperature,simple_did,<= 50,True,,2,38,3,8,2.112574561403496,2.440206361518708,-2.6701420220186987,6.895291144825691,0.38663493816643846,51
+Biblis A,2011,water_temperature,twfe_did,<= 50,True,,2,38,3,8,3.834683013453407,0.11533278170259097,3.6086349150795085,4.060731111827305,2.1205519363026333e-242,51
+Biblis A,2011,water_temperature,simple_did,<= 75,True,,2,38,3,8,2.112574561403496,2.440206361518708,-2.6701420220186987,6.895291144825691,0.38663493816643846,51
+Biblis A,2011,water_temperature,twfe_did,<= 75,True,,2,38,3,8,3.834683013453407,0.11533278170259097,3.6086349150795085,4.060731111827305,2.1205519363026333e-242,51
+Biblis B,2011,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,33,0,0,,,,,,35
+Biblis B,2011,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,33,0,0,,,,,,35
+Biblis B,2011,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Biblis B,2011,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,38,0,0,,,,,,40
+Unterweser,2011,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,37,0,0,,,,,,42
+Unterweser,2011,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,37,0,0,,,,,,42
+Unterweser,2011,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Unterweser,2011,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,5,49,0,0,,,,,,54
+Isar 1,2011,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,10,,,,,,24
+Isar 1,2011,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,10,,,,,,24
+Isar 1,2011,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,10,,,,,,24
+Isar 1,2011,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,10,,,,,,24
+Isar 1,2011,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,0,,,,,,14
+Isar 1,2011,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,0,,,,,,14
+Isar 1,2011,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,6,,,,,,20
+Isar 1,2011,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,6,,,,,,20
+Isar 1,2011,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,10,,,,,,24
+Isar 1,2011,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,10,,,,,,24
+Isar 1,2011,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,10,,,,,,24
+Isar 1,2011,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,14,0,10,,,,,,24
+Isar 2,2023,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Isar 2,2023,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,11,1,0,0,,,,,,12
+Neckarwestheim 1,2011,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,32,,,,,,59
+Neckarwestheim 1,2011,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,32,,,,,,59
+Neckarwestheim 1,2011,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,32,,,,,,59
+Neckarwestheim 1,2011,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,32,,,,,,59
+Neckarwestheim 1,2011,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,0,,,,,,27
+Neckarwestheim 1,2011,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,0,,,,,,27
+Neckarwestheim 1,2011,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,15,,,,,,42
+Neckarwestheim 1,2011,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,15,,,,,,42
+Neckarwestheim 1,2011,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,15,,,,,,42
+Neckarwestheim 1,2011,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,15,,,,,,42
+Neckarwestheim 1,2011,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,32,,,,,,59
+Neckarwestheim 1,2011,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,27,0,32,,,,,,59
+Neckarwestheim 2,2023,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Neckarwestheim 2,2023,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,19,4,0,0,,,,,,23
+Philippsburg 1,2011,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,2,28,,,,,,40
+Philippsburg 1,2011,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,2,28,,,,,,40
+Philippsburg 1,2011,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,2,23,,,,,,35
+Philippsburg 1,2011,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,2,23,,,,,,35
+Philippsburg 1,2011,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,0,0,,,,,,10
+Philippsburg 1,2011,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,0,0,,,,,,10
+Philippsburg 1,2011,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,0,0,,,,,,10
+Philippsburg 1,2011,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,0,0,,,,,,10
+Philippsburg 1,2011,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,2,28,,,,,,40
+Philippsburg 1,2011,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,2,28,,,,,,40
+Philippsburg 1,2011,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,2,28,,,,,,40
+Philippsburg 1,2011,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,10,2,28,,,,,,40
+Philippsburg 2,2019,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Philippsburg 2,2019,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,8,0,0,,,,,,10
+Grohnde,2021,water_temperature,simple_did,all,True,,1,2,28,17,3.953407563025145,1.3559662919094846,1.2957624666322296,6.6110526594180605,0.0035504539206975137,48
+Grohnde,2021,water_temperature,twfe_did,all,True,,1,2,28,17,0.0957093256000141,0.9098507659965274,-1.68756540705936,1.8789840582593882,0.9162231936144479,48
+Grohnde,2021,dissolved_oxygen,simple_did,all,True,,1,2,16,17,2.1150772058823524,1.231077841662751,-0.29779102594194296,4.527945437706648,0.08578395197559911,36
+Grohnde,2021,dissolved_oxygen,twfe_did,all,True,,1,2,16,17,-1.0900402494331098,0.4882897881065097,-2.047070648140563,-0.1330098507256564,0.02559095502540319,36
+Grohnde,2021,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,1,2,0,0,,,,,,3
+Grohnde,2021,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,1,2,0,0,,,,,,3
+Grohnde,2021,water_temperature,simple_did,<= 25,True,,1,2,3,6,0.5331666666666592,0.0451335466920422,0.44470654065569964,0.6216267926776189,3.34052906775567e-32,12
+Grohnde,2021,water_temperature,twfe_did,<= 25,True,,1,2,3,6,-1.4501666666666608,0.35930101895515115,-2.1543837234273004,-0.7459496099060213,5.4352327630199674e-05,12
+Grohnde,2021,water_temperature,simple_did,<= 50,True,,1,2,9,10,1.8811666666666662,1.3384131519732383,-0.7420749076356148,4.504408240968948,0.15986665897289365,22
+Grohnde,2021,water_temperature,twfe_did,<= 50,True,,1,2,9,10,-0.4241096774193531,0.8409123764010517,-2.072267649319404,1.2240482944806979,0.6140191901072845,22
+Grohnde,2021,water_temperature,simple_did,<= 75,True,,1,2,9,10,1.8811666666666662,1.3384131519732383,-0.7420749076356148,4.504408240968948,0.15986665897289365,22
+Grohnde,2021,water_temperature,twfe_did,<= 75,True,,1,2,9,10,-0.4241096774193531,0.8409123764010517,-2.072267649319404,1.2240482944806979,0.6140191901072845,22
+Emsland,2023,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Emsland,2023,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,15,2,0,0,,,,,,17
+Brokdorf,2021,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Brokdorf,2021,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,4,3,0,0,,,,,,7
+Grafenrheinfeld,2015,water_temperature,simple_did,all,True,,13,27,14,38,0.5835419960156717,2.3592443461014883,-4.040491953072995,5.207575945104339,0.8046429728546907,92
+Grafenrheinfeld,2015,water_temperature,twfe_did,all,True,,13,27,14,38,0.24205645706341594,0.24909095477498322,-0.24615284317024655,0.7302657572970784,0.33117029756935634,92
+Grafenrheinfeld,2015,dissolved_oxygen,simple_did,all,True,,13,27,13,38,-0.7026027890238361,1.3161175611660727,-3.2821458083300303,1.876940230282358,0.5934487720154882,91
+Grafenrheinfeld,2015,dissolved_oxygen,twfe_did,all,True,,13,27,13,38,1.0972095840849758,0.8553368315526501,-0.5792198004088212,2.773638968578773,0.19956891575230862,91
+Grafenrheinfeld,2015,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,13,27,0,0,,,,,,40
+Grafenrheinfeld,2015,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,13,27,0,0,,,,,,40
+Grafenrheinfeld,2015,water_temperature,simple_did,<= 25,True,,13,27,3,12,1.010630341880351,3.6105528772750715,-6.0659232618562555,8.087183945616957,0.7795464516168655,55
+Grafenrheinfeld,2015,water_temperature,twfe_did,<= 25,True,,13,27,3,12,-0.04156127300289181,0.26659987427561194,-0.5640874248659976,0.480964878860214,0.8761167161145558,55
+Grafenrheinfeld,2015,water_temperature,simple_did,<= 50,True,,13,27,14,32,-0.6466241224053759,2.3015661954305315,-5.157610973484093,3.864362728673342,0.7787490499679838,86
+Grafenrheinfeld,2015,water_temperature,twfe_did,<= 50,True,,13,27,14,32,0.23203044549597,0.25562194026075724,-0.26897935107336346,0.7330402420653034,0.36403176081873556,86
+Grafenrheinfeld,2015,water_temperature,simple_did,<= 75,True,,13,27,14,32,-0.6466241224053759,2.3015661954305315,-5.157610973484093,3.864362728673342,0.7787490499679838,86
+Grafenrheinfeld,2015,water_temperature,twfe_did,<= 75,True,,13,27,14,32,0.23203044549597,0.25562194026075724,-0.26897935107336346,0.7330402420653034,0.36403176081873556,86
+Gundremmingen B,2017,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,11,23,,,,,,42
+Gundremmingen B,2017,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,11,23,,,,,,42
+Gundremmingen B,2017,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,12,22,,,,,,42
+Gundremmingen B,2017,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,12,22,,,,,,42
+Gundremmingen B,2017,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,0,0,,,,,,8
+Gundremmingen B,2017,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,0,0,,,,,,8
+Gundremmingen B,2017,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,0,0,,,,,,8
+Gundremmingen B,2017,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,0,0,,,,,,8
+Gundremmingen B,2017,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,0,0,,,,,,8
+Gundremmingen B,2017,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,0,0,,,,,,8
+Gundremmingen B,2017,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,0,0,,,,,,8
+Gundremmingen B,2017,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,0,8,0,0,,,,,,8
+Gundremmingen C,2021,water_temperature,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,dissolved_oxygen,simple_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,dissolved_oxygen,twfe_did,all,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,simple_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,twfe_did,<= 10,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,simple_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,twfe_did,<= 25,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,simple_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,twfe_did,<= 50,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,simple_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
+Gundremmingen C,2021,water_temperature,twfe_did,<= 75,False,2x2 DiD cannot be estimated because one required cell contains zero observations.,2,4,0,0,,,,,,6
