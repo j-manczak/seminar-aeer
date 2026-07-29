@@ -1,0 +1,20 @@
+site,river,site_river_km,event_year,blocks_shut,capacity_lost_mw,capacity_share_lost,station_id,station_name,station_river_km,role,distance_km,contaminated_by,clean
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10039802,Donauwörth,539.61,downstream,46.07,,True
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10046105,Ingolstadt Luitpoldstr.,485.45,downstream,100.23,,True
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10026293,Neu-Ulm,624.67,upstream,38.98,,True
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10039802,Donauwörth,539.61,downstream,46.07,,True
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10046105,Ingolstadt Luitpoldstr.,485.45,downstream,100.23,,True
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10026293,Neu-Ulm,624.67,upstream,38.98,,True
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16008007,Landau,30.02,downstream,33.78,,True
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16007004,Landshut-Birket,80.22,upstream,16.43,,True
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16005701,München,151.84,upstream,88.05,,True
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16004403,Puppling,182.77,upstream,118.97,,True
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16008007,Landau,30.02,downstream,33.78,,True
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16007004,Landshut-Birket,80.22,upstream,16.43,,True
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16005701,München,151.84,upstream,88.05,,True
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16004403,Puppling,182.77,upstream,118.97,,True
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24028000,Astheim,309.88,downstream,18.61,,True
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24042000,Würzburg,250.97,downstream,77.51,,True
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24043800,Erlabrunn Messstation,240.39,downstream,88.09,,True
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24022003,Schweinfurt,334.58,upstream,6.09,,True
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24012203,Trunstadt,384.31,upstream,55.83,,True

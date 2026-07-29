@@ -1,0 +1,39 @@
+station_id,name,river_de,river,district,url,latitude,longitude
+24028000,Astheim,Main,Main,KT,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/astheim-24028000,49.8584,10.2177
+16003207,Bad Tölz B472,Isar,Isar,TÖL,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/isar/bad-toelz-b472-16003207,47.7542,11.5561
+10098007,Dandlbachmündung,Donau,Danube,PA,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/dandlbachmuendung-10098007,48.5144,13.7272
+10081004,Deggendorf,Donau,Danube,DEG,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/deggendorf-10081004,48.8251,12.9623
+10039802,Donauwörth,Donau,Danube,DON,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/kelheim/donauwoerth-10039802,48.7109,10.8015
+24043800,Erlabrunn Messstation,Main,Main,WÜ,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/erlabrunn-messstation-24043800,49.8551,9.8537
+24060002,Faulbach,Main,Main,MIL,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/faulbach-24060002,49.7849,9.4386
+10046105,Ingolstadt Luitpoldstr.,Donau,Danube,IN,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/kelheim/ingolstadt-luitpoldstr-10046105,48.7574,11.4261
+10097809,Jochenstein Messstation,Donau,Danube,PA,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/jochenstein-messstation-10097809,48.5208,13.7023
+24078008,Kahl a. Main Messstation,Main,Main,AB,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/kahl-a-main-messstation-24078008,50.0639,8.9903
+10053009,Kelheim,Donau,Danube,KEH,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/kelheim/kelheim-10053009,48.9165,11.8646
+24010004,Kemmern,Main,Main,BA,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/elbe/kemmern-24010004,49.9512,10.8735
+24064003,Kleinheubach,Main,Main,MIL,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/kleinheubach-24064003,49.7165,9.2246
+24080000,Krotzenburg,Main,Main,HU,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/krotzenburg-24080000,50.0798,8.9528
+16008007,Landau,Isar,Isar,DGF,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/landau-16008007,48.6752,12.6927
+16007004,Landshut-Birket,Isar,Isar,LA,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/landshut-birket-16007004,48.5276,12.1334
+16003003,Lenggries,Isar,Isar,TÖL,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/isar/lenggries-16003003,47.6843,11.5719
+24075000,Mainflingen,Main,Main,OF,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/mainflingen-24075000,50.0154,9.0337
+24003009,Mainleus,Main,Main,KU,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/elbe/mainleus-24003009,50.0994,11.3727
+16000708,Mittenwald,Isar,Isar,GAP,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/isar/mittenwald-16000708,47.4433,11.2708
+16005701,München,Isar,Isar,M,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/kelheim/muenchen-16005701,48.1454,11.5968
+10026293,Neu-Ulm,Donau,Danube,NU,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/kelheim/neu-ulm-10026293,48.3891,9.9866
+10051105,Neustadt,Donau,Danube,KEH,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/kelheim/neustadt-10051105,48.8183,11.7455
+24070006,Obernau,Main,Main,AB,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/obernau-24070006,49.9338,9.1291
+10056302,Oberndorf,Donau,Danube,KEH,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/kelheim/oberndorf-10056302,48.947,12.0149
+10091008,Passau-Donau,Donau,Danube,PA,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/passau-donau-10091008,48.5761,13.4587
+10077900,Pfelling Messstation,Donau,Danube,SR,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/pfelling-messstation-10077900,48.8799,12.7474
+16004403,Puppling,Isar,Isar,TÖL,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/isar/puppling-16004403,47.9162,11.4461
+10060455,Regensburg Pfaffenstein,Donau,Danube,R,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/kelheim/regensburg-pfaffenstein-10060455,49.0278,12.0767
+10062000,Schwabelweis,Donau,Danube,R,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/schwabelweis-10062000,49.0236,12.1387
+24022003,Schweinfurt,Main,Main,SW,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/schweinfurt-24022003,50.0312,10.2208
+24006007,Schwürbitz,Main,Main,LIF,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/elbe/schwuerbitz-24006007,50.1649,11.1513
+24050009,Steinbach,Main,Main,MSP,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/steinbach-24050009,50.01,9.6037
+10074009,Straubing,Donau,Danube,SR,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/straubing-10074009,48.8864,12.574
+24012203,Trunstadt,Main,Main,BA,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/elbe/trunstadt-24012203,49.9297,10.7552
+10089006,Vilshofen,Donau,Danube,PA,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/passau/vilshofen-10089006,48.6373,13.1825
+24056005,Wertheim,Main,Main,MTK,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/wertheim-24056005,49.7609,9.5183
+24042000,Würzburg,Main,Main,WÜ,https://www.gkd.bayern.de/de/fluesse/wassertemperatur/main_unten/wuerzburg-24042000,49.7961,9.9258

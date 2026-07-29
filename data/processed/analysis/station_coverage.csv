@@ -1,0 +1,15 @@
+site,river,event_year,blocks_shut,cooling,heat_to_river,capacity_lost_mw,upstream_n,upstream_usable_n,upstream_station,upstream_km,upstream_source,upstream_from,downstream_n,downstream_usable_n,downstream_station,downstream_km,downstream_source,downstream_from,estimable_2x2,blocker
+Biblis,Rhine,2011,"Biblis A, Biblis B",once_through,high,2407.0,1,0,,,,,0,0,,,,,False,no gauge on either side with data before the shutdown
+Isar,Isar,2011,Isar 1,once_through,high,878.0,4,2,Landshut-Birket,16.42,gkd,1995.0,2,1,Landau,33.78,gkd,2007.0,True,
+Neckarwestheim,Neckar,2011,Neckarwestheim 1,cooling_tower,low,785.0,4,0,,,,,1,0,,,,,False,no gauge on either side with data before the shutdown
+Philippsburg,Rhine,2011,Philippsburg 1,hybrid,moderate,890.0,1,0,,,,,1,0,,,,,False,no gauge on either side with data before the shutdown
+Unterweser,Weser,2011,Unterweser,once_through,high,1345.0,2,0,,,,,0,0,,,,,False,no gauge on either side with data before the shutdown
+Grafenrheinfeld,Main,2015,Grafenrheinfeld,cooling_tower,low,1275.0,4,2,Schweinfurt,6.09,gkd,1995.0,4,3,Astheim,18.61,gkd,2007.0,True,
+Gundremmingen,Danube,2017,Gundremmingen B,cooling_tower,low,1284.0,4,1,Neu-Ulm,38.98,gkd,1995.0,5,2,Donauwörth,46.08,gkd,1995.0,True,
+Philippsburg,Rhine,2019,Philippsburg 2,hybrid,moderate,1402.0,1,0,,,,,1,0,,,,,False,no gauge on either side with data before the shutdown
+Brokdorf,Elbe,2021,Brokdorf,once_through,high,1410.0,3,2,FLUSS,53.74,waterbase,2020.0,0,0,,,,,False,no downstream gauge with data before the shutdown
+Grohnde,Weser,2021,Grohnde,cooling_tower,low,1360.0,1,1,HEMELN,105.46,waterbase,2020.0,1,1,HESS OLDENDORFFUHLEN,21.07,waterbase,2020.0,True,
+Gundremmingen,Danube,2021,Gundremmingen C,cooling_tower,low,1288.0,4,4,BOEFINGER HALDE KWUW,33.46,waterbase,2020.0,5,5,DILLINGEN MESSSTATION,13.66,waterbase,2020.0,True,
+Emsland,Ems,2023,Emsland,cooling_tower,low,1336.0,1,1,E 1A  UH KA RHEINENORD  EU,24.94,waterbase,2020.0,1,1,HERBRUM,79.1,waterbase,2020.0,True,
+Isar,Isar,2023,Isar 2,cooling_tower,low,1410.0,4,4,Landshut-Birket,16.42,gkd,1995.0,2,2,Landau,33.78,gkd,2007.0,True,
+Neckarwestheim,Neckar,2023,Neckarwestheim 2,cooling_tower,low,1310.0,4,4,BESIGHEIM,5.91,waterbase,2020.0,1,1,KOCHENDORF,23.9,waterbase,2020.0,True,

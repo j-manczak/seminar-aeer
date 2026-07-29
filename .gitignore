@@ -7,6 +7,14 @@ data/raw/discharge/
 # Large reproducible intermediate: rebuilt by scripts/pipeline/weather_download.py.
 data/processed/dwd_kl_daily_near_nuclear.csv
 
+# HydroRIVERS download (~320 MB unpacked); re-fetched by
+# scripts/pipeline/river_network.py. The two derived GeoJSONs below are small
+# and ARE tracked, so the maps and the river kilometres stay reproducible
+# without the full network.
+data/raw/rivers/*
+!data/raw/rivers/study_river_stems.geojson
+!data/raw/rivers/osm_tidal_reaches.geojson
+
 # Python cache files.
 __pycache__/
 *.py[cod]
