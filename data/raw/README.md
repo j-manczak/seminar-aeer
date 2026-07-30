@@ -27,7 +27,9 @@ data/raw/
     germany.geo.json            <- auto-downloaded by pipeline/boundaries.py
   gkd/
     gkd_stations.csv            <- written by pipeline/gkd_bayern.py
-    daily/<station_id>.csv      <- one file per gauge, cached
+    daily/<station_id>.csv      <- one file per temperature gauge, cached
+    gkd_chemie_stations.csv     <- written by pipeline/gkd_chemie.py
+    chemie/<station_id>.csv     <- one file per chemistry sampling point, cached
 ```
 
 ## What is and is not in git
@@ -50,6 +52,7 @@ without re-downloading the 320 MB river network.
 | Tidal Elbe / Weser geometry | OpenStreetMap via Overpass, © OSM contributors, ODbL — auto |
 | National boundary | <https://github.com/isellsoap/deutschlandGeoJSON> — auto |
 | Daily water temperature | <https://www.gkd.bayern.de/de/fluesse/wassertemperatur> — auto |
+| Dissolved oxygen | <https://www.gkd.bayern.de/de/fluesse/chemie> — auto |
 
 A caveat worth repeating: the Waterbase mixes groundwater, drinking-water and
 lake monitoring points into the same table, and Germany reported **no river

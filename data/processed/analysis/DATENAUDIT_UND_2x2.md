@@ -278,9 +278,8 @@ Der GKD-Downloader (`pipeline/gkd_bayern.py`) ist so gebaut, dass sich dieselbe
 Struktur für ein weiteres Landesportal nachziehen lässt.
 
 **D. Was ich *nicht* empfehle:** die Waterbase-basierten Ergebnisse in
-`plant_level_did/` und `2x2_2011_shutdowns/` weiter zu verwenden. Sie beruhen auf
-Grundwassermessstellen. Die Verzeichnisse sollten als überholt markiert oder
-gelöscht werden.
+`Archiv/analysis/plant_level_did/` und `Archiv/analysis/2x2_2011_shutdowns/` weiter zu verwenden. Sie beruhen auf
+Grundwassermessstellen. Sie liegen jetzt unter `Archiv/` (siehe `Archiv/README.md`).
 
 ---
 
@@ -332,3 +331,126 @@ python scripts/make_sites_by_reactor.py
 * OpenStreetMap via Overpass (tidale Elbe, Unterweser) — © OpenStreetMap-Mitwirkende, ODbL
 * Gewässerkundlicher Dienst Bayern — <https://www.gkd.bayern.de/de/fluesse/wassertemperatur>
 * EEA Waterbase WISE6, v2025_1 disaggregiert
+
+---
+
+# Nachtrag, 30.07.2026 — Sauerstoff, Distanz, Confounder, Normalisierung
+
+Ausführliche Methodik: `../METHODS.md` §11.
+
+## N.1 Sauerstoff bestätigt den Isar-Befund
+
+Waterbase hat beim Sauerstoff dieselbe Lücke wie bei der Temperatur (Fließgewässer
+erst ab 2020). Wir haben deshalb das GKD-Chemieprogramm erschlossen:
+**45.336 Sauerstoffwerte an 37 Messstellen an Isar, Donau und Main, ab 1990**
+(`scripts/pipeline/gkd_chemie.py`, rund 14-tägige Beprobung).
+
+| Standort | Ereignis | Paar | DiD | p | MDE |
+|---|---:|---|---:|---:|---:|
+| **Isar** | **2011** | Moosburg 37 km ↑ / Plattling 54 km ↓ | **+0,91 mg/l** | **0,003** | 0,86 |
+| Isar | 2011 | Hofham 21 km ↑ / Gottfrieding 20 km ↓ | +0,01 mg/l | 0,99 | **1,17** |
+| Grafenrheinfeld | 2015 | Schweinfurt / Erlabrunn 88 km ↓ | +0,22 mg/l | 0,35 | 0,66 |
+| Gundremmingen | 2017 | Böfinger Halde / Dillingen 14 km ↓ | +0,03 mg/l | 0,89 | 0,66 |
+| Gundremmingen | 2021 | Böfinger Halde / Dillingen 14 km ↓ | −0,38 mg/l | 0,19 | 0,80 |
+
+Der Isar-Effekt ist **+0,91 mg/l** (Donut +1,46, p < 0,0001; Placebo +0,43, n.s.).
+Das Vorzeichen stimmt mit der Physik überein: kühleres Wasser hält mehr Sauerstoff.
+Damit zeigen **beide** Outcomes am selben Ereignis in dieselbe Richtung.
+
+Zwei Dinge, die man dazu sagen muss:
+
+* Das **nächstgelegene** Paar findet nichts — aber mit einer Mindesteffektgröße
+  von 1,17 mg/l konnte es auch nichts finden. Alle Schätzungen tragen jetzt eine
+  `min_detectable_effect`-Spalte, damit „kein Effekt" und „keine Trennschärfe"
+  unterscheidbar sind.
+* Die Sauerstoff-Messstellen sind **nicht** die Temperaturpegel, und die
+  Beprobung ist 14-tägig statt täglich. Das Sauerstoffergebnis ist Bestätigung,
+  nicht zweiter unabhängiger Beweis.
+
+## N.2 Distanz-Sensitivität und der Radius
+
+Die ehrliche Lage: eine **Abklingkurve** lässt sich genau dort nicht schätzen, wo
+sie zählen würde. Die Isar hat nur *einen* Downstream-Pegel mit Daten vor 2011
+(Landau, 34 km); Plattling beginnt erst 2020.
+
+Was wir stattdessen beantworten können: **bis wohin hätte dieses Design etwas
+gefunden?** Jede Schätzung bekommt ein Urteil (`effect`, `drift`,
+`null, but underpowered`, `null`) und eine MDE.
+
+* Trennschärfe (MDE ≤ 0,25 °C) bis **100 km**.
+* Bestätigte Detektion bis **34 km**.
+* **Verwendeter Radius: 50 km entlang des Flusses** — aufgerundet von 33,8 km.
+
+Der Wert steht in `plant_2x2/analysis_radius.json` und wird von der
+Confounder-Analyse und beiden Karten gelesen. Alle Entfernungen sind
+Flusskilometer, keine Luftlinie.
+
+Nebenbefund: die scheinbaren Effekte an den Kühlturm-Standorten sind über die
+Distanz **flach** (Grafenrheinfeld +0,41 bei 19 km, +0,25 bei 88 km;
+Gundremmingen +0,21 bei 46 km, +0,20 bei 100 km). Eine Wärmefahne klingt ab;
+eine Drift nicht. Das ist ein weiteres Argument, diese Werte nicht als Effekte zu
+lesen.
+
+## N.3 Andere Kraftwerke am Fluss
+
+Alle kondensierenden Anlagen ≥ 50 MW aus den OPSD-Daten wurden auf das Flussnetz
+gelegt und je Standort-Ereignis geprüft. Ein Kraftwerk ist nur dann ein
+Confounder, wenn es sich **zeitnah zur Abschaltung verändert** hat — stabile
+Nachbarn fallen aus der gepaarten Differenz heraus.
+
+**Die Temperatur-Schätzungen sind sauber:**
+
+* **Isar 2011: kein anderes Wärmekraftwerk innerhalb von 50 km** entlang der Isar.
+  Die Münchner Heizkraftwerke liegen ~90 km oberhalb, also außerhalb.
+* Gundremmingen: ebenfalls keines im Radius.
+* Grafenrheinfeld: nur HKW Eltmann (Gas, 57 MW) oberhalb des Kontrollpegels,
+  über den Zeitraum unverändert.
+
+**Ein Confounder, und er betrifft den Sauerstoff:** *Kraftwerk Plattling*
+(Gas, 118 MW), **2010 in Betrieb gegangen**, 0,7 km unterhalb der
+Sauerstoff-Messstelle Plattling. Formal außerhalb der Messstrecke, aber knapp.
+Richtung: es fügt Wärme hinzu und senkt damit den Sauerstoff unterhalb — wirkt
+also **gegen** unseren Befund. Der +0,91 mg/l ist damit eher konservativ.
+
+**Ein Design, das wir deswegen verwerfen:** beim Sauerstoff für Isar **2023**
+liegt der datenreichste Oberlieger oberhalb von München, sodass sämtliche
+Münchner Heizkraftwerke *zwischen* den Pegeln liegen. Das erklärt den sonst
+rätselhaften +0,67 mg/l und ist der Grund, dieses Ergebnis nicht zu berichten.
+
+## N.4 Erwärmung pro erzeugter Strommenge
+
+Zwei Nenner, zwei Fragen — und man braucht beide:
+
+| Standort | Ereignis | Erzeugung entzogen | Wärme in den Fluss | Effekt | **je TWh/a** | **je GW** |
+|---|---:|---:|---:|---:|---:|---:|
+| **Isar 1** | **2011** | 6,01 TWh/a | **1,61 GW** | −1,93 °C | **0,32 °C** | **1,20 °C** |
+| Grafenrheinfeld | 2015 | 9,43 TWh/a | 0,075 GW | +0,41 °C | n. i. | n. i. |
+| Gundremmingen B | 2017 | 10,50 TWh/a | 0,077 GW | +0,21 °C | n. i. | n. i. |
+| Isar 2 | 2023 | 11,48 TWh/a | 0,076 GW | −0,14 °C | n. i. | n. i. |
+
+*n. i. = nicht interpretierbar: dort teilt man Drift durch einen sehr kleinen
+Nenner. Diese Zahlen gehören nicht ins Paper.*
+
+Der zentrale Punkt: Isar 1 gab **1,61 GW** in die Isar, Grafenrheinfeld
+**0,075 GW** in den Main — Faktor 21 — obwohl sich ihre *elektrischen* Leistungen
+um weniger als ein Drittel unterscheiden. Wer nur pro TWh normiert, lässt die
+Kühlturm-Standorte wie gescheiterte Behandlungen aussehen. Sie waren nie
+Behandlungen vergleichbarer Größe.
+
+**Für das Paper:** Die Abschaltung von Isar 1 senkte die Isar-Temperatur 34 km
+flussabwärts um **1,93 °C**, entsprechend **0,32 °C je TWh/a** entzogener
+Erzeugung bzw. **1,20 °C je GW** flusswirksamer Abwärme.
+
+## N.5 Karten
+
+Beide Karten zeigen jetzt, **welcher Pegel als upstream (Kontrolle) und welcher
+als downstream (behandelt) verwendet wurde** (schwarz umrandet, in der
+Standortkarte zusätzlich mit UP/DOWN beschriftet), und zeichnen **andere
+Wärmekraftwerke** im 50-km-Radius entlang des Flusses ein — Confounder
+farblich hervorgehoben.
+
+## N.6 Aufgeräumt
+
+Überholtes liegt unter `Archiv/` mit eigener `README.md`: die Waterbase-basierten
+Ergebnisordner, die zugehörigen Abbildungen und die Skripte des ersten
+Durchlaufs. Nichts gelöscht, Git-Historie vollständig.

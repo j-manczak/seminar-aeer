@@ -1,0 +1,8 @@
+{
+  "radius_km": 50.0,
+  "basis": "largest confirmed detection 33.8 km, rounded up to the next 25 km and floored at 50 km",
+  "max_confirmed_detection_km": 33.8,
+  "max_distance_with_power_km": 100.2,
+  "plume_floor_c": 0.25,
+  "note": "Distances are along the river channel, not straight-line. The radius is a detection limit for this design, not an estimate of how far a thermal plume physically reaches: the one site with a real effect (Isar) has a single downstream gauge with pre-2011 data, so no decay curve can be fitted there."
+}

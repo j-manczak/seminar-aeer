@@ -1,0 +1,23 @@
+outcome,spec,site,river,event_year,upstream_station,downstream_station,plant,city,energy_source,capacity_net_bnetza,chp,river_km,reach,commissioned_year,shutdown_year,changed_near_event,is_confounder,active_at_event,near_a_gauge
+water_temperature,nearest_downstream,Grafenrheinfeld,Main,2015,Schweinfurt,Astheim,HKW Eltmann,Eltmann,Natural gas,57.0,yes,373.4085135152655,above the control gauge,2007.0,,,False,True,False
+water_temperature,best_coverage,Grafenrheinfeld,Main,2015,Schweinfurt,Würzburg,HKW Eltmann,Eltmann,Natural gas,57.0,yes,373.4085135152655,above the control gauge,2007.0,,,False,True,False
+water_temperature,nearest_downstream,Gundremmingen,Danube,2017,Neu-Ulm,Donauwörth,,,,,,,none within the radius,,,,False,,False
+water_temperature,best_coverage,Gundremmingen,Danube,2017,Neu-Ulm,Ingolstadt Luitpoldstr.,,,,,,,none within the radius,,,,False,,False
+water_temperature,nearest_downstream,Gundremmingen,Danube,2021,Neu-Ulm,Donauwörth,,,,,,,none within the radius,,,,False,,False
+water_temperature,nearest_downstream,Isar,Isar,2011,Landshut-Birket,Landau,,,,,,,none within the radius,,,,False,,False
+water_temperature,nearest_downstream,Isar,Isar,2023,Landshut-Birket,Landau,,,,,,,none within the radius,,,,False,,False
+dissolved_oxygen,nearest_downstream,Grafenrheinfeld,Main,2015,"SH Schweinfurt, km 332,0, OW",Erlabrunn KW-OW,HKW Eltmann,Eltmann,Natural gas,57.0,yes,373.4085135152655,above the control gauge,2007.0,,,False,True,False
+dissolved_oxygen,nearest_downstream,Gundremmingen,Danube,2017,"Böfinger Halde, KW-UW",Dillingen Meßstation,,,,,,,none within the radius,,,,False,,False
+dissolved_oxygen,nearest_downstream,Gundremmingen,Danube,2021,"Böfinger Halde, KW-UW",Dillingen Meßstation,,,,,,,none within the radius,,,,False,,False
+dissolved_oxygen,best_coverage,Gundremmingen,Danube,2021,"Böfinger Halde, KW-UW",BITTENBRUNN KW-OW,,,,,,,none within the radius,,,,False,,False
+dissolved_oxygen,nearest_downstream,Isar,Isar,2011,HOFHAM,GOTTFRIEDING BRUECKE,,,,,,,none within the radius,,,,False,,False
+dissolved_oxygen,best_coverage,Isar,Isar,2011,HMS Moosburg,Plattling Bruecke B8,Nord 2 (2),Unterföhring,Hard coal,332.7,yes,146.53375992081888,above the control gauge,1991.0,,,False,True,False
+dissolved_oxygen,best_coverage,Isar,Isar,2011,HMS Moosburg,Plattling Bruecke B8,Kraftwerk Plattling,Plattling,Natural gas,118.5,yes,8.67820055502269,,2010.0,,commissioned 2010,True,True,True
+dissolved_oxygen,best_coverage,Isar,Isar,2023,Baierbrunn oh Ausleitung,Plattling Bruecke B8,Süd DT1 (1),München,Natural gas,79.7,yes,153.48447837394798,between the gauges (treated reach),1980.0,,,False,True,False
+dissolved_oxygen,best_coverage,Isar,Isar,2023,Baierbrunn oh Ausleitung,Plattling Bruecke B8,Süd GT3 (1),München,Natural gas,97.9,yes,153.48447837394798,between the gauges (treated reach),1980.0,,,False,True,False
+dissolved_oxygen,best_coverage,Isar,Isar,2023,Baierbrunn oh Ausleitung,Plattling Bruecke B8,Süd GT2 (1),München,Natural gas,97.9,yes,153.48447837394798,between the gauges (treated reach),1980.0,,,False,True,False
+dissolved_oxygen,best_coverage,Isar,Isar,2023,Baierbrunn oh Ausleitung,Plattling Bruecke B8,Süd GT 61 (2),München,Natural gas,124.9,yes,153.48447837394798,between the gauges (treated reach),2004.0,,,False,True,False
+dissolved_oxygen,best_coverage,Isar,Isar,2023,Baierbrunn oh Ausleitung,Plattling Bruecke B8,Süd GT 62 (2),München,Natural gas,123.9,yes,153.48447837394798,between the gauges (treated reach),2004.0,,,False,True,False
+dissolved_oxygen,best_coverage,Isar,Isar,2023,Baierbrunn oh Ausleitung,Plattling Bruecke B8,Süd DT60 (2),München,Natural gas,127.6,yes,153.48447837394798,between the gauges (treated reach),2004.0,,,False,True,False
+dissolved_oxygen,best_coverage,Isar,Isar,2023,Baierbrunn oh Ausleitung,Plattling Bruecke B8,Nord 2 (2),Unterföhring,Hard coal,332.7,yes,146.53375992081888,between the gauges (treated reach),1991.0,,,False,True,False
+dissolved_oxygen,best_coverage,Isar,Isar,2023,Baierbrunn oh Ausleitung,Plattling Bruecke B8,Kraftwerk Plattling,Plattling,Natural gas,118.5,yes,8.67820055502269,,2010.0,,,False,True,True

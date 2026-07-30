@@ -621,3 +621,205 @@ exactly where the cooling technology predicts it**.
 3. The distance decay cannot be traced on the Isar for lack of a second
    downstream gauge with pre-2011 data (§6, item 5).
 4. Discharge is not yet used as an exposure term (§6, item 6).
+
+---
+
+## 11. Zweite Revision (30. Juli 2026): Sauerstoff, Distanz, Confounder, Normalisierung
+
+### 11.1 Dissolved oxygen — `pipeline/gkd_chemie.py`
+
+Sauerstoff hat dasselbe Problem wie Temperatur: die Waterbase meldet deutschen
+**Fließgewässer**-Sauerstoff erst ab 2020 (0 Messungen vor 2020, 25.286 danach),
+kann also weder 2011 noch 2015 oder 2017 abdecken. Das Messprogramm
+„Gewässerchemie" des GKD Bayern reicht dagegen bis 1990 zurück.
+
+Zwei Unterschiede zur Temperatur, die die Interpretation betreffen:
+
+* **Andere Messstellen.** Chemie-Probenahmestellen sind nicht die kontinuierlichen
+  Temperaturpegel, das Sauerstoff-2×2 benutzt also ein eigenes Pegelpaar.
+* **Andere Frequenz.** Etwa 14-tägig statt täglich (~26 Werte/Jahr an einer guten
+  Stelle). Deshalb wird für Sauerstoff **auf Monatsebene gepaart**, nicht auf den
+  Tag: die Ober- und Unterlieger werden nicht immer am selben Tag angefahren.
+
+Geladen: 45.336 Sauerstoffwerte an 37 Stellen an Isar, Donau und Main.
+
+**Mindesteffektgröße.** Weil das Sauerstoff-Panel ein bis zwei Größenordnungen
+dünner ist, trägt jede Schätzung jetzt eine `min_detectable_effect`-Spalte: der
+kleinste wahre Effekt, den der Test bei 5 % Niveau in 80 % der Fälle finden
+würde (≈ 2,8 × Standardfehler). Ohne sie ist ein Nullergebnis nicht lesbar —
+„kein Effekt" und „keine Trennschärfe" sehen identisch aus.
+
+**Pegelwahl.** Neben dem *nächsten* sauberen Paar wird auch das
+**datenreichste** saubere Paar berichtet (`spec = best_coverage`), mit derselben
+Robustheitsbatterie. Nähe und Trennschärfe ziehen in verschiedene Richtungen:
+die nächstgelegene Stelle hat manchmal erst nach der Abschaltung angefangen zu
+messen, während eine weiter entfernte dreißig Jahre Historie hat.
+
+**Ergebnis (Isar 2011).** Nächstes Paar (Hofham 21 km ↑ / Gottfrieding 20 km ↓):
++0,01 mg/l, aber MDE = 1,17 mg/l — schlicht ohne Trennschärfe. Datenreichstes
+Paar (HMS Moosburg 37 km ↑ / Plattling 54 km ↓, n = 36/36): **+0,91 mg/l
+(p = 0,003)**, Donut +1,46 (p < 0,0001), Placebo +0,43 (n.s.). Vorzeichen und
+Größenordnung passen: kühleres Wasser hält mehr Sauerstoff.
+
+**Vorbehalt.** Zum selben Paar gehört *Kraftwerk Plattling* (Gas, 118 MW, **2010
+in Betrieb gegangen**), 0,7 km unterhalb der Messstelle. Formal liegt es außerhalb
+der Strecke — die Messstelle liegt oberhalb —, aber bei ein paar hundert Metern
+Koordinatengenauigkeit ist das knapp, und die Inbetriebnahme fällt fast auf das
+Ereignis. Siehe §11.3.
+
+### 11.2 Distanz-Sensitivität — `scripts/distance_sensitivity.py`
+
+Zwei Fragen werden unter „Sensitivitätsanalyse nach Entfernung" oft vermischt:
+
+1. **Wie klingt der Effekt flussabwärts ab?** Dafür bräuchte es mehrere
+   Downstream-Pegel pro Ereignis. Die haben wir bei den Kühlturm-Standorten, wo
+   es nichts abzuklingen gibt — und **nicht** an der Isar, dem einzigen Standort
+   mit echtem Effekt: dort gibt es genau einen Downstream-Pegel mit Daten vor
+   2011. Die Abklingkurve lässt sich also genau dort nicht schätzen, wo sie
+   zählen würde.
+2. **Bis zu welcher Entfernung kann dieses Design überhaupt etwas finden?** Das
+   lässt sich beantworten, weil jede Schätzung ihre MDE mitführt.
+
+Alle Entfernungen sind **Flusskilometer entlang der Achse**, nie Luftlinie.
+
+Jede Schätzung bekommt ein Urteil:
+
+| Urteil | Bedeutung |
+|---|---|
+| `effect` | signifikant, richtiges Vorzeichen, größer als der eigene Placebo |
+| `significant but no larger than its placebo (drift)` | Drift, kein Effekt |
+| `null, but underpowered` | MDE über der Nachweisschwelle — sagt nichts aus |
+| `null` | trennscharf genug, kein Effekt |
+
+**Abgeleiteter Radius: 50 km entlang des Flusses.** Grundlage: größte bestätigte
+Detektion 33,8 km (Isar → Landau), aufgerundet auf das nächste 25-km-Vielfache
+und auf 50 km angehoben. Der Wert steht in
+`analysis/plant_2x2/analysis_radius.json` und wird von der Confounder-Analyse
+**und** beiden Karten gelesen, damit alle dieselbe Geometrie benutzen.
+
+Wichtig: Das ist eine **Nachweisgrenze dieses Designs**, keine Schätzung der
+physikalischen Reichweite einer Wärmefahne. Trennschärfe hätten wir bis 100 km
+gehabt (max. Distanz mit MDE ≤ 0,25 °C) — bestätigt haben wir bis 34 km, weil
+weiter draußen kein Pegel mit Vorperiode steht.
+
+### 11.3 Andere Kraftwerke am Fluss — `pipeline/thermal_confounders.py`
+
+Ein Kernkraftwerk ist nicht die einzige Wärmequelle an seinem Fluss. Aus den
+OPSD-Daten werden alle **kondensierenden** Anlagen (Dampfturbine, GuD; ohne
+Wasserkraft) ab 50 MW auf das Flussnetz gelegt und je Standort-Ereignis
+eingeteilt in:
+
+* **zwischen den Pegeln** — die Wärme landet in der *behandelten* Strecke;
+* **oberhalb des Kontrollpegels** — wärmt beide Pegel, fällt aus der Differenz.
+
+Entscheidend ist nicht die Nähe, sondern die **Veränderung**: eine Anlage ist nur
+dann ein Confounder, wenn sie innerhalb von ±3 Jahren um das Kernkraftwerks-
+Ereignis in Betrieb ging oder stillgelegt wurde. Stabile Nachbarn fallen aus der
+gepaarten Differenz heraus.
+
+**Ergebnis.**
+
+* **Temperatur-Schätzungen: sauber.** Für Isar 2011 (Landshut-Birket → Landau)
+  liegt **kein anderes Wärmekraftwerk** innerhalb von 50 km entlang der Isar —
+  die Münchner Anlagen sind ~90 km oberhalb. Für Gundremmingen ebenfalls keines.
+  Bei Grafenrheinfeld nur das HKW Eltmann (Gas, 57 MW) oberhalb des
+  Kontrollpegels, unverändert über den Zeitraum.
+* **Ein Confounder, und der betrifft den Sauerstoff:** Kraftwerk Plattling
+  (Gas, 118 MW, 2010) direkt an der Sauerstoff-Messstelle Plattling.
+  Richtung: es *fügt* Wärme hinzu und *senkt* damit den Sauerstoff unterhalb —
+  wirkt also **gegen** unseren Befund (+0,91 mg/l). Der Sauerstoffeffekt ist
+  damit eher konservativ geschätzt.
+* **Isar 2023 (Sauerstoff) ist kein sauberes Design:** das datenreichste Paar
+  beginnt oberhalb von München, sodass sämtliche Münchner Heizkraftwerke
+  *zwischen* den Pegeln liegen. Das erklärt den sonst rätselhaften +0,67-Wert
+  und ist der Grund, dieses Ergebnis nicht zu berichten.
+
+Anlagen innerhalb von 3 km eines Pegels werden zusätzlich markiert, auch wenn
+die Geometrie sie knapp außerhalb der Strecke verortet — Kraftwerks- und
+Pegelkoordinaten sind nur auf einige hundert Meter genau.
+
+### 11.4 Erwärmung pro erzeugter Strommenge — `pipeline/thermal_load.py`
+
+Die rohen 2×2-Schätzer sind zwischen Standorten nicht vergleichbar. Zwei
+Normalisierungen beantworten zwei verschiedene Fragen:
+
+* **pro TWh** — °C je TWh entzogener Jahresstromerzeugung. Die ökonomisch
+  natürliche Größe und das, wonach gefragt war.
+* **pro GW Flusswärme** — °C je GW Abwärme, die *tatsächlich ins Wasser* ging.
+  Die physikalisch richtige Größe; hier kommt die Kühltechnik ins Spiel.
+
+Herleitung je Block: `Abwärme = P_thermisch − P_elektrisch_netto`, davon geht ein
+Anteil in den Fluss (`once_through` 0,95; `hybrid` 0,50; `cooling_tower` 0,03 —
+letzteres aus dem dokumentierten 97-%-Anteil bei Grafenrheinfeld). Thermische
+Leistungen und Erzeugungsmengen aus den Blocktabellen der Kraftwerksartikel
+(operator- und PRIS-gestützt), abgerufen 30. Juli 2026; Werte in
+`analysis/plant_2x2/reactor_thermal_load.csv`, geschätzte Größen sind mit
+`figures_approximate` markiert.
+
+**Warum beides nötig ist:** Isar 1 gab ~1,61 GW in die Isar, Grafenrheinfeld
+~0,075 GW in den Main — Faktor 21 — während sich die *elektrischen* Leistungen um
+weniger als ein Drittel unterscheiden. Wer nur pro TWh normiert, lässt
+Kühlturm-Standorte wie gescheiterte Behandlungen aussehen; sie waren nie
+Behandlungen vergleichbarer Größe.
+
+**Ergebnis für das einzige bestätigte Ereignis (Isar 1, 2011):**
+
+| Größe | Wert |
+|---|---:|
+| Entzogene Jahreserzeugung | 6,01 TWh/a |
+| Abwärme in den Fluss | 1,61 GW |
+| Effekt (Temperatur) | −1,93 °C |
+| **Erwärmung je TWh/a** | **0,32 °C** |
+| **Erwärmung je GW Flusswärme** | **1,20 °C** |
+
+Die normalisierten Werte der übrigen Standorte stehen in der Tabelle, sind aber
+mit `interpretable = False` markiert: dort teilt man Drift durch einen sehr
+kleinen Nenner (0,076 GW), was große, souverän aussehende und bedeutungslose
+Zahlen erzeugt. Diese Werte gehören nicht ins Paper.
+
+### 11.5 Karten
+
+Beide Karten kennzeichnen jetzt, **welcher Pegel als upstream (Kontrolle) und
+welcher als downstream (behandelt) verwendet wurde** — schwarz umrandet und in
+der Standortkarte zusätzlich mit „UP"/„DOWN" beschriftet. Zusätzlich sind
+**andere Wärmekraftwerke am selben Fluss** eingezeichnet, gefiltert auf den
+50-km-Radius aus §11.2, entlang des Flusses gemessen. Anlagen, die sich zeitnah
+zur Abschaltung verändert haben, sind farblich als Confounder hervorgehoben.
+
+### 11.6 Neue Dateien
+
+| Datei | Zweck |
+|---|---|
+| `scripts/pipeline/gkd_chemie.py` | Sauerstoff (und Vor-Ort-Temperatur) aus dem GKD-Chemieprogramm |
+| `scripts/pipeline/thermal_confounders.py` | kondensierende Kraftwerke auf dem Flussnetz, Reichweiten- und Zeitprüfung |
+| `scripts/pipeline/thermal_load.py` | Abwärme, Flusswärmeanteil und Erzeugung je Block |
+| `scripts/distance_sensitivity.py` | Distanzkurve, Urteile, abgeleiteter Radius |
+| `scripts/confounder_report.py` | Confounder je Standort-Ereignis |
+| `scripts/effect_per_generation.py` | Normalisierung pro TWh und pro GW |
+
+Ausgaben zusätzlich in `analysis/plant_2x2/`: `distance_sensitivity.csv`,
+`analysis_radius.json`, `confounders_by_site_event.csv`,
+`thermal_plants_on_study_rivers.csv`, `effect_per_generation.csv`,
+`reactor_thermal_load.csv`. Abbildungen: `distance_sensitivity.png`,
+`effect_per_generation.png`, `long_run_gap_<outcome>.png`,
+`<standort>_<jahr>_<outcome>.png`.
+
+**Reihenfolge:**
+
+```bash
+python scripts/pipeline/gkd_chemie.py       # ~5 min, cached je Messstelle
+python scripts/plant_2x2_did.py
+python scripts/distance_sensitivity.py      # schreibt analysis_radius.json
+python scripts/confounder_report.py         # liest den Radius
+python scripts/effect_per_generation.py
+python scripts/make_study_map.py
+python scripts/make_sites_by_reactor.py
+```
+
+### 11.7 Archiv
+
+Überholtes liegt jetzt unter `Archiv/` (Analysen, Abbildungen und Skripte des
+ersten Waterbase-basierten Durchlaufs) mit einer eigenen `README.md`, die
+erklärt, warum. Nichts wurde gelöscht. `pipeline/river_position.py` bleibt in der
+Pipeline, weil ältere Ausgabedateien seine Spalten tragen und `build_all.py` es
+noch importiert.

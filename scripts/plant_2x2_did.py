@@ -1,34 +1,40 @@
-"""Per-site 2x2 difference-in-differences on upstream vs downstream river temperature.
+"""Per-site 2x2 difference-in-differences on upstream vs downstream river data.
 
 Design
 ------
 For one nuclear site and one shutdown year the 2x2 is
 
                      before shutdown        after shutdown
-    upstream  (C)    mean T_up,before       mean T_up,after
-    downstream(T)    mean T_down,before     mean T_down,after
+    upstream  (C)    mean y_up,before       mean y_up,after
+    downstream(T)    mean y_down,before     mean y_down,after
 
 and the estimate is the difference of the two differences. Because the two
-gauges sit on the same river and are read on the same days, the sharper way to
-write the same thing is the **paired daily difference**
+gauges sit on the same river and are read in the same period, the sharper way to
+write the same thing is the **paired difference**
 
-    dT_t = T_downstream,t - T_upstream,t
-    dT_t = a + b * post_t + month fixed effects + e_t
+    dy_t = y_downstream,t - y_upstream,t
+    dy_t = a + b * post_t + month fixed effects + e_t
 
 where ``b`` is numerically the DiD estimate but removes all common weather,
-season and river-wide trend variation. That is the headline specification here;
-the pooled two-station regression is reported next to it as a cross-check.
+season and river-wide trend variation before estimation.
 
-Daily river temperature is heavily autocorrelated, so standard errors are
-Newey-West (HAC) with a 30-day bandwidth. The pooled specification clusters on
-the gauge instead.
+Two outcomes
+------------
+``water_temperature``  GKD Bayern daily means, ~1995-2024. Paired on the day.
+``dissolved_oxygen``   GKD Bayern chemistry, roughly fortnightly samples back to
+                       1990. Paired on the *month*, because the up- and
+                       downstream sampling points are not always visited on the
+                       same day. The oxygen panel is one to two orders of
+                       magnitude thinner than the temperature one, and it uses
+                       its own gauge pair — chemistry sampling points are not the
+                       continuous temperature gauges.
 
-Robustness shipped with every estimate:
-  * **distance sensitivity** - the effect is re-estimated against each available
-    downstream gauge, so it can be plotted against along-river distance
-  * **season split** - summer (Jun-Sep, low flow, warm water) vs the rest of the
-    year, where a thermal plume should matter most
-  * **placebo** - the same regression on a fake shutdown three years earlier
+Standard errors are Newey-West (HAC); the bandwidth is set per outcome to about
+a month of observations. The pooled two-gauge regression, clustered on the
+gauge, is reported alongside as a cross-check.
+
+Robustness shipped with every estimate: donut, placebo, season split and a full
+distance sweep over every available downstream gauge.
 
 Run:
     python scripts/plant_2x2_did.py
@@ -37,6 +43,7 @@ Run:
 from __future__ import annotations
 
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -53,76 +60,106 @@ import statsmodels.formula.api as smf
 from pipeline import river_network, station_pairs
 from pipeline.config import ANALYSIS_DIR, PROCESSED_DIR, PROJECT_ROOT
 
-GKD_PANEL = PROCESSED_DIR / "gkd_water_temperature_daily.csv"
 OUT_DIR = ANALYSIS_DIR / "plant_2x2"
 FIG_DIR = PROJECT_ROOT / "figures" / "plant_2x2"
 
-WINDOW_YEARS = 3          # years kept either side of the shutdown
-HAC_LAGS = 30             # days; river temperature is strongly persistent
+WINDOW_YEARS = 3
 SUMMER_MONTHS = (6, 7, 8, 9)
 PLACEBO_OFFSET_YEARS = 3
 MAX_PAIR_KM = 120.0
-MIN_DAYS_PER_CELL = 60    # a cell needs this many paired days to be reported
+
+
+@dataclass(frozen=True)
+class Outcome:
+    """One measured quantity, with the settings its sampling frequency needs."""
+
+    name: str
+    label: str
+    unit: str
+    source_file: Path
+    value_column: str
+    pair_on: str        # "date" for daily data, "month" for campaign sampling
+    hac_lags: int       # ~one month of observations
+    min_per_cell: int   # a cell needs this many paired periods to be reported
+
+
+OUTCOMES = [
+    Outcome(
+        name="water_temperature", label="water temperature", unit="°C",
+        source_file=PROCESSED_DIR / "gkd_water_temperature_daily.csv",
+        value_column="temp_mean_c", pair_on="date", hac_lags=30, min_per_cell=60,
+    ),
+    Outcome(
+        name="dissolved_oxygen", label="dissolved oxygen", unit="mg/l",
+        source_file=PROCESSED_DIR / "gkd_dissolved_oxygen.csv",
+        value_column="oxygen_mg_l", pair_on="month", hac_lags=2, min_per_cell=12,
+    ),
+]
 
 
 # --------------------------------------------------------------------------
 # data
 # --------------------------------------------------------------------------
-def load_daily() -> pd.DataFrame:
-    """Daily station temperature with each gauge placed on its river."""
-    if not GKD_PANEL.exists():
-        raise FileNotFoundError(
-            f"{GKD_PANEL} not found - run scripts/pipeline/gkd_bayern.py first."
-        )
-    daily = pd.read_csv(GKD_PANEL, comment="#", parse_dates=["date"])
-    daily = daily.dropna(subset=["temp_mean_c", "latitude", "longitude"])
+def load_panel(outcome: Outcome) -> pd.DataFrame:
+    """Tidy panel for one outcome, with every gauge placed on its river."""
+    if not outcome.source_file.exists():
+        print(f"plant_2x2_did: {outcome.source_file.name} missing, skipping {outcome.name}.")
+        return pd.DataFrame()
 
-    stations = daily[["station_id", "station_name", "latitude", "longitude"]].drop_duplicates()
+    panel = pd.read_csv(outcome.source_file, comment="#", parse_dates=["date"])
+    panel = panel.rename(columns={outcome.value_column: "value"})
+    panel = panel.dropna(subset=["value", "latitude", "longitude"])
+
+    stations = panel[["station_id", "station_name", "latitude", "longitude"]].drop_duplicates()
     located = river_network.locate_frame(stations, max_offset_m=2500.0)
-    located = located.rename(columns={"river": "river_matched"})
-    daily = daily.merge(
-        located[["station_id", "river_matched", "river_km", "offset_m"]], on="station_id", how="left"
+    located = located[located["river"].notna()]
+    panel = panel.drop(columns=[c for c in ("river", "river_km", "offset_m") if c in panel.columns])
+    panel = panel.merge(located[["station_id", "river", "river_km", "offset_m"]],
+                        on="station_id", how="inner")
+
+    panel["year"] = panel["date"].dt.year
+    panel["month"] = panel["date"].dt.month
+    panel["period"] = (
+        panel["date"] if outcome.pair_on == "date"
+        else panel["date"].dt.to_period("M").dt.to_timestamp()
     )
-    daily = daily.dropna(subset=["river_km"])
-    daily["river"] = daily["river_matched"]
-    daily["year"] = daily["date"].dt.year
-    daily["month"] = daily["date"].dt.month
-    return daily
+    return panel
 
 
-def station_table(daily: pd.DataFrame) -> pd.DataFrame:
+def station_table(panel: pd.DataFrame) -> pd.DataFrame:
     return (
-        daily.groupby(["station_id", "station_name", "river", "river_km"], as_index=False)
-        .agg(n_days=("temp_mean_c", "size"), year_min=("year", "min"), year_max=("year", "max"))
+        panel.groupby(["station_id", "station_name", "river", "river_km"], as_index=False)
+        .agg(n_obs=("value", "size"), year_min=("year", "min"), year_max=("year", "max"))
     )
 
 
 # --------------------------------------------------------------------------
 # estimation
 # --------------------------------------------------------------------------
-def paired_frame(daily: pd.DataFrame, upstream_id: str, downstream_id: str,
-                 event_year: int, window: int = WINDOW_YEARS,
-                 max_year: Optional[int] = None, donut: int = 0) -> pd.DataFrame:
-    """Daily downstream-minus-upstream difference around one event.
+def paired_frame(panel: pd.DataFrame, upstream_id, downstream_id, event_year: int,
+                 window: int = WINDOW_YEARS, max_year: Optional[int] = None,
+                 donut: int = 0) -> pd.DataFrame:
+    """Downstream-minus-upstream difference per shared period around one event.
 
     ``max_year`` truncates the sample, which the placebo needs: a fake shutdown
     three years early would otherwise carry the *real* shutdown year inside its
     own post period and inherit part of the true effect.
 
-    ``donut`` additionally drops whole years either side of the shutdown. Plants
-    do not switch off cleanly — Isar 1 lost a fuel element in February 2010 and
-    ran at reduced availability into 2011 — so the years touching the event are
-    neither properly treated nor properly untreated.
+    ``donut`` drops whole years either side of the shutdown. Plants do not switch
+    off cleanly — Isar 1 lost a fuel element in February 2010 and ran at reduced
+    availability into 2011 — so the years touching the event are neither properly
+    treated nor properly untreated.
     """
     lo, hi = event_year - window, event_year + window
     if max_year is not None:
         hi = min(hi, max_year)
-    subset = daily[(daily["year"] >= lo) & (daily["year"] <= hi) & (daily["year"] != event_year)]
+    subset = panel[(panel["year"] >= lo) & (panel["year"] <= hi) & (panel["year"] != event_year)]
     if donut:
         subset = subset[(subset["year"] < event_year - donut) | (subset["year"] > event_year + donut)]
+
     wide = (
         subset[subset["station_id"].isin([upstream_id, downstream_id])]
-        .pivot_table(index="date", columns="station_id", values="temp_mean_c", aggfunc="mean")
+        .pivot_table(index="period", columns="station_id", values="value", aggfunc="mean")
     )
     if upstream_id not in wide.columns or downstream_id not in wide.columns:
         return pd.DataFrame()
@@ -131,45 +168,52 @@ def paired_frame(daily: pd.DataFrame, upstream_id: str, downstream_id: str,
         return pd.DataFrame()
 
     frame = pd.DataFrame({
-        "date": wide.index,
-        "upstream_c": wide[upstream_id].to_numpy(),
-        "downstream_c": wide[downstream_id].to_numpy(),
+        "period": wide.index,
+        "upstream": wide[upstream_id].to_numpy(),
+        "downstream": wide[downstream_id].to_numpy(),
     })
-    frame["delta_c"] = frame["downstream_c"] - frame["upstream_c"]
-    frame["year"] = frame["date"].dt.year
-    frame["month"] = frame["date"].dt.month
+    frame["delta"] = frame["downstream"] - frame["upstream"]
+    frame["year"] = frame["period"].dt.year
+    frame["month"] = frame["period"].dt.month
     frame["post"] = (frame["year"] > event_year).astype(int)
-    frame["summer"] = frame["month"].isin(SUMMER_MONTHS).astype(int)
     return frame
 
 
-def fit_paired(frame: pd.DataFrame) -> Optional[dict]:
-    """Regress the daily gap on `post` with month fixed effects (HAC errors)."""
+def fit_paired(frame: pd.DataFrame, outcome: Outcome) -> Optional[dict]:
+    """Regress the paired gap on `post` with month fixed effects (HAC errors)."""
     if frame.empty:
         return None
     pre_n = int((frame["post"] == 0).sum())
     post_n = int((frame["post"] == 1).sum())
-    if pre_n < MIN_DAYS_PER_CELL or post_n < MIN_DAYS_PER_CELL:
+    if pre_n < outcome.min_per_cell or post_n < outcome.min_per_cell:
+        return None
+    if frame["month"].nunique() < 2:
         return None
 
-    fitted = smf.ols("delta_c ~ post + C(month)", data=frame).fit(
-        cov_type="HAC", cov_kwds={"maxlags": HAC_LAGS}
+    fitted = smf.ols("delta ~ post + C(month)", data=frame).fit(
+        cov_type="HAC", cov_kwds={"maxlags": outcome.hac_lags}
     )
     ci_low, ci_high = fitted.conf_int().loc["post"]
+    standard_error = float(fitted.bse["post"])
     return {
-        "did_c": float(fitted.params["post"]),
-        "std_error": float(fitted.bse["post"]),
+        "did": float(fitted.params["post"]),
+        "std_error": standard_error,
+        # Smallest true effect this test would detect 80 % of the time at the 5 %
+        # level. Without it a null is unreadable: "no effect" and "no power to
+        # see one" look identical, and the oxygen panel is thin enough that the
+        # distinction decides the interpretation.
+        "min_detectable_effect": round(2.802 * standard_error, 4),
         "ci_low": float(ci_low),
         "ci_high": float(ci_high),
         "p_value": float(fitted.pvalues["post"]),
-        "n_days_pre": pre_n,
-        "n_days_post": post_n,
-        "gap_pre_c": float(frame.loc[frame["post"] == 0, "delta_c"].mean()),
-        "gap_post_c": float(frame.loc[frame["post"] == 1, "delta_c"].mean()),
-        "up_pre_c": float(frame.loc[frame["post"] == 0, "upstream_c"].mean()),
-        "up_post_c": float(frame.loc[frame["post"] == 1, "upstream_c"].mean()),
-        "down_pre_c": float(frame.loc[frame["post"] == 0, "downstream_c"].mean()),
-        "down_post_c": float(frame.loc[frame["post"] == 1, "downstream_c"].mean()),
+        "n_pre": pre_n,
+        "n_post": post_n,
+        "gap_pre": float(frame.loc[frame["post"] == 0, "delta"].mean()),
+        "gap_post": float(frame.loc[frame["post"] == 1, "delta"].mean()),
+        "up_pre": float(frame.loc[frame["post"] == 0, "upstream"].mean()),
+        "up_post": float(frame.loc[frame["post"] == 1, "upstream"].mean()),
+        "down_pre": float(frame.loc[frame["post"] == 0, "downstream"].mean()),
+        "down_post": float(frame.loc[frame["post"] == 1, "downstream"].mean()),
     }
 
 
@@ -178,41 +222,43 @@ def fit_pooled(frame: pd.DataFrame) -> Optional[dict]:
     if frame.empty:
         return None
     long = pd.concat([
-        frame.assign(temp_c=frame["upstream_c"], treated=0, gauge="upstream"),
-        frame.assign(temp_c=frame["downstream_c"], treated=1, gauge="downstream"),
+        frame.assign(value=frame["upstream"], treated=0, gauge="upstream"),
+        frame.assign(value=frame["downstream"], treated=1, gauge="downstream"),
     ], ignore_index=True)
     try:
-        fitted = smf.ols("temp_c ~ treated * post + C(month)", data=long).fit(
+        fitted = smf.ols("value ~ treated * post + C(month)", data=long).fit(
             cov_type="cluster", cov_kwds={"groups": long["gauge"]}
         )
     except Exception:
         return None
-    name = "treated:post"
-    if name not in fitted.params:
+    if "treated:post" not in fitted.params:
         return None
-    return {"pooled_did_c": float(fitted.params[name]), "pooled_p_value": float(fitted.pvalues[name])}
+    return {"pooled_did": float(fitted.params["treated:post"]),
+            "pooled_p_value": float(fitted.pvalues["treated:post"])}
 
 
-def estimate_one(daily: pd.DataFrame, site: str, river: str, event_year: int,
-                 upstream: pd.Series, downstream: pd.Series, label: str = "all_year",
+def estimate_one(panel: pd.DataFrame, outcome: Outcome, site: str, river: str, event_year: int,
+                 upstream: pd.Series, downstream: pd.Series, sample: str = "all_year",
                  months: Optional[tuple] = None, event_override: Optional[int] = None,
                  max_year: Optional[int] = None, donut: int = 0,
                  window: int = WINDOW_YEARS) -> Optional[dict]:
-    """One 2x2 estimate for a site-event and a chosen gauge pair."""
+    """One 2x2 estimate for a site-event, an outcome and a chosen gauge pair."""
     effective_event = event_override if event_override is not None else event_year
-    frame = paired_frame(daily, upstream["station_id"], downstream["station_id"],
+    frame = paired_frame(panel, upstream["station_id"], downstream["station_id"],
                          effective_event, window=window, max_year=max_year, donut=donut)
     if months is not None and not frame.empty:
         frame = frame[frame["month"].isin(months)]
-    result = fit_paired(frame)
+    result = fit_paired(frame, outcome)
     if result is None:
         return None
     result.update(fit_pooled(frame) or {})
     result.update({
+        "outcome": outcome.name,
+        "unit": outcome.unit,
         "site": site,
         "river": river,
         "event_year": event_year,
-        "sample": label,
+        "sample": sample,
         "upstream_station": upstream["station_name"],
         "upstream_km": round(float(upstream["distance_km"]), 1),
         "downstream_station": downstream["station_name"],
@@ -221,10 +267,12 @@ def estimate_one(daily: pd.DataFrame, site: str, river: str, event_year: int,
     return result
 
 
-def run(daily: pd.DataFrame) -> tuple:
-    """All estimates and the underlying gauge inventory."""
-    stations = station_table(daily)
-    stations = stations.rename(columns={"river_km": "river_km"})
+def run_outcome(panel: pd.DataFrame, outcome: Outcome) -> tuple:
+    """Every estimate for one outcome, plus the gauge inventory behind it."""
+    if panel.empty:
+        return pd.DataFrame(), pd.DataFrame()
+
+    stations = station_table(panel)
     pairs = station_pairs.candidate_pairs(stations, max_km=MAX_PAIR_KM)
     if pairs.empty:
         return pd.DataFrame(), pairs
@@ -239,77 +287,122 @@ def run(daily: pd.DataFrame) -> tuple:
         river = group["river"].iloc[0]
         upstream = ups.iloc[0]
 
-        for rank, (_, downstream) in enumerate(downs.iterrows()):
-            # Headline estimate uses the nearest downstream gauge; the rest form
-            # the distance-sensitivity curve.
-            base = estimate_one(daily, site, river, event_year, upstream, downstream)
+        # The headline is the *closest pair that actually estimates*, not simply
+        # the closest pair: the nearest gauge sometimes starts recording after
+        # the shutdown, which would silently drop the site instead of falling
+        # back to the next one downstream.
+        headline_done = False
+        headline_pair = None
+        for _, downstream in downs.iterrows():
+            base = estimate_one(panel, outcome, site, river, event_year, upstream, downstream)
             if base is None:
                 continue
-            base["spec"] = "nearest_downstream" if rank == 0 else "distance_sensitivity"
+            base["spec"] = "distance_sensitivity" if headline_done else "nearest_downstream"
             results.append(base)
 
-            if rank > 0:
+            if headline_done:
                 continue
-            for label, months in (("summer_jun_sep", SUMMER_MONTHS), ("winter_oct_may", (10, 11, 12, 1, 2, 3, 4, 5))):
-                seasonal = estimate_one(daily, site, river, event_year, upstream, downstream,
-                                        label=label, months=months)
-                if seasonal:
-                    seasonal["spec"] = "season_split"
-                    results.append(seasonal)
+            headline_done = True
+            results.extend(robustness_battery(panel, outcome, site, river, event_year,
+                                              upstream, downstream))
+            headline_pair = (upstream["station_id"], downstream["station_id"])
 
-            # Drop the years touching the shutdown: ramp-down and commissioning
-            # of the shutdown itself make them neither clean pre nor clean post.
-            donut = estimate_one(daily, site, river, event_year, upstream, downstream,
-                                 label="donut_drop_1y_each_side", donut=1, window=WINDOW_YEARS + 1)
-            if donut:
-                donut["spec"] = "donut"
-                results.append(donut)
-
-            placebo = estimate_one(daily, site, river, event_year, upstream, downstream,
-                                   label=f"placebo_{event_year - PLACEBO_OFFSET_YEARS}",
-                                   event_override=event_year - PLACEBO_OFFSET_YEARS,
-                                   max_year=event_year - 1)
-            if placebo:
-                placebo["spec"] = "placebo"
-                results.append(placebo)
+        # Proximity and statistical power pull in different directions: the
+        # nearest gauge may have only started recording recently, while a gauge
+        # further away has thirty years behind it. Report the best-powered clean
+        # pair as well, so a thin headline cannot hide a usable estimate — and
+        # give it the same robustness battery, otherwise it is an unchecked
+        # second estimate that invites cherry-picking.
+        best = None
+        for _, up_candidate in ups.iterrows():
+            for _, down_candidate in downs.iterrows():
+                estimate = estimate_one(panel, outcome, site, river, event_year,
+                                        up_candidate, down_candidate)
+                if estimate is None:
+                    continue
+                power = min(estimate["n_pre"], estimate["n_post"])
+                if best is None or power > best[0]:
+                    best = (power, estimate, up_candidate, down_candidate)
+        if best is not None:
+            _, estimate, up_best, down_best = best
+            estimate["spec"] = "best_coverage"
+            results.append(estimate)
+            if not headline_done or (up_best["station_id"], down_best["station_id"]) != headline_pair:
+                results.extend(robustness_battery(panel, outcome, site, river, event_year,
+                                                  up_best, down_best, prefix="best_coverage_"))
 
     return pd.DataFrame(results), pairs
+
+
+def robustness_battery(panel: pd.DataFrame, outcome: Outcome, site: str, river: str,
+                       event_year: int, upstream: pd.Series, downstream: pd.Series,
+                       prefix: str = "") -> List[dict]:
+    """Donut, season split and placebo for one gauge pair."""
+    out: List[dict] = []
+
+    donut = estimate_one(panel, outcome, site, river, event_year, upstream, downstream,
+                         sample="donut_drop_1y_each_side", donut=1, window=WINDOW_YEARS + 1)
+    if donut:
+        donut["spec"] = f"{prefix}donut"
+        out.append(donut)
+
+    for label, months in (("summer_jun_sep", SUMMER_MONTHS),
+                          ("winter_oct_may", (10, 11, 12, 1, 2, 3, 4, 5))):
+        seasonal = estimate_one(panel, outcome, site, river, event_year, upstream,
+                                downstream, sample=label, months=months)
+        if seasonal:
+            seasonal["spec"] = f"{prefix}season_split"
+            out.append(seasonal)
+
+    placebo = estimate_one(panel, outcome, site, river, event_year, upstream, downstream,
+                           sample=f"placebo_{event_year - PLACEBO_OFFSET_YEARS}",
+                           event_override=event_year - PLACEBO_OFFSET_YEARS,
+                           max_year=event_year - 1)
+    if placebo:
+        placebo["spec"] = f"{prefix}placebo"
+        out.append(placebo)
+    return out
 
 
 # --------------------------------------------------------------------------
 # figures
 # --------------------------------------------------------------------------
-def plot_site(daily: pd.DataFrame, row: pd.Series, pairs: pd.DataFrame) -> None:
+def plot_site(panel: pd.DataFrame, outcome: Outcome, row: pd.Series, pairs: pd.DataFrame) -> None:
     """Monthly upstream/downstream series and their gap around the shutdown."""
     site, event_year = row["site"], int(row["event_year"])
     group = pairs[(pairs["site"] == site) & (pairs["event_year"] == event_year) & pairs["clean"]]
-    up = group[(group["role"] == "upstream") & (group["station_name"] == row["upstream_station"])].iloc[0]
-    down = group[(group["role"] == "downstream") & (group["station_name"] == row["downstream_station"])].iloc[0]
+    up = group[(group["role"] == "upstream") & (group["station_name"] == row["upstream_station"])]
+    down = group[(group["role"] == "downstream") & (group["station_name"] == row["downstream_station"])]
+    if up.empty or down.empty:
+        return
+    up, down = up.iloc[0], down.iloc[0]
 
-    frame = paired_frame(daily, up["station_id"], down["station_id"], event_year, window=WINDOW_YEARS + 2)
+    frame = paired_frame(panel, up["station_id"], down["station_id"], event_year,
+                         window=WINDOW_YEARS + 2)
     if frame.empty:
         return
-    monthly = frame.set_index("date").resample("MS").mean(numeric_only=True).reset_index()
+    monthly = frame.set_index("period").resample("MS").mean(numeric_only=True).reset_index()
 
     figure, axes = plt.subplots(2, 1, figsize=(11, 7.5), sharex=True,
                                 gridspec_kw={"height_ratios": [2, 1.4]})
-    axes[0].plot(monthly["date"], monthly["upstream_c"], color="#2b6cb0", lw=1.6,
+    axes[0].plot(monthly["period"], monthly["upstream"], color="#2b6cb0", lw=1.6,
                  label=f"upstream · {row['upstream_station']} ({row['upstream_km']:.0f} km)")
-    axes[0].plot(monthly["date"], monthly["downstream_c"], color="#c53030", lw=1.6,
+    axes[0].plot(monthly["period"], monthly["downstream"], color="#c53030", lw=1.6,
                  label=f"downstream · {row['downstream_station']} ({row['downstream_km']:.0f} km)")
-    axes[0].set_ylabel("monthly mean water temperature (°C)")
+    axes[0].set_ylabel(f"monthly mean {outcome.label} ({outcome.unit})")
     axes[0].legend(loc="upper left", fontsize=9, frameon=False)
     axes[0].set_title(f"{site} ({row['river']}) — shutdown {event_year}", fontsize=13, loc="left")
 
     axes[1].axhline(0, color="#a0aec0", lw=0.8)
-    axes[1].plot(monthly["date"], monthly["delta_c"], color="#2d3748", lw=1.4)
-    pre = monthly[monthly["date"].dt.year < event_year]["delta_c"].mean()
-    post = monthly[monthly["date"].dt.year > event_year]["delta_c"].mean()
-    axes[1].axhline(pre, xmax=0.5, color="#c53030", ls="--", lw=1.2, label=f"mean gap before: {pre:+.2f} °C")
-    axes[1].axhline(post, xmin=0.5, color="#2b6cb0", ls="--", lw=1.2, label=f"mean gap after: {post:+.2f} °C")
-    axes[1].set_ylabel("downstream − upstream (°C)")
-    axes[1].legend(loc="lower left", fontsize=9, frameon=True, framealpha=0.85,
-                   edgecolor="none")
+    axes[1].plot(monthly["period"], monthly["delta"], color="#2d3748", lw=1.4)
+    pre = monthly[monthly["period"].dt.year < event_year]["delta"].mean()
+    post = monthly[monthly["period"].dt.year > event_year]["delta"].mean()
+    axes[1].axhline(pre, xmax=0.5, color="#c53030", ls="--", lw=1.2,
+                    label=f"mean gap before: {pre:+.2f} {outcome.unit}")
+    axes[1].axhline(post, xmin=0.5, color="#2b6cb0", ls="--", lw=1.2,
+                    label=f"mean gap after: {post:+.2f} {outcome.unit}")
+    axes[1].set_ylabel(f"downstream − upstream ({outcome.unit})")
+    axes[1].legend(loc="lower left", fontsize=9, frameon=True, framealpha=0.85, edgecolor="none")
 
     for axis in axes:
         axis.axvline(pd.Timestamp(f"{event_year}-03-15"), color="#744210", lw=1.4, alpha=0.8)
@@ -317,24 +410,18 @@ def plot_site(daily: pd.DataFrame, row: pd.Series, pairs: pd.DataFrame) -> None:
 
     p_value = float(row["p_value"])
     p_text = "p < 1e-16" if p_value < 1e-16 else f"p = {p_value:.3g}"
-    figure.suptitle(
-        f"DiD on the daily gap: {row['did_c']:+.3f} °C  ({p_text})",
-        y=0.02, fontsize=10, color="#4a5568",
-    )
+    figure.suptitle(f"DiD on the paired gap: {row['did']:+.3f} {outcome.unit}  ({p_text})",
+                    y=0.02, fontsize=10, color="#4a5568")
     figure.tight_layout()
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     name = site.lower().replace(" ", "_")
-    figure.savefig(FIG_DIR / f"{name}_{event_year}_2x2.png", dpi=150, bbox_inches="tight")
+    figure.savefig(FIG_DIR / f"{name}_{event_year}_{outcome.name}.png", dpi=150, bbox_inches="tight")
     plt.close(figure)
 
 
-def plot_long_run(daily: pd.DataFrame, pairs: pd.DataFrame, results: pd.DataFrame) -> None:
-    """Annual downstream-minus-upstream gap over the whole record, per pair.
-
-    The ±3-year window can only show that the gap moved; this shows *when*. A
-    thermal discharge switching off should appear as a step at the shutdown, not
-    as a drift that was under way for years.
-    """
+def plot_long_run(panel: pd.DataFrame, outcome: Outcome, pairs: pd.DataFrame,
+                  results: pd.DataFrame) -> None:
+    """Annual downstream-minus-upstream gap over the whole record, per pair."""
     headline = results[results["spec"] == "nearest_downstream"]
     if headline.empty:
         return
@@ -360,15 +447,17 @@ def plot_long_run(daily: pd.DataFrame, pairs: pd.DataFrame, results: pd.DataFram
 
     for axis, (site, river, up, down, events) in zip(axes, panels):
         wide = (
-            daily[daily["station_id"].isin([up["station_id"], down["station_id"]])]
-            .pivot_table(index="date", columns="station_id", values="temp_mean_c", aggfunc="mean")
+            panel[panel["station_id"].isin([up["station_id"], down["station_id"]])]
+            .pivot_table(index="period", columns="station_id", values="value", aggfunc="mean")
             .dropna()
         )
         if wide.empty:
             continue
         gap = (wide[down["station_id"]] - wide[up["station_id"]]).rename("gap")
         annual = gap.groupby(gap.index.year).agg(["mean", "count", "std"])
-        annual = annual[annual["count"] >= 180]
+        annual = annual[annual["count"] >= (180 if outcome.pair_on == "date" else 6)]
+        if annual.empty:
+            continue
         error = 1.96 * annual["std"] / np.sqrt(annual["count"])
 
         axis.axhline(0, color="#a0aec0", lw=0.9)
@@ -380,7 +469,7 @@ def plot_long_run(daily: pd.DataFrame, pairs: pd.DataFrame, results: pd.DataFram
             axis.annotate(f"shutdown {event}", (event, axis.get_ylim()[1]),
                           textcoords="offset points", xytext=(4, -12),
                           fontsize=8.5, color="#c53030")
-        axis.set_ylabel("gap (°C)")
+        axis.set_ylabel(f"gap ({outcome.unit})")
         axis.set_title(
             f"{site} ({river}) · {down['station_name']} minus {up['station_name']} "
             f"({down['distance_km']:.0f} km downstream vs {up['distance_km']:.0f} km upstream)",
@@ -389,70 +478,65 @@ def plot_long_run(daily: pd.DataFrame, pairs: pd.DataFrame, results: pd.DataFram
         axis.spines[["top", "right"]].set_visible(False)
 
     axes[-1].set_xlabel("year")
-    figure.suptitle("Annual mean downstream − upstream water temperature gap",
+    figure.suptitle(f"Annual mean downstream − upstream {outcome.label} gap",
                     fontsize=13, y=1.0, x=0.01, ha="left")
     figure.tight_layout()
     FIG_DIR.mkdir(parents=True, exist_ok=True)
-    figure.savefig(FIG_DIR / "long_run_gap.png", dpi=150, bbox_inches="tight")
-    plt.close(figure)
-
-
-def plot_distance(results: pd.DataFrame) -> None:
-    """Estimated effect against along-river distance of the downstream gauge."""
-    subset = results[results["spec"].isin(["nearest_downstream", "distance_sensitivity"])]
-    if subset.empty:
-        return
-    figure, axis = plt.subplots(figsize=(9, 5.5))
-    for (site, event_year), group in subset.groupby(["site", "event_year"]):
-        group = group.sort_values("downstream_km")
-        axis.errorbar(group["downstream_km"], group["did_c"],
-                      yerr=[group["did_c"] - group["ci_low"], group["ci_high"] - group["did_c"]],
-                      marker="o", capsize=3, lw=1.4, label=f"{site} {event_year}")
-    axis.axhline(0, color="#a0aec0", lw=1)
-    axis.set_xlabel("along-river distance of the downstream gauge (km)")
-    axis.set_ylabel("DiD estimate (°C)")
-    axis.set_title("Distance sensitivity: effect decays away from the plant", loc="left")
-    axis.legend(fontsize=9, frameon=False)
-    axis.spines[["top", "right"]].set_visible(False)
-    figure.tight_layout()
-    FIG_DIR.mkdir(parents=True, exist_ok=True)
-    figure.savefig(FIG_DIR / "distance_sensitivity.png", dpi=150, bbox_inches="tight")
+    figure.savefig(FIG_DIR / f"long_run_gap_{outcome.name}.png", dpi=150, bbox_inches="tight")
     plt.close(figure)
 
 
 # --------------------------------------------------------------------------
 def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    daily = load_daily()
-    print(f"plant_2x2_did: {len(daily):,} station-days, {daily['station_id'].nunique()} gauges")
+    all_results: List[pd.DataFrame] = []
+    all_pairs: List[pd.DataFrame] = []
 
-    results, pairs = run(daily)
-    pairs.to_csv(OUT_DIR / "station_pairs.csv", index=False)
-    if results.empty:
-        print("plant_2x2_did: no site-event had both a clean upstream and downstream gauge.")
+    for outcome in OUTCOMES:
+        panel = load_panel(outcome)
+        if panel.empty:
+            continue
+        print(f"plant_2x2_did: {outcome.name}: {len(panel):,} readings, "
+              f"{panel['station_id'].nunique()} gauges", flush=True)
+
+        results, pairs = run_outcome(panel, outcome)
+        if results.empty:
+            print(f"plant_2x2_did: {outcome.name}: no site-event had a clean gauge pair.")
+            continue
+        pairs = pairs.assign(outcome=outcome.name)
+        all_pairs.append(pairs)
+        all_results.append(results)
+
+        for _, row in results[results["spec"] == "nearest_downstream"].iterrows():
+            plot_site(panel, outcome, row, pairs)
+        plot_long_run(panel, outcome, pairs, results)
+
+    if not all_results:
+        print("plant_2x2_did: nothing estimable.")
         return 1
 
+    results = pd.concat(all_results, ignore_index=True)
     columns = [
-        "site", "river", "event_year", "spec", "sample",
+        "outcome", "site", "river", "event_year", "spec", "sample", "unit",
         "upstream_station", "upstream_km", "downstream_station", "downstream_km",
-        "up_pre_c", "up_post_c", "down_pre_c", "down_post_c",
-        "gap_pre_c", "gap_post_c", "did_c", "std_error", "ci_low", "ci_high",
-        "p_value", "pooled_did_c", "pooled_p_value", "n_days_pre", "n_days_post",
+        "up_pre", "up_post", "down_pre", "down_post", "gap_pre", "gap_post",
+        "did", "std_error", "min_detectable_effect", "ci_low", "ci_high", "p_value",
+        "pooled_did", "pooled_p_value", "n_pre", "n_post",
     ]
     results = results[[c for c in columns if c in results.columns]].round(4)
     results.to_csv(OUT_DIR / "plant_2x2_results.csv", index=False)
+    pd.concat(all_pairs, ignore_index=True).to_csv(OUT_DIR / "station_pairs.csv", index=False)
 
-    headline = results[results["spec"] == "nearest_downstream"]
-    for _, row in headline.iterrows():
-        plot_site(daily, row, pairs)
-    plot_distance(results)
-    plot_long_run(daily, pairs, results)
+    pd.set_option("display.width", 260)
+    for outcome in OUTCOMES:
+        headline = results[(results["outcome"] == outcome.name) & (results["spec"] == "nearest_downstream")]
+        if headline.empty:
+            continue
+        print(f"\nHeadline 2x2 — {outcome.label} ({outcome.unit}), nearest clean gauge pair\n")
+        print(headline[["site", "river", "event_year", "upstream_station", "downstream_station",
+                        "downstream_km", "gap_pre", "gap_post", "did", "p_value",
+                        "n_pre", "n_post"]].to_string(index=False))
 
-    print("\nHeadline 2x2 estimates (nearest clean gauge pair, daily gap, HAC errors)\n")
-    show = headline[["site", "river", "event_year", "upstream_station", "downstream_station",
-                     "downstream_km", "gap_pre_c", "gap_post_c", "did_c", "p_value",
-                     "n_days_pre", "n_days_post"]]
-    print(show.to_string(index=False))
     print(f"\nWrote {OUT_DIR / 'plant_2x2_results.csv'} and figures to {FIG_DIR}")
     return 0
 

@@ -31,7 +31,14 @@ from matplotlib.patches import Patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from pipeline import boundaries, monitoring_stations, river_network, station_pairs  # noqa: E402
+import json  # noqa: E402
+
+import pandas as pd  # noqa: E402
+
+from pipeline import (  # noqa: E402
+    boundaries, monitoring_stations, river_network, station_pairs, thermal_confounders,
+)
+from pipeline.config import ANALYSIS_DIR  # noqa: E402
 
 OUT = ROOT / "figures" / "study_map.png"
 
@@ -45,6 +52,8 @@ SOURCE_STYLE = {
     "gkd": ("#0f9d58", "GKD Bayern — Tagesmittel, ab den 1990ern"),
     "waterbase": ("#8c8c8c", "EEA Waterbase — Stichproben, erst ab 2020"),
 }
+UPSTREAM_COLOR = "#1f6fd0"
+DOWNSTREAM_COLOR = "#d13438"
 RIVER_COLOR = "#5aa9dd"
 LAND_FILL = "#f5f4f0"
 BORDER_COLOR = "#b9b7ae"
@@ -54,6 +63,31 @@ RIVER_DE = {"Rhine": "Rhein", "Danube": "Donau", "Main": "Main", "Neckar": "Neck
 
 
 MAX_PAIR_KM = 120.0  # wie in scripts/plant_2x2_did.py
+RADIUS_FILE = ANALYSIS_DIR / "plant_2x2" / "analysis_radius.json"
+RESULTS = ANALYSIS_DIR / "plant_2x2" / "plant_2x2_results.csv"
+DEFAULT_RADIUS_KM = 50.0
+PLANT_COLOR = "#7a5195"
+
+
+def analysis_radius() -> float:
+    """Radius aus der Sensitivitätsanalyse, entlang des Flusses gemessen."""
+    if RADIUS_FILE.exists():
+        return float(json.loads(RADIUS_FILE.read_text(encoding="utf-8"))["radius_km"])
+    return DEFAULT_RADIUS_KM
+
+
+def used_stations() -> dict:
+    """Pegelname -> Rolle (upstream/downstream), für die tatsächlich benutzten."""
+    if not RESULTS.exists():
+        return {}
+    results = pd.read_csv(RESULTS)
+    used = results[results["spec"].isin(["nearest_downstream", "best_coverage"])]
+    roles = {}
+    for name in used["upstream_station"].dropna():
+        roles[name] = "upstream"
+    for name in used["downstream_station"].dropna():
+        roles[name] = "downstream"
+    return roles
 
 
 def _to_geo(line):
@@ -76,6 +110,7 @@ def _label_point(points, xlim, ylim, avoid):
 
 
 def main() -> int:
+    radius = analysis_radius()
     stems = river_network.study_river_stems()
     sites = station_pairs.plant_sites()
     stations = monitoring_stations.all_stations()
@@ -130,17 +165,38 @@ def main() -> int:
                       color="#1f6fa8", ha="center", va="bottom", weight="bold", zorder=3,
                       bbox=dict(boxstyle="round,pad=0.15", fc="white", ec="none", alpha=0.75))
 
+    # --- andere Wärmekraftwerke am Fluss ----------------------------------
+    # Nur die, die innerhalb des Analyseradius eines Standorts liegen — gemessen
+    # entlang des Flusses, nicht Luftlinie.
+    plants = thermal_confounders.load_thermal_plants()
+    plants = plants[~plants["is_nuclear"]]
+    near = plants[[
+        any(site.river == row.river and abs(row.river_km - site.river_km) <= radius
+            for site in sites)
+        for row in plants.itertuples()
+    ]]
+    if not near.empty:
+        axis.scatter(near["longitude"], near["latitude"], s=48, c=PLANT_COLOR,
+                     marker="P", edgecolors="white", linewidths=0.7, zorder=5)
+
     # --- Messstellen ------------------------------------------------------
+    roles = used_stations()
     for source, (colour, _) in SOURCE_STYLE.items():
         subset = stations[stations["source"] == source]
         if subset.empty:
             continue
-        axis.scatter(subset["longitude"], subset["latitude"], s=26, c=colour,
-                     marker="o", edgecolors="white", linewidths=0.6, zorder=4)
+        picked = subset["station_name"].isin(roles)
+        axis.scatter(subset.loc[~picked, "longitude"], subset.loc[~picked, "latitude"],
+                     s=26, c=colour, marker="o", edgecolors="white", linewidths=0.6, zorder=4)
+        # Die Pegel, auf denen die Schätzung beruht, deutlich hervorheben.
+        for row in subset[picked].itertuples():
+            axis.scatter([row.longitude], [row.latitude], s=95,
+                         c=UPSTREAM_COLOR if roles[row.station_name] == "upstream" else DOWNSTREAM_COLOR,
+                         marker="o", edgecolors="#111111", linewidths=1.6, zorder=7)
         for row in subset.itertuples():
             axis.annotate(str(row.label), (row.longitude, row.latitude),
                           textcoords="offset points", xytext=(4.5, 3.0),
-                          fontsize=6.4, color="#3a3a3a", zorder=5)
+                          fontsize=6.4, color="#3a3a3a", zorder=6)
 
     # --- Kraftwerksstandorte ---------------------------------------------
     for site in sites:
@@ -164,8 +220,8 @@ def main() -> int:
                    fontsize=15, loc="left", weight="bold", pad=26)
     axis.text(0, 1.012,
               "Flussachsen: HydroRIVERS v1.0 (tidale Elbe und Unterweser aus OpenStreetMap); "
-              f"Pfeile = Fließrichtung aus der Netztopologie. Gezeigt sind nur Messstellen "
-              f"≤ {MAX_PAIR_KM:.0f} km entlang des Flusses von einem Standort.",
+              f"Pfeile = Fließrichtung aus der Netztopologie. Messstellen ≤ {MAX_PAIR_KM:.0f} km, "
+              f"andere Wärmekraftwerke ≤ {radius:.0f} km entlang des Flusses von einem Standort.",
               transform=axis.transAxes, fontsize=8.6, color="#555555", va="bottom")
 
     handles = [Line2D([], [], color=c, marker=m, ls="", ms=10, label=t)
@@ -173,6 +229,12 @@ def main() -> int:
     handles += [Line2D([], [], color=c, marker="o", ls="", ms=7, label=t)
                 for c, t in SOURCE_STYLE.values()]
     handles += [
+        Line2D([], [], color=UPSTREAM_COLOR, marker="o", ls="", ms=9, mec="#111111", mew=1.6,
+               label="in der Schätzung benutzt: upstream (Kontrolle)"),
+        Line2D([], [], color=DOWNSTREAM_COLOR, marker="o", ls="", ms=9, mec="#111111", mew=1.6,
+               label="in der Schätzung benutzt: downstream (behandelt)"),
+        Line2D([], [], color=PLANT_COLOR, marker="P", ls="", ms=9,
+               label=f"anderes Wärmekraftwerk am Fluss (≤ {radius:.0f} km)"),
         Line2D([], [], color=RIVER_COLOR, lw=2, label="Studienfluss (Hauptlauf)"),
         Patch(facecolor=LAND_FILL, edgecolor=BORDER_COLOR, label="Deutschland (Staatsgrenze)"),
     ]

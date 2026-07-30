@@ -1,0 +1,125 @@
+plant,company,city,state,energy_source,technology,chp,capacity_net_bnetza,commissioned_year,shutdown_year,status,is_nuclear,latitude,longitude,river,river_km,offset_m
+Kernkraft Gundremmingen (B),RWE Power AG,Gundremmingen,Bayern,Nuclear,Steam turbine,no,1284.0,1984.0,2017.0,shutdown,True,48.515,10.402,Danube,585.743,1192.695
+Kernkraft Gundremmingen (C),RWE Power AG,Gundremmingen,Bayern,Nuclear,Steam turbine,no,1288.0,1984.0,,operating,True,48.516,10.398,Danube,585.627,945.63
+Ingolstadt (3),Uniper Kraftwerke GmbH ,Großmehring,Bayern,Oil,Steam turbine,no,386.0,1973.0,,operating,False,48.761,11.503,Danube,479.054,110.64
+Ingolstadt (4),Uniper Kraftwerke GmbH ,Großmehring,Bayern,Oil,Steam turbine,no,386.0,1974.0,,operating,False,48.761,11.503,Danube,479.054,110.64
+Gemeinschaftskraftwerk Irsching (5),Gemeinschaftskraftwerk Irsching GmbH,Vohburg,Bayern,Natural gas,Combined cycle,no,846.0,2010.0,,operating,False,48.767,11.58,Danube,473.109,289.889
+Ulrich Hartmann (Irsching) (4),Uniper Kraftwerke GmbH ,Vohburg,Bayern,Natural gas,Combined cycle,no,561.0,2011.0,,operating,False,48.767,11.58,Danube,473.109,289.889
+Irsching (3),Uniper Kraftwerke GmbH ,Vohburg,Bayern,Oil,Steam turbine,no,415.0,1974.0,,operating,False,48.767,11.58,Danube,473.109,289.889
+Moorburg B (B),Vattenfall Heizkraftwerk Moorburg GmbH,Hamburg,Hamburg,Hard coal,Steam turbine,yes,800.0,2015.0,,operating,False,53.486,9.953,Elbe,118.221,367.123
+Moorburg A (A),Vattenfall Heizkraftwerk Moorburg GmbH,Hamburg,Hamburg,Hard coal,Steam turbine,yes,800.0,2015.0,,operating,False,53.486,9.953,Elbe,118.221,367.123
+Wedel (Wedel 2),Wärme Hamburg GmbH,Wedel,Schleswig-Holstein,Hard coal,Steam turbine,yes,123.0,1962.0,,operating,False,53.567,9.724,Elbe,89.816,376.341
+Wedel (Wedel 1),Wärme Hamburg GmbH,Wedel,Schleswig-Holstein,Hard coal,Steam turbine,yes,137.0,1961.0,,operating,False,53.567,9.724,Elbe,89.816,376.341
+Dow Stade (Kraftwärmekopplungsanlage),Dow Deutschland Anlagengesellschaft mbH,Stade,Niedersachsen,Natural gas,Steam turbine,yes,190.0,,2014.0,shutdown,False,53.652,9.508,Elbe,71.903,644.931
+Dow Stade (Cogen Dow Stade),Dow Deutschland Anlagengesellschaft mbH,Stade,Niedersachsen,Natural gas,Combined cycle,yes,157.0,2015.0,,operating,False,53.652,9.508,Elbe,71.903,644.931
+Brokdorf (KBR),Preussen Elektra GmbH,Brokdorf,Schleswig-Holstein,Nuclear,Steam turbine,no,1410.0,1986.0,,operating,True,53.851,9.346,Elbe,46.717,1319.954
+Emsland (C1),RWE Generation SE,Lingen,Niedersachsen,Natural gas,Combined cycle,yes,116.0,1974.0,,operating,False,52.482,7.307,Ems,127.595,542.983
+Emsland (B1),RWE Generation SE,Lingen,Niedersachsen,Natural gas,Combined cycle,yes,116.0,1973.0,,operating,False,52.482,7.307,Ems,127.595,542.983
+Emsland (B2),RWE Generation SE,Lingen,Niedersachsen,Natural gas,Combined cycle,yes,359.0,1973.0,,operating,False,52.482,7.307,Ems,127.595,542.983
+Emsland (C2),RWE Generation SE,Lingen,Niedersachsen,Natural gas,Combined cycle,yes,359.0,1974.0,,operating,False,52.482,7.307,Ems,127.595,542.983
+Emsland (D),RWE Generation SE,Lingen,Niedersachsen,Natural gas,Combined cycle,yes,887.0,2010.0,,operating,False,52.482,7.307,Ems,127.595,542.983
+Kernkraftwerk Emsland (KKE),RWE Power AG,Lingen,Niedersachsen,Nuclear,Steam turbine,no,1336.0,1988.0,,operating,True,52.482,7.307,Ems,127.595,542.983
+BP Werk Lingen,BP Europa SE,Lingen,Niedersachsen,Natural gas,Steam turbine,yes,66.0,1996.0,,operating,False,52.561,7.295,Ems,116.171,1791.023
+Süd DT1 (1),SWM Services GmbH,München,Bayern,Natural gas,Combined cycle,yes,79.7,1980.0,,operating,False,48.135,11.582,Isar,153.484,452.239
+Süd GT3 (1),SWM Services GmbH,München,Bayern,Natural gas,Combined cycle,yes,97.9,1980.0,,operating,False,48.135,11.582,Isar,153.484,452.239
+Süd GT2 (1),SWM Services GmbH,München,Bayern,Natural gas,Combined cycle,yes,97.9,1980.0,,operating,False,48.135,11.582,Isar,153.484,452.239
+Süd GT 61 (2),SWM Services GmbH,München,Bayern,Natural gas,Combined cycle,yes,124.9,2004.0,,operating,False,48.135,11.582,Isar,153.484,452.239
+Süd GT 62 (2),SWM Services GmbH,München,Bayern,Natural gas,Combined cycle,yes,123.9,2004.0,,operating,False,48.135,11.582,Isar,153.484,452.239
+Süd DT60 (2),SWM Services GmbH,München,Bayern,Natural gas,Combined cycle,yes,127.6,2004.0,,operating,False,48.135,11.582,Isar,153.484,452.239
+Nord 2 (2),SWM Services GmbH,Unterföhring,Bayern,Hard coal,Steam turbine,yes,332.7,1991.0,,operating,False,48.181,11.64,Isar,146.534,820.486
+Isar 2 (KKI 2),Preussen Elektra GmbH,Essenbach,Bayern,Nuclear,Steam turbine,no,1410.0,1988.0,,operating,True,48.605,12.295,Isar,63.813,279.945
+Kraftwerk Plattling,Kraftwerk Platting GmbH,Plattling,Bayern,Natural gas,Combined cycle,yes,118.5,2010.0,,operating,False,48.787,12.882,Isar,8.678,1263.845
+Franken 1 (1),Uniper Kraftwerke GmbH ,Nürnberg,Bayern,Natural gas,Combined cycle,no,383.0,1973.0,,seasonal_conservation,False,49.421,11.008,Main,456.973,36.135
+Franken 1 (2),Uniper Kraftwerke GmbH ,Nürnberg,Bayern,Natural gas,Combined cycle,no,440.0,1976.0,,seasonal_conservation,False,49.421,11.008,Main,456.973,36.135
+HKW Eltmann,Palm Power GmbH & Co. KG,Eltmann,Bayern,Natural gas,Steam turbine,yes,57.0,2007.0,,operating,False,49.984,10.651,Main,373.409,393.492
+Grafenrheinfeld (KKG),E.ON Kernkraft GmbH,Grafenrheinfeld,Bayern,Nuclear,Steam turbine,no,1275.0,,2015.0,shutdown,True,49.984,10.182,Main,328.489,334.799
+Obernburg (1),Kraftwerk Obernburg GmbH,Obernburg,Bayern,Natural gas,Combined cycle,yes,60.0,1995.0,,operating,False,49.829,9.148,Main,104.907,385.923
+Staudinger (1),Uniper Kraftwerke GmbH ,Großkrotzenburg,Hessen,Hard coal,Steam turbine,yes,249.0,1965.0,2013.0,shutdown,False,50.089,8.953,Main,62.863,518.48
+Staudinger (3),Uniper Kraftwerke GmbH ,Großkrotzenburg,Hessen,Hard coal,Steam turbine,no,293.0,1970.0,2012.0,shutdown,False,50.089,8.953,Main,62.863,518.48
+Staudinger (5),Uniper Kraftwerke GmbH ,Großkrotzenburg,Hessen,Hard coal,Steam turbine,yes,510.0,1992.0,,operating,False,50.089,8.953,Main,62.863,518.48
+Staudinger (4),Uniper Kraftwerke GmbH ,Großkrotzenburg,Hessen,Natural gas,Steam turbine,no,572.0,1977.0,,operating,False,50.089,8.953,Main,62.863,518.48
+HKW West (Block 2),Mainova AG,Frankfurt am Main,Hessen,Hard coal,Steam turbine,yes,61.5,1988.0,,operating,False,50.098,8.653,Main,35.658,218.549
+HKW West (Block 3),Mainova AG,Frankfurt am Main,Hessen,Hard coal,Steam turbine,yes,61.5,1989.0,,operating,False,50.098,8.653,Main,35.658,218.549
+HKW West (Block 4),Mainova AG,Frankfurt am Main,Hessen,Natural gas,Steam turbine,yes,99.0,1994.0,,operating,False,50.098,8.653,Main,35.658,218.549
+HKW Niederrad (Block 1),Mainova AG,Frankfurt am Main,Hessen,Natural gas,Steam turbine,yes,70.0,2004.0,,operating,False,50.086,8.628,Main,33.193,442.978
+HKW Niederrad (Block 2),Mainova AG,Frankfurt am Main,Hessen,Natural gas,Steam turbine,yes,56.0,,2017.0,shutdown,False,50.086,8.628,Main,33.193,442.978
+Heizkraftwerk (Block B),Infraserv GmbH & Co. Höchst KG,Industriepark Höchst,Hessen,Hard coal,Steam turbine,yes,66.0,1989.0,,operating,False,50.092,8.531,Main,25.272,244.661
+ADS-Anlage,Infraserv GmbH & Co. Höchst KG,Industriepark Höchst,Hessen,Natural gas,Steam turbine,yes,96.5,2012.0,,operating,False,50.092,8.531,Main,25.272,244.661
+Heizkraftwerk (Block A),Infraserv GmbH & Co. Höchst KG,Industriepark Höchst,Hessen,Natural gas,Steam turbine,yes,86.0,2003.0,,operating,False,50.092,8.531,Main,25.272,244.661
+GuD-Anlage Rüsselsheim (M120),Opel Automobile GmbH ,Rüsselheim,Hessen,Natural gas,Combined cycle,yes,112.1,1999.0,,operating,False,49.992,8.414,Main,10.727,654.288
+Heizkraftwerk Altbach/Deizisau (ALT HKW 2 (DT Solobetrieb)),EnBW Energie Baden-Württemberg AG,Altbach,Baden-Württemberg,Hard coal,Steam turbine,yes,336.0,1997.0,,operating,False,48.718,9.375,Neckar,190.592,126.773
+Heizkraftwerk Altbach/Deizisau (ALT HKW 1),EnBW Energie Baden-Württemberg AG,Altbach,Baden-Württemberg,Hard coal,Steam turbine,yes,433.0,1985.0,,operating,False,48.718,9.375,Neckar,190.592,126.773
+Dampfkraftwerk Marbach am Neckar (Marbach III GT (solo)),EnBW Energie Baden-Württemberg AG,Marbach,Baden-Württemberg,Oil,Combined cycle,no,85.0,1975.0,,operating,False,48.927,9.23,Neckar,150.795,45.952
+Dampfkraftwerk Marbach am Neckar (MAR III DT),EnBW Energie Baden-Württemberg AG,Marbach,Baden-Württemberg,Oil,Combined cycle,no,263.5,1975.0,,operating,False,48.927,9.23,Neckar,150.795,45.952
+Kraftwerk Walheim (WAL 1),EnBW Energie Baden-Württemberg AG,Walheim,Baden-Württemberg,Hard coal,Steam turbine,no,96.0,1964.0,,operating,False,49.017,9.157,Neckar,129.236,83.28
+Kraftwerk Walheim (WAL 2),EnBW Energie Baden-Württemberg AG,Walheim,Baden-Württemberg,Hard coal,Steam turbine,no,148.0,1967.0,,operating,False,49.017,9.157,Neckar,129.236,83.28
+Gemeinschaftskernkraftwerk Neckarwestheim II (GKN II),EnBW Energie Baden-Württemberg AG,Neckarwestheim,Baden-Württemberg,Nuclear,Steam turbine,no,1310.0,1989.0,,operating,True,49.041,9.175,Neckar,124.501,542.822
+Heizkraftwerk Heilbronn (HLB 5),EnBW Energie Baden-Württemberg AG,Heilbronn,Baden-Württemberg,Hard coal,Steam turbine,no,125.0,1965.0,,operating,False,49.177,9.206,Neckar,105.191,298.722
+Heizkraftwerk Heilbronn (HLB 6),EnBW Energie Baden-Württemberg AG,Heilbronn,Baden-Württemberg,Hard coal,Steam turbine,no,125.0,1966.0,,operating,False,49.177,9.206,Neckar,105.191,298.722
+Heizkraftwerk Heilbronn (HLB 7),EnBW Energie Baden-Württemberg AG,Heilbronn,Baden-Württemberg,Hard coal,Steam turbine,yes,778.0,1985.0,,operating,False,49.177,9.206,Neckar,105.191,298.722
+Rheinhafen-Dampfkraftwerk (RDK 7),EnBW Energie Baden-Württemberg AG,Karlsruhe,Baden-Württemberg,Hard coal,Steam turbine,yes,517.0,1985.0,,operating,False,49.012,8.303,Rhine,595.216,355.493
+Rheinhafen-Dampfkraftwerk (RDK 8),EnBW Energie Baden-Württemberg AG,Karlsruhe,Baden-Württemberg,Hard coal,Steam turbine,yes,834.0,2014.0,,operating,False,49.012,8.303,Rhine,595.216,355.493
+Rheinhafen-Dampfkraftwerk (RDK 4S),EnBW Energie Baden-Württemberg AG,Karlsruhe,Baden-Württemberg,Natural gas,Combined cycle,no,353.0,1998.0,,operating,False,49.012,8.303,Rhine,595.216,355.493
+Stora Enso Maxau,Stora Enso Maxau GmbH,Karlsruhe,Baden-Württemberg,Biomass and biogas,Steam turbine,yes,78.0,2010.0,,operating,False,49.039,8.311,Rhine,592.023,373.344
+HKW Wörth,Palm Power GmbH & Co. KG,Wörth,Rheinland-Pfalz,Natural gas,Steam turbine,yes,59.0,2007.0,,operating,False,49.07,8.307,Rhine,589.017,1298.457
+Kernkraftwerk Philippsburg 2 (KKP 2),EnBW Energie Baden-Württemberg AG,Philippsburg,Baden-Württemberg,Nuclear,Steam turbine,no,1402.0,1985.0,2019.0,shutdown,True,49.253,8.435,Rhine,563.755,496.615
+GKM (Block 3),Grosskraftwerk Mannheim AG,Mannheim,Baden-Württemberg,Hard coal,Steam turbine,yes,202.5,1966.0,2015.0,shutdown,False,49.446,8.49,Rhine,536.029,215.988
+GKM (Block 4),Grosskraftwerk Mannheim AG,Mannheim,Baden-Württemberg,Hard coal,Steam turbine,yes,202.5,1970.0,2015.0,shutdown,False,49.446,8.49,Rhine,536.029,215.988
+GKM (Block 6),Grosskraftwerk Mannheim AG,Mannheim,Baden-Württemberg,Hard coal,Steam turbine,yes,255.0,2005.0,,operating,False,49.446,8.49,Rhine,536.029,215.988
+GKM (Block 7),Grosskraftwerk Mannheim AG,Mannheim,Baden-Württemberg,Hard coal,Steam turbine,yes,425.0,1982.0,,operating,False,49.446,8.49,Rhine,536.029,215.988
+GKM (Block 8),Grosskraftwerk Mannheim AG,Mannheim,Baden-Württemberg,Hard coal,Steam turbine,yes,435.0,1993.0,,operating,False,49.446,8.49,Rhine,536.029,215.988
+GKM (Block 9),Grosskraftwerk Mannheim AG,Mannheim,Baden-Württemberg,Hard coal,Steam turbine,yes,843.0,2015.0,,operating,False,49.446,8.49,Rhine,536.029,215.988
+"Kraftwerk Mitte (GUD A 800  GT 11, GT 12, DT 10)",BASF SE,Ludwigshafen,Rheinland-Pfalz,Natural gas,Combined cycle,yes,497.5,2005.0,,operating,False,49.514,8.432,Rhine,523.694,295.131
+"Kraftwerk Süd (GUD C 200 GT 1, GT 2, DT 1)",BASF SE,Ludwigshafen,Rheinland-Pfalz,Natural gas,Combined cycle,yes,410.0,1997.0,,operating,False,49.514,8.432,Rhine,523.694,296.233
+Kraftwerk Mainz (KW2),Kraftwerke Mainz-Wiesbaden AG,Mainz,Rheinland-Pfalz,Natural gas,Combined cycle,yes,335.0,1976.0,,operating,False,50.025,8.243,Rhine,449.107,414.293
+Kraftwerk Mainz (KW3),Kraftwerke Mainz-Wiesbaden AG,Mainz,Rheinland-Pfalz,Natural gas,Combined cycle,yes,434.2,2000.0,,operating,False,50.026,8.238,Rhine,448.799,640.651
+Heizkraftwerk Karlstraße (Heizkraftwerk Karlstraße),Energie- und Wasserversorgung Bonn/Rhein-Sieg GmbH,Bonn,Nordrhein-Westfalen,Natural gas,Steam turbine,yes,95.0,2013.0,,operating,False,50.734,7.081,Rhine,289.255,2115.599
+Kraftwerk (D210),Basell Polyolefine GmbH,Wesseling,Nordrhein-Westfalen,Oil,Steam turbine,yes,90.0,1962.0,,operating,False,50.831,6.959,Rhine,272.57,1635.645
+Shell Deutschland Oil GmbH,Shell Deutschland Oil GmbH,Köln,Nordrhein-Westfalen,Oil,Combined cycle,yes,97.1,2004.0,,operating,False,50.855,6.981,Rhine,271.01,978.105
+HKW Niehl 2 (GuD),RheinEnergie AG,Köln,Nordrhein-Westfalen,Natural gas,Combined cycle,yes,413.0,2005.0,,operating,False,50.975,6.988,Rhine,248.951,264.198
+Niehl 3 (Niehl 31),RheinEnergie AG,Köln,Nordrhein-Westfalen,Natural gas,Steam turbine,yes,459.9,2016.0,,operating,False,50.975,6.988,Rhine,248.951,274.639
+HKW Merkenich (Block 6),RheinEnergie AG,Köln,Nordrhein-Westfalen,Lignite,Steam turbine,yes,75.3,2010.0,,operating,False,51.018,6.964,Rhine,243.537,601.04
+HKW Merkenich (GuD),RheinEnergie AG,Köln,Nordrhein-Westfalen,Natural gas,Combined cycle,yes,108.0,2004.0,,operating,False,51.018,6.964,Rhine,243.537,601.04
+Dormagen (GuD),RWE Generation SE,Dormagen,Nordrhein-Westfalen,Natural gas,Combined cycle,yes,586.0,2000.0,,operating,False,51.079,6.829,Rhine,231.209,1944.719
+Holthausen,Henkel AG & Co. KGaA,Düsseldorf,Nordrhein-Westfalen,Natural gas,Steam turbine,yes,84.0,1948.0,,operating,False,51.176,6.838,Rhine,219.536,1694.483
+GuD (AGuD),Stadtwerke Düsseldorf AG,Düsseldorf,Nordrhein-Westfalen,Natural gas,Combined cycle,yes,100.0,2000.0,,operating,False,51.221,6.731,Rhine,203.09,405.638
+Gasblock (Block E),Stadtwerke Düsseldorf AG,Düsseldorf,Nordrhein-Westfalen,Natural gas,Steam turbine,yes,293.0,1977.0,2019.0,shutdown,False,51.221,6.731,Rhine,203.09,405.638
+GuD (GuD F),Stadtwerke Düsseldorf AG,Düsseldorf,Nordrhein-Westfalen,Natural gas,Combined cycle,yes,595.0,2016.0,,operating,False,51.224,6.735,Rhine,201.507,345.827
+G-Kraftwerk,Currenta GmbH & Co. OHG,Leverkusen,Nordrhein-Westfalen,Hard coal,Steam turbine,yes,103.0,1962.0,,operating,False,51.369,6.654,Rhine,176.546,648.654
+Kraftwerk N 230,Currenta GmbH & Co. OHG,Krefeld-Uerdingen,Nordrhein-Westfalen,Hard coal,Steam turbine,yes,110.0,1971.0,,operating,False,51.37,6.662,Rhine,175.877,490.551
+Huckingen (A),Hüttenwerke Krupp Mannesmann GmbH,Duisburg-Huckingen,Nordrhein-Westfalen,Other fuels,Combined cycle,yes,303.0,1976.0,,operating,False,51.368,6.717,Rhine,172.261,580.442
+Huckingen (B),Hüttenwerke Krupp Mannesmann GmbH,Duisburg-Huckingen,Nordrhein-Westfalen,Other fuels,Combined cycle,yes,303.0,1977.0,,operating,False,51.368,6.717,Rhine,172.261,580.442
+HKW III/B (HKW III/B),Stadtwerke Duisburg AG,Duisburg,Nordrhein-Westfalen,Natural gas,Combined cycle,yes,234.0,2005.0,,operating,False,51.391,6.748,Rhine,169.225,666.02
+HKW I (ZAWSF),Stadtwerke Duisburg AG,Duisburg,Nordrhein-Westfalen,Hard coal,Steam turbine,yes,95.0,1985.0,2018.0,shutdown,False,51.429,6.752,Rhine,165.89,1845.955
+HKW II/B (HKW II/B),Stadtwerke Duisburg AG,Duisburg,Nordrhein-Westfalen,Hard coal,Steam turbine,yes,133.0,1965.0,2012.0,shutdown,False,51.429,6.752,Rhine,165.89,1845.955
+Duisburg Ruhrort 2 (Block 2),ThyssenKrupp Steel Europe AG,Duisburg - Ruhrort,Nordrhein-Westfalen,Other fuels,Steam turbine,yes,60.0,1955.0,,operating,False,51.46,6.731,Rhine,161.072,532.148
+Duisburg Ruhrort 3 (Block 3),ThyssenKrupp Steel Europe AG,Duisburg - Ruhrort,Nordrhein-Westfalen,Other fuels,Steam turbine,yes,95.0,1963.0,,operating,False,51.46,6.731,Rhine,161.072,532.148
+Duisburg Ruhrort 4 (Block 4),ThyssenKrupp Steel Europe AG,Duisburg - Ruhrort,Nordrhein-Westfalen,Other fuels,Steam turbine,yes,170.0,1968.0,,operating,False,51.46,6.731,Rhine,161.072,532.148
+Duisburg Hamborn 3 (Block 3),ThyssenKrupp Steel Europe AG,Hamborn,Nordrhein-Westfalen,Other fuels,Steam turbine,yes,59.0,1958.0,,operating,False,51.491,6.727,Rhine,153.508,922.335
+Duisburg Hamborn 4 (Block 4),ThyssenKrupp Steel Europe AG,Hamborn,Nordrhein-Westfalen,Other fuels,Steam turbine,yes,101.0,1976.0,,operating,False,51.491,6.727,Rhine,153.508,922.335
+Duisburg Hamborn 5 (Block 5),ThyssenKrupp Steel Europe AG,Hamborn,Nordrhein-Westfalen,Other fuels,Steam turbine,yes,225.0,2003.0,,operating,False,51.501,6.73,Rhine,152.63,539.698
+KW Walsum (Walsum 9),Steag GmbH,Duisburg,Nordrhein-Westfalen,Hard coal,Steam turbine,yes,370.0,1988.0,,operating,False,51.527,6.719,Rhine,150.61,931.114
+KW Walsum (Walsum 10),STEAG-EVN Walsum 10 Kraftwerksgesellsellschaft mbH,Duisburg,Nordrhein-Westfalen,Hard coal,Steam turbine,yes,725.0,2013.0,,operating,False,51.527,6.719,Rhine,150.61,931.114
+KW Walsum (Walsum 7),Steag GmbH,Duisburg,Nordrhein-Westfalen,Hard coal,Steam turbine,no,129.0,1959.0,2014.0,shutdown,False,51.529,6.712,Rhine,149.775,746.616
+KW Voerde (Block A),RWE Generation SE,Voerde,Nordrhein-Westfalen,Hard coal,Steam turbine,no,695.0,1982.0,2017.0,shutdown,False,51.576,6.689,Rhine,142.931,691.443
+KW Voerde (Block B),RWE Generation SE,Voerde,Nordrhein-Westfalen,Hard coal,Steam turbine,no,695.0,1985.0,2017.0,shutdown,False,51.576,6.689,Rhine,142.931,691.443
+KW West (West 2),Steag GmbH,Voerde,Nordrhein-Westfalen,Hard coal,Steam turbine,no,318.0,1971.0,2017.0,shutdown,False,51.58,6.679,Rhine,142.096,500.5
+KW West (West 1),Steag GmbH,Voerde,Nordrhein-Westfalen,Hard coal,Steam turbine,no,322.0,1971.0,2017.0,shutdown,False,51.58,6.679,Rhine,142.096,500.5
+Solvay Kraftwerk Rheinberg,Solvay Chemicals GmbH,Rheinberg,Nordrhein-Westfalen,Natural gas,Steam turbine,yes,79.0,1961.0,,operating,False,51.565,6.578,Rhine,136.414,1878.875
+HKW Nord (Generator A),Volkswagen AG,Wolfsburg,Niedersachsen,Hard coal,Steam turbine,yes,61.5,2000.0,,operating,False,51.253,9.438,Weser,505.722,1939.621
+HKW West (Block 1),Volkswagen AG,Wolfsburg,Niedersachsen,Hard coal,Steam turbine,yes,138.5,1985.0,,operating,False,51.253,9.438,Weser,505.722,1939.621
+"GuD Baunatal, VW Werksgelände",Volkswagen AG,Baunatal,Hessen,Natural gas,Combined cycle,yes,78.0,2011.0,,operating,False,51.253,9.438,Weser,505.722,1948.798
+Grohnde (KWG),Preussen Elektra GmbH,Emmerthal,Niedersachsen,Nuclear,Steam turbine,no,1360.0,1985.0,,operating,True,52.036,9.413,Weser,355.876,50.57
+Kraftwerk Veltheim (2),Gemeinschaftskraftwerk Veltheim GmbH,Porta Westfalica,Nordrhein-Westfalen,Hard coal,Steam turbine,no,93.0,1965.0,2012.0,shutdown,False,52.19,8.933,Weser,308.05,514.218
+Kraftwerk Veltheim (3),Uniper Kraftwerke GmbH ,Porta Westfalica,Nordrhein-Westfalen,Hard coal,Steam turbine,no,303.0,1970.0,2015.0,shutdown,False,52.19,8.933,Weser,308.05,514.218
+Kraftwerk Veltheim (4 DT),Uniper Kraftwerke GmbH ,Porta Westfalica,Nordrhein-Westfalen,Natural gas,Steam turbine,no,335.0,1975.0,2015.0,shutdown,False,52.187,8.93,Weser,307.845,171.646
+Heyden (4),Uniper Kraftwerke GmbH ,Petershagen,Nordrhein-Westfalen,Hard coal,Steam turbine,no,875.0,1987.0,,operating,False,52.383,8.996,Weser,272.134,1429.975
+Landesbergen Gas (Dampfturbine),Statkraft Markets GmbH,Landesbergen,Niedersachsen,Natural gas,Steam turbine,no,431.0,1973.0,,shutdown_temporary,False,52.546,9.114,Weser,238.27,305.721
+KW Hastedt (Block 15),swb Erzeugung AG & Co. KG,Bremen,Bremen,Hard coal,Steam turbine,yes,119.0,1989.0,,operating,False,53.06,8.873,Weser,128.831,240.704
+KW Hastedt (Block 14),swb Erzeugung GmbH & Co. KG,Bremen,Bremen,Natural gas,Steam turbine,yes,155.0,,2016.0,shutdown,False,53.06,8.873,Weser,128.831,240.704
+KW Hafen (Block 5),swb Erzeugung GmbH & Co. KG,Bremen,Bremen,Hard coal,Steam turbine,yes,127.0,1968.0,2016.0,shutdown,False,53.125,8.729,Weser,115.206,784.026
+KW Hafen (Block 6),swb Erzeugung AG & Co. KG,Bremen,Bremen,Hard coal,Steam turbine,yes,303.0,1979.0,,operating,False,53.125,8.729,Weser,115.206,780.847
+KW Mittelsbüren (GuD MiBÜ),Gemeinschaftskraftwerk Bremen GmbH und Co. KG,Bremen,Bremen,Natural gas,Combined cycle,no,444.5,2016.0,,operating,False,53.129,8.685,Weser,112.422,666.702
+KW Mittelsbüren (Block 4),ArcelorMittal Bremen GmbH,Bremen,Bremen,Other fuels,Steam turbine,no,160.0,1975.0,,operating,False,53.129,8.685,Weser,112.422,666.702
+KW Mittelsbüren (Block 3),swb Erzeugung GmbH & Co. KG,Bremen,Bremen,Other fuels,Steam turbine,no,110.0,,2013.0,shutdown,False,53.129,8.685,Weser,112.422,666.702
+Farge (Farge),ENGIE Deutschland AG,Bremen,Bremen,Hard coal,Steam turbine,no,350.0,1969.0,,operating,False,53.202,8.516,Weser,24.618,313.421

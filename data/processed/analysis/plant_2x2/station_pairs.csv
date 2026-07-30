@@ -1,20 +1,50 @@
-site,river,site_river_km,event_year,blocks_shut,capacity_lost_mw,capacity_share_lost,station_id,station_name,station_river_km,role,distance_km,contaminated_by,clean
-Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10039802,Donauwörth,539.61,downstream,46.07,,True
-Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10046105,Ingolstadt Luitpoldstr.,485.45,downstream,100.23,,True
-Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10026293,Neu-Ulm,624.67,upstream,38.98,,True
-Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10039802,Donauwörth,539.61,downstream,46.07,,True
-Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10046105,Ingolstadt Luitpoldstr.,485.45,downstream,100.23,,True
-Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10026293,Neu-Ulm,624.67,upstream,38.98,,True
-Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16008007,Landau,30.02,downstream,33.78,,True
-Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16007004,Landshut-Birket,80.22,upstream,16.43,,True
-Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16005701,München,151.84,upstream,88.05,,True
-Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16004403,Puppling,182.77,upstream,118.97,,True
-Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16008007,Landau,30.02,downstream,33.78,,True
-Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16007004,Landshut-Birket,80.22,upstream,16.43,,True
-Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16005701,München,151.84,upstream,88.05,,True
-Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16004403,Puppling,182.77,upstream,118.97,,True
-Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24028000,Astheim,309.88,downstream,18.61,,True
-Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24042000,Würzburg,250.97,downstream,77.51,,True
-Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24043800,Erlabrunn Messstation,240.39,downstream,88.09,,True
-Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24022003,Schweinfurt,334.58,upstream,6.09,,True
-Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24012203,Trunstadt,384.31,upstream,55.83,,True
+site,river,site_river_km,event_year,blocks_shut,capacity_lost_mw,capacity_share_lost,station_id,station_name,station_river_km,role,distance_km,contaminated_by,clean,outcome
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10039802,Donauwörth,539.61,downstream,46.07,,True,water_temperature
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10046105,Ingolstadt Luitpoldstr.,485.45,downstream,100.23,,True,water_temperature
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,10026293,Neu-Ulm,624.67,upstream,38.98,,True,water_temperature
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10039802,Donauwörth,539.61,downstream,46.07,,True,water_temperature
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10046105,Ingolstadt Luitpoldstr.,485.45,downstream,100.23,,True,water_temperature
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,10026293,Neu-Ulm,624.67,upstream,38.98,,True,water_temperature
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16008007,Landau,30.02,downstream,33.78,,True,water_temperature
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16007004,Landshut-Birket,80.22,upstream,16.43,,True,water_temperature
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16005701,München,151.84,upstream,88.05,,True,water_temperature
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,16004403,Puppling,182.77,upstream,118.97,,True,water_temperature
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16008007,Landau,30.02,downstream,33.78,,True,water_temperature
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16007004,Landshut-Birket,80.22,upstream,16.43,,True,water_temperature
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16005701,München,151.84,upstream,88.05,,True,water_temperature
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,16004403,Puppling,182.77,upstream,118.97,,True,water_temperature
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24028000,Astheim,309.88,downstream,18.61,,True,water_temperature
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24042000,Würzburg,250.97,downstream,77.51,,True,water_temperature
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24043800,Erlabrunn Messstation,240.39,downstream,88.09,,True,water_temperature
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24022003,Schweinfurt,334.58,upstream,6.09,,True,water_temperature
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,24012203,Trunstadt,384.31,upstream,55.83,,True,water_temperature
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,2389,Dillingen Meßstation,572.03,downstream,13.66,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,2962,Schäfstall Pegel,535.42,downstream,50.26,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,3164,BITTENBRUNN KW-OW,509.5,downstream,76.19,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,142526,Messstation Ingolstadt Luitpoldstraße,485.45,downstream,100.23,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2017,Gundremmingen B,1284.0,0.499,2346,"Böfinger Halde, KW-UW",619.15,upstream,33.46,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,2389,Dillingen Meßstation,572.03,downstream,13.66,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,2962,Schäfstall Pegel,535.42,downstream,50.26,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,3164,BITTENBRUNN KW-OW,509.5,downstream,76.19,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,142526,Messstation Ingolstadt Luitpoldstraße,485.45,downstream,100.23,,True,dissolved_oxygen
+Gundremmingen,Danube,585.69,2021,Gundremmingen C,1288.0,0.501,2346,"Böfinger Halde, KW-UW",619.15,upstream,33.46,,True,dissolved_oxygen
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,11353,GOTTFRIEDING BRUECKE,43.54,downstream,20.26,,True,dissolved_oxygen
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,11446,Plattling Bruecke B8,9.42,downstream,54.37,,True,dissolved_oxygen
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,11239,HOFHAM,85.31,upstream,21.52,,True,dissolved_oxygen
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,105519,uh Ausleitung Werkkanal Moosburg,97.47,upstream,33.67,,True,dissolved_oxygen
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,10988,HMS Moosburg,100.67,upstream,36.88,,True,dissolved_oxygen
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,10908,Praterinsel Mutterb,153.04,upstream,89.24,,True,dissolved_oxygen
+Isar,Isar,63.8,2011,Isar 1,878.0,0.384,10909,Baierbrunn oh Ausleitung,168.12,upstream,104.33,,True,dissolved_oxygen
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,11353,GOTTFRIEDING BRUECKE,43.54,downstream,20.26,,True,dissolved_oxygen
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,11446,Plattling Bruecke B8,9.42,downstream,54.37,,True,dissolved_oxygen
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,11239,HOFHAM,85.31,upstream,21.52,,True,dissolved_oxygen
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,105519,uh Ausleitung Werkkanal Moosburg,97.47,upstream,33.67,,True,dissolved_oxygen
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,10988,HMS Moosburg,100.67,upstream,36.88,,True,dissolved_oxygen
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,10908,Praterinsel Mutterb,153.04,upstream,89.24,,True,dissolved_oxygen
+Isar,Isar,63.8,2023,Isar 2,1410.0,0.616,10909,Baierbrunn oh Ausleitung,168.12,upstream,104.33,,True,dissolved_oxygen
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,176715,"Wehrarm Volkach km 304,7 W Altmain",303.8,downstream,24.69,,True,dissolved_oxygen
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,20256,Erlabrunn KW-OW,240.45,downstream,88.04,,True,dissolved_oxygen
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,142522,Messstation Erlabrunn,240.38,downstream,88.1,,True,dissolved_oxygen
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,19556,"SH Schweinfurt, km 332,0, OW",335.76,upstream,7.28,,True,dissolved_oxygen
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,19268,"Viereth, KW-Oberwasser",386.94,upstream,58.45,,True,dissolved_oxygen
+Grafenrheinfeld,Main,328.49,2015,Grafenrheinfeld,1275.0,1.0,16122,"Hallstadt, Brücke",391.8,upstream,63.31,,True,dissolved_oxygen

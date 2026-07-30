@@ -1,0 +1,16 @@
+block,river,cooling_type,river_heat_load,shutdown_year,electric_net_mw,thermal_mw,efficiency,waste_heat_mw,river_share,heat_to_river_mw,annual_net_gwh,figures_approximate,generation_note
+Biblis A,Rhine,once_through,high,2011,1167,3517,0.332,2350,0.95,2232.5,8000,True,Rated thermal power; annual output approximate.
+Biblis B,Rhine,once_through,high,2011,1240,3733,0.332,2493,0.95,2368.3,8500,True,Rated thermal power; annual output approximate.
+Unterweser,Weser,once_through,high,2011,1345,3900,0.345,2555,0.95,2427.2,10000,True,Rated thermal power; annual output approximate.
+Isar 1,Isar,once_through,high,2011,878,2575,0.341,1697,0.95,1612.1,6009,False,"198,270 GWh lifetime over 33 operating years (1978-2011); the final years were below average (Feb 2010 fuel-element outage)."
+Isar 2,Isar,cooling_tower,low,2023,1410,3950,0.357,2540,0.03,76.2,11477,False,"Metered 2018 generation, a normal full year."
+Neckarwestheim 1,Neckar,cooling_tower,low,2011,785,2497,0.314,1712,0.03,51.4,5500,True,Rated thermal power; annual output approximate.
+Neckarwestheim 2,Neckar,cooling_tower,low,2023,1310,3850,0.34,2540,0.03,76.2,10500,True,Rated thermal power; annual output approximate.
+Philippsburg 1,Rhine,hybrid,moderate,2011,890,2575,0.346,1685,0.5,842.5,6000,True,Rated thermal power; annual output approximate.
+Philippsburg 2,Rhine,hybrid,moderate,2019,1402,3950,0.355,2548,0.5,1274.0,11000,True,Rated thermal power; annual output approximate.
+Grohnde,Weser,cooling_tower,low,2021,1360,3900,0.349,2540,0.03,76.2,10500,True,Rated thermal power; annual output approximate.
+Emsland,Ems,cooling_tower,low,2023,1336,3850,0.347,2514,0.03,75.4,11000,True,Rated thermal power; annual output approximate.
+Brokdorf,Elbe,once_through,high,2021,1410,3900,0.362,2490,0.95,2365.5,11000,True,Rated thermal power; annual output approximate.
+Grafenrheinfeld,Main,cooling_tower,low,2015,1275,3765,0.339,2490,0.03,74.7,9425,False,Published annual net output; capacity factor 80 %.
+Gundremmingen B,Danube,cooling_tower,low,2017,1284,3840,0.334,2556,0.03,76.7,10500,False,Site output ~21 TWh/a split evenly between the two identical blocks.
+Gundremmingen C,Danube,cooling_tower,low,2021,1288,3840,0.335,2552,0.03,76.6,10500,False,Site output ~21 TWh/a split evenly between the two identical blocks.
