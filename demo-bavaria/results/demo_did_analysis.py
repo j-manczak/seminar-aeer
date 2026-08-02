@@ -15,31 +15,35 @@ def load_station_data(filename):
     filepath = data_dir / filename
     
     # Read file and find the data header
-    with open(filepath, 'r', encoding='utf-8') as f:
-        lines = f.readlines()
-    
-    # Find line with "Tageswerte Wassertemperatur"
-    data_start = 0
-    for i, line in enumerate(lines):
-        if "Tageswerte Wassertemperatur" in line:
-            data_start = i + 1
-            break
-    
-    # Read the data
-    df = pd.read_csv(
-        filepath,
-        skiprows=data_start,
-        sep=';',
-        decimal=',',  # German decimal format
-        parse_dates=['Datum'],
-        date_format='%Y-%m-%d'
-    )
-    
-    # Select relevant columns
-    df = df[['Datum', 'Mittelwert']].rename(columns={'Mittelwert': 'temp'})
-    df = df.sort_values('Datum')
-    
-    return df
+    try:
+        with open(filepath, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        
+        # Find line with "Tageswerte Wassertemperatur"
+        data_start = 0
+        for i, line in enumerate(lines):
+            if "Tageswerte Wassertemperatur" in line:
+                data_start = i + 1
+                break
+        
+        # Read the data
+        df = pd.read_csv(
+            filepath,
+            skiprows=data_start,
+            sep=';',
+            decimal=',',  # German decimal format
+            parse_dates=['Datum'],
+            date_format='%Y-%m-%d'
+        )
+        
+        # Select relevant columns
+        df = df[['Datum', 'Mittelwert']].rename(columns={'Mittelwert': 'temp'})
+        df = df.sort_values('Datum')
+        
+        return df
+    except FileNotFoundError:
+        print(f"Warning: File {filename} not found")
+        return pd.DataFrame()
 
 def extract_year(date):
     """Extract year from date."""
@@ -169,21 +173,25 @@ def main():
     results = []
     
     # Case 1: Isar 1 (2011 shutdown)
-    print("\nLoading data for Case 1: Isar...")
-    isar_upstream = load_station_data("landshut-birket.csv")
-    isar_downstream = load_station_data("landau.csv")
+    print("Loading data for Case 1: Isar 1...")
+    isar_upstream = load_station_data("landshut-birket-2010.csv")
+    isar_downstream = load_station_data("landau-2010.csv")
     
-    result_isar = did_analysis(
-        isar_upstream, isar_downstream,
-        shutdown_year=2011,
-        case_name="Isar 1 (Isar River)"
-    )
-    results.append(result_isar)
+    if isar_upstream.empty or isar_downstream.empty:
+        print("Cannot load Isar 1 data (files not found)")
+        result_isar = None
+    else:
+        result_isar = did_analysis(
+            isar_upstream, isar_downstream,
+            shutdown_year=2011,
+            case_name="Isar 1 (Isar River) - Shutdown May 2011"
+        )
+        results.append(result_isar)
     
     # Case 2: Gundremmingen C (2021 shutdown)
-    print("\n\nLoading data for Case 2: Gundremmingen...")
-    donau_upstream = load_station_data("nue-ulm.csv")
-    donau_downstream = load_station_data("donauworth.csv")
+    print("\n\nLoading data for Case 2: Gundremmingen C...")
+    donau_upstream = load_station_data("nue-ulm-2020.csv")
+    donau_downstream = load_station_data("donauworth-2020.csv")
     
     result_gundremmingen = did_analysis(
         donau_upstream, donau_downstream,
@@ -198,9 +206,9 @@ def main():
     donau_upstream_b_pre = load_station_data("neu-ulm-2016.csv")
     donau_downstream_b_pre = load_station_data("Donauworth-2016.csv")
     
-    # Post-shutdown (2020-2022)
-    donau_upstream_b_post = load_station_data("nue-ulm.csv")
-    donau_downstream_b_post = load_station_data("donauworth.csv")
+    # Post-shutdown (2020)
+    donau_upstream_b_post = load_station_data("nue-ulm-2020.csv")
+    donau_downstream_b_post = load_station_data("donauworth-2020.csv")
     
     # Combine pre and post data
     donau_upstream_b_combined = pd.concat([donau_upstream_b_pre, donau_upstream_b_post], ignore_index=True)
@@ -213,8 +221,20 @@ def main():
     )
     results.append(result_gundremmingen_b)
     
+    # Case 4: Isar 2 (2023 shutdown)
+    print("\n\nLoading data for Case 4: Isar 2...")
+    isar2_upstream = load_station_data("landshut-birket-2022.csv")
+    isar2_downstream = load_station_data("landau-2022.csv")
+    
+    result_isar2 = did_analysis(
+        isar2_upstream, isar2_downstream,
+        shutdown_year=2023,
+        case_name="Isar 2 (Isar River) - Shutdown Apr 15, 2023"
+    )
+    results.append(result_isar2)
+    
     # Save results to CSV
-    results_df = pd.DataFrame(results)
+    results_df = pd.DataFrame([r for r in results if r is not None])
     output_path = Path("DiD_summary.csv")
     results_df.to_csv(output_path, index=False)
     print(f"\n\n{'='*70}")
