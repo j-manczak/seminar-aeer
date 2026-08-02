@@ -192,6 +192,27 @@ def main():
     )
     results.append(result_gundremmingen)
     
+    # Case 3: Gundremmingen B (2017 shutdown with 2016 pre-period data)
+    print("\n\nLoading data for Case 3: Gundremmingen B...")
+    # Pre-shutdown (2016)
+    donau_upstream_b_pre = load_station_data("neu-ulm-2016.csv")
+    donau_downstream_b_pre = load_station_data("Donauworth-2016.csv")
+    
+    # Post-shutdown (2020-2022)
+    donau_upstream_b_post = load_station_data("nue-ulm.csv")
+    donau_downstream_b_post = load_station_data("donauworth.csv")
+    
+    # Combine pre and post data
+    donau_upstream_b_combined = pd.concat([donau_upstream_b_pre, donau_upstream_b_post], ignore_index=True)
+    donau_downstream_b_combined = pd.concat([donau_downstream_b_pre, donau_downstream_b_post], ignore_index=True)
+    
+    result_gundremmingen_b = did_analysis(
+        donau_upstream_b_combined, donau_downstream_b_combined,
+        shutdown_year=2017,
+        case_name="Gundremmingen B (Donau River) - Shutdown Dec 31, 2017"
+    )
+    results.append(result_gundremmingen_b)
+    
     # Save results to CSV
     results_df = pd.DataFrame(results)
     output_path = Path("DiD_summary.csv")
