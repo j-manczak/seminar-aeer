@@ -310,6 +310,22 @@ def main():
         )
         results.append(result_neckar_w2)
     
+    # Case 7: Philippsburg 1 (2011 shutdown)
+    print("\n\nLoading data for Case 7: Philippsburg 1...")
+    philippsburg_upstream = load_station_data("Karlsruhe-2011.csv")
+    philippsburg_downstream = load_station_data("Mannheim-2011.csv")
+    
+    if philippsburg_upstream.empty or philippsburg_downstream.empty:
+        print("Cannot load Philippsburg 1 data (files not found)")
+        result_philippsburg = None
+    else:
+        result_philippsburg = did_analysis(
+            philippsburg_upstream, philippsburg_downstream,
+            shutdown_year=2011,
+            case_name="Philippsburg 1 (Rhine River) - Shutdown Mar 22, 2011"
+        )
+        results.append(result_philippsburg)
+    
     # Save results to CSV
     results_df = pd.DataFrame([r for r in results if r is not None])
     output_path = Path("DiD_summary.csv")
