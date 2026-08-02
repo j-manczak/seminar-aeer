@@ -196,6 +196,13 @@ phil_down = load_station_data("Mannheim-2011.csv")
 create_case_visualization(phil_up, phil_down, pd.Timestamp('2011-03-22'), 
                           "Philippsburg 1 - Rhine River", "case_07_philippsburg1_2011.png")
 
+# Case 8: Philippsburg 2
+print("[8/8] Creating visualization for Philippsburg 2...")
+phil2_up = load_station_data("Karlsruhe-2019.csv")
+phil2_down = load_station_data("Mannheim-2019.csv")
+create_case_visualization(phil2_up, phil2_down, pd.Timestamp('2019-12-31'), 
+                          "Philippsburg 2 - Rhine River", "case_08_philippsburg2_2019.png")
+
 print("\n" + "="*80)
 print("✅ ALL VISUALIZATIONS GENERATED SUCCESSFULLY!")
 print("="*80)
@@ -206,4 +213,5 @@ print("  3. case_03_gundremmingen_b_2017.png")
 print("  4. case_04_isar2_2023.png")
 print("  5. case_05_neckarwestheim1_2011.png")
 print("  6. case_06_neckarwestheim2_2023.png")
-print("  7. case_07_philippsburg1_2011.png\n")
+print("  7. case_07_philippsburg1_2011.png")
+print("  8. case_08_philippsburg2_2019.png\n")
