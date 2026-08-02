@@ -32,12 +32,57 @@ def load_station_data(filename):
             skiprows=data_start,
             sep=';',
             decimal=',',  # German decimal format
-            parse_dates=['Datum'],
-            date_format='%Y-%m-%d'
         )
         
+        # Handle both 'Mittelwert' and 'Tagesmittelwert' column names
+        if 'Mittelwert' in df.columns:
+            df = df[['Datum', 'Mittelwert']].rename(columns={'Mittelwert': 'temp'})
+            # Parse dates (format: YYYY-MM-DD)
+            df['Datum'] = pd.to_datetime(df['Datum'], format='%Y-%m-%d', errors='coerce')
+        elif 'Tagesmittelwert' in df.columns:
+            df = df[['Datum', 'Tagesmittelwert']].rename(columns={'Tagesmittelwert': 'temp'})
+            # Parse dates (format: DD.MM.YYYY)
+            df['Datum'] = pd.to_datetime(df['Datum'], format='%d.%m.%Y', errors='coerce')
+            # Convert German decimal format
+            df['temp'] = pd.to_numeric(df['temp'], errors='coerce')
+        else:
+            print(f"Warning: Neither 'Mittelwert' nor 'Tagesmittelwert' found in {filename}")
+            return pd.DataFrame()
+        
+        df = df.dropna(subset=['temp', 'Datum'])
+        df = df.sort_values('Datum')
+        
+        return df
+    except FileNotFoundError:
+        print(f"Warning: File {filename} not found")
+        return pd.DataFrame()
+
+def load_station_data_from_combined(filename, station_name):
+    """Load temperature data for a specific station from a combined Laufen-Besigheim file."""
+    filepath = data_dir / filename
+    
+    try:
+        # Read the raw CSV with all columns to identify stations
+        df = pd.read_csv(
+            filepath,
+            sep=';',
+            decimal=',',
+        )
+        
+        # Filter by station name
+        df = df[df['Messstation'].str.contains(station_name, case=False, na=False)]
+        
         # Select relevant columns
-        df = df[['Datum', 'Mittelwert']].rename(columns={'Mittelwert': 'temp'})
+        df = df[['Datum', 'Tagesmittelwert']].rename(columns={'Tagesmittelwert': 'temp'})
+        
+        # Handle missing values (marked as '-')
+        df['temp'] = pd.to_numeric(df['temp'], errors='coerce')
+        df = df.dropna(subset=['temp'])
+        
+        # Parse dates properly (format: DD.MM.YYYY)
+        df['Datum'] = pd.to_datetime(df['Datum'], format='%d.%m.%Y', errors='coerce')
+        df = df.dropna(subset=['Datum'])
+        
         df = df.sort_values('Datum')
         
         return df
@@ -232,6 +277,38 @@ def main():
         case_name="Isar 2 (Isar River) - Shutdown Apr 15, 2023"
     )
     results.append(result_isar2)
+    
+    # Case 5: Neckarwestheim 1 (2011 shutdown)
+    print("\n\nLoading data for Case 5: Neckarwestheim 1...")
+    neckar_w1_upstream = load_station_data("besigheim-2011.csv")
+    neckar_w1_downstream = load_station_data("Lauffen-2011.csv")
+    
+    if neckar_w1_upstream.empty or neckar_w1_downstream.empty:
+        print("Cannot load Neckarwestheim 1 data (files not found)")
+        result_neckar_w1 = None
+    else:
+        result_neckar_w1 = did_analysis(
+            neckar_w1_upstream, neckar_w1_downstream,
+            shutdown_year=2011,
+            case_name="Neckarwestheim 1 (Neckar River) - Shutdown Jun 5, 2011"
+        )
+        results.append(result_neckar_w1)
+    
+    # Case 6: Neckarwestheim 2 (2023 shutdown)
+    print("\n\nLoading data for Case 6: Neckarwestheim 2...")
+    neckar_w2_upstream = load_station_data("besigheim-2023.csv")
+    neckar_w2_downstream = load_station_data("Lauffen-2023.csv")
+    
+    if neckar_w2_upstream.empty or neckar_w2_downstream.empty:
+        print("Cannot load Neckarwestheim 2 data (files not found)")
+        result_neckar_w2 = None
+    else:
+        result_neckar_w2 = did_analysis(
+            neckar_w2_upstream, neckar_w2_downstream,
+            shutdown_year=2023,
+            case_name="Neckarwestheim 2 (Neckar River) - Shutdown Apr 15, 2023"
+        )
+        results.append(result_neckar_w2)
     
     # Save results to CSV
     results_df = pd.DataFrame([r for r in results if r is not None])
