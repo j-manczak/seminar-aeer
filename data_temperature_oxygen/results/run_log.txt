@@ -1,0 +1,221 @@
+====================================================================================================
+2×2 DiD — Abschaltungen August 2011, Fenster 2006-08-06 bis 2016-08-05
+Datenbasis: ausschliesslich data_temperature_oxygen/
+====================================================================================================
+
+MESSSTELLEN
+
+case                 role           station  river     source     lat     lon  km_luftlinie_zum_kraftwerk                                                    dateien
+  A1   upstream/Kontrolle   Landshut-Birket   Isar GKD Bayern 48.5274 12.1332                        14.7 Landshut_Birket_2011-5_C.csv, Landshut_Birket_2011-5_P.csv
+  A1 downstream/Treatment  Landau a.d. Isar   Isar GKD Bayern 48.6751 12.6926                        30.3                   Landau_2011-5_C.csv, Landau_2011-5_P.csv
+  B1   upstream/Kontrolle         Besigheim Neckar       LUBW 49.0023  9.1472                         4.7                                    Besigheim-2011-5_CO.csv
+  B1 downstream/Treatment           Lauffen Neckar       LUBW 49.0719  9.1606                         3.5                                      Lauffen-2011-5_CO.csv
+  B2   upstream/Kontrolle         Besigheim Neckar       LUBW 49.0023  9.1472                         4.7                                    Besigheim-2011-5_CO.csv
+  B2 downstream/Treatment Mannheim (Neckar) Neckar       LUBW 49.4943  8.4687                        71.8                                     Mannheim-2011-5_CO.csv
+  C1   upstream/Kontrolle Karlsruhe (Rhein)  Rhein       LUBW 49.0110  8.2983                        28.7                                    Karlsruhe_2011-5_CO.csv
+  C1 downstream/Treatment Mannheim (Neckar) Neckar       LUBW 49.4943  8.4687                        27.0                                     Mannheim-2011-5_CO.csv
+  P1   upstream/Kontrolle           Neu-Ulm  Donau GKD Bayern 48.3891  9.9866                        33.7                                       Neu_Ulm_2001-5_C.csv
+  P1 downstream/Treatment        Donauwörth  Donau GKD Bayern 48.7107 10.8015                        36.6           Donauworth_2011-5_C.csv, Donauworth_2011-5_P.csv
+  P2   upstream/Kontrolle Karlsruhe (Rhein)  Rhein       LUBW 49.0110  8.2983                         NaN                                    Karlsruhe_2011-5_CO.csv
+  P2 downstream/Treatment         Besigheim Neckar       LUBW 49.0023  9.1472                         NaN                                    Besigheim-2011-5_CO.csv
+
+ABDECKUNG
+
+case       outcome unit          upstream        downstream  gepaarte_tage  davon_vor_schnitt  davon_nach_schnitt erster_tag letzter_tag  abdeckung_vorperiode  abdeckung_nachperiode
+  A1   temperature   °C   Landshut-Birket  Landau a.d. Isar           3336               1517                1819 2007-05-16  2016-08-05                 0.831                  0.996
+  A1         level   cm   Landshut-Birket  Landau a.d. Isar           3653               1826                1827 2006-08-06  2016-08-05                 1.000                  1.001
+  B1   temperature   °C         Besigheim           Lauffen           2208                492                1716 2010-03-17  2016-08-05                 0.269                  0.940
+  B1        oxygen mg/l         Besigheim           Lauffen           2141                488                1653 2010-03-11  2016-08-05                 0.267                  0.905
+  B1 o2_saturation    %         Besigheim           Lauffen           2135                482                1653 2010-03-17  2016-08-05                 0.264                  0.905
+  B2   temperature   °C         Besigheim Mannheim (Neckar)           3546               1752                1794 2006-08-06  2016-08-05                 0.959                  0.982
+  B2        oxygen mg/l         Besigheim Mannheim (Neckar)           3389               1700                1689 2006-08-06  2016-08-05                 0.931                  0.925
+  B2 o2_saturation    %         Besigheim Mannheim (Neckar)           3378               1700                1678 2006-08-06  2016-08-05                 0.931                  0.919
+  C1   temperature   °C Karlsruhe (Rhein) Mannheim (Neckar)           3496               1738                1758 2006-08-06  2016-08-05                 0.952                  0.963
+  C1        oxygen mg/l Karlsruhe (Rhein) Mannheim (Neckar)           3392               1721                1671 2006-08-06  2016-08-05                 0.942                  0.915
+  C1 o2_saturation    % Karlsruhe (Rhein) Mannheim (Neckar)           3371               1720                1651 2006-08-06  2016-08-05                 0.942                  0.904
+  P1   temperature   °C           Neu-Ulm        Donauwörth           3631               1819                1812 2006-08-06  2016-08-05                 0.996                  0.992
+  P2   temperature   °C Karlsruhe (Rhein)         Besigheim           3573               1805                1768 2006-08-06  2016-08-05                 0.988                  0.968
+  P2        oxygen mg/l Karlsruhe (Rhein)         Besigheim           3494               1768                1726 2006-08-06  2016-08-05                 0.968                  0.945
+  P2 o2_saturation    % Karlsruhe (Rhein)         Besigheim           3484               1767                1717 2006-08-06  2016-08-05                 0.968                  0.940
+
+NICHT SCHÄTZBAR (keine passende Datei im Ordner)
+
+  [A1] oxygen: Isar: Landshut-Birket und Landau liegen nur als _C (Temperatur) und _P (Pegel) vor. Ohne eine _O-Datei für beide Pegel ist der Sauerstoffkanal am einzigen Standort mit Durchlaufkühlung nicht schätzbar.
+  [A1] o2_saturation: Folgt aus der fehlenden Sauerstoffreihe an der Isar.
+  [B1] level: Neckar: Besigheim und Lauffen sind LUBW-Gütemessstellen (_CO), es gibt keine Pegeldatei. Die Abflusskontrolle fehlt für alle Neckar- und Rheinpaare.
+  [P1] level: Neu-Ulm hat keine _P-Datei, deshalb kein Pegelpaar an der Donau.
+
+HAUPTERGEBNISSE (Schnitt 06.08.2011, Monats-FE, Newey-West HAC(30))
+
+case       outcome unit           role  up_pre  up_post  down_pre  down_post  gap_pre  gap_post    did    se        p  n_pre  n_post
+  A1   temperature   °C      treatment  11.852   12.137    13.584     12.092    1.732    -0.046 -1.774 0.130 2.75e-42   1517    1819
+  A1         level   cm      treatment 119.051  123.570   112.959    116.881   -6.091    -6.689 -0.599 0.817   0.4639   1826    1827
+  B1   temperature   °C      treatment  13.888   13.015    14.327     13.120    0.439     0.105 -0.350 0.138   0.0109    492    1716
+  B1        oxygen mg/l      treatment   9.896    9.788     9.549      9.725   -0.347    -0.063  0.273 0.149   0.0672    488    1653
+  B1 o2_saturation    %      treatment  93.865   90.710    91.707     90.417   -2.158    -0.294  1.695 1.636   0.3003    482    1653
+  B2   temperature   °C  treatment_far  12.824   13.164    13.520     13.471    0.696     0.307 -0.379 0.074 2.93e-07   1752    1794
+  B2        oxygen mg/l  treatment_far   9.482    9.733    10.310     10.621    0.827     0.888  0.061 0.199   0.7605   1700    1689
+  B2 o2_saturation    %  treatment_far  87.394   91.386    97.051    100.475    9.656     9.089 -0.582 2.068   0.7782   1700    1678
+  C1   temperature   °C not_identified  13.688   13.807    13.522     13.537   -0.165    -0.270 -0.082 0.112   0.4616   1738    1758
+  C1        oxygen mg/l not_identified  10.074   10.140    10.309     10.554    0.235     0.414  0.180 0.171   0.2946   1721    1671
+  C1 o2_saturation    % not_identified  95.512   96.927    96.993    100.364    1.481     3.437  1.958 1.815   0.2807   1720    1651
+  P1   temperature   °C        placebo   9.934   10.481    10.992     11.359    1.058     0.878 -0.176 0.060   0.0031   1819    1812
+  P2   temperature   °C        placebo  13.435   13.757    12.572     13.186   -0.863    -0.571  0.296 0.097   0.0022   1805    1768
+  P2        oxygen mg/l        placebo  10.126   10.217     9.565      9.768   -0.561    -0.449  0.109 0.239   0.6481   1768    1726
+  P2 o2_saturation    %        placebo  95.548   97.018    87.676     91.515   -7.872    -5.503  2.292 2.470   0.3535   1767    1717
+
+ROBUSTHEIT
+
+
+  [A1] Isar 1 — Landshut-Birket → Landau — temperature (°C)
+    baseline            -1.774  (SE 0.130, p 0.0000)***  n= 3336   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         -1.778  (SE 0.135, p 0.0000)***  n= 3336   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      -1.897  (SE 0.122, p 0.0000)***  n= 3336   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    -1.920  (SE 0.123, p 0.0000)***  n= 3191   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            -2.085  (SE 0.125, p 0.0000)***  n= 2606   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    +0.083  (SE 0.198, p 0.6735)     n= 1372   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              -1.189  (SE 0.203, p 0.0000)***  n= 1138   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              -2.077  (SE 0.145, p 0.0000)***  n= 2198   nur Oktober–Mai
+    level_control       -1.774  (SE 0.119, p 0.0000)***  n= 3336   zusätzlich Wasserstand beider Pegel als Kovariate
+
+  [A1] Isar 1 — Landshut-Birket → Landau — level (cm)
+    baseline            -0.599  (SE 0.817, p 0.4639)     n= 3653   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         -0.597  (SE 0.891, p 0.5026)     n= 3653   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      -0.790  (SE 0.797, p 0.3217)     n= 3653   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    -0.726  (SE 0.825, p 0.3788)     n= 3508   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            -2.287  (SE 0.762, p 0.0027)***  n= 2923   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    -5.035  (SE 0.952, p 0.0000)***  n= 1681   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              +0.510  (SE 1.594, p 0.7491)     n= 1220   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              -1.155  (SE 0.875, p 0.1868)     n= 2433   nur Oktober–Mai
+
+  [B1] Neckarwestheim 1 — Besigheim → Lauffen (Nahfeld) — temperature (°C)
+    baseline            -0.350  (SE 0.138, p 0.0109)**   n= 2208   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         -0.334  (SE 0.156, p 0.0327)**   n= 2208   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      -0.460  (SE 0.158, p 0.0036)***  n= 2208   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    -0.464  (SE 0.163, p 0.0046)***  n= 2063   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            -0.166  (SE 0.121, p 0.1704)     n= 1579   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008   zu wenige Beobachtungen (n=347)
+    summer              -0.334  (SE 0.132, p 0.0115)**   n=  780   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              -0.360  (SE 0.198, p 0.0696)*    n= 1428   nur Oktober–Mai
+
+  [B1] Neckarwestheim 1 — Besigheim → Lauffen (Nahfeld) — oxygen (mg/l)
+    baseline            +0.273  (SE 0.149, p 0.0672)*    n= 2141   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         +0.284  (SE 0.169, p 0.0931)*    n= 2141   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      +0.423  (SE 0.143, p 0.0031)***  n= 2141   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    +0.416  (SE 0.139, p 0.0028)***  n= 1996   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            +0.464  (SE 0.196, p 0.0179)**   n= 1517   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008   zu wenige Beobachtungen (n=343)
+    summer              +0.085  (SE 0.329, p 0.7958)     n=  731   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              +0.385  (SE 0.113, p 0.0007)***  n= 1410   nur Oktober–Mai
+
+  [B1] Neckarwestheim 1 — Besigheim → Lauffen (Nahfeld) — o2_saturation (%)
+    baseline            +1.695  (SE 1.636, p 0.3003)     n= 2135   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         +1.864  (SE 1.824, p 0.3067)     n= 2135   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      +2.963  (SE 1.610, p 0.0658)*    n= 2135   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    +2.871  (SE 1.561, p 0.0659)*    n= 1990   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            +4.388  (SE 2.160, p 0.0422)**   n= 1511   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008   zu wenige Beobachtungen (n=337)
+    summer              +0.309  (SE 3.631, p 0.9322)     n=  731   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              +2.539  (SE 1.242, p 0.0409)**   n= 1404   nur Oktober–Mai
+
+  [B2] Neckarwestheim 1 — Besigheim → Mannheim (Fernfeld) — temperature (°C)
+    baseline            -0.379  (SE 0.074, p 0.0000)***  n= 3546   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         -0.389  (SE 0.089, p 0.0000)***  n= 3546   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      -0.432  (SE 0.073, p 0.0000)***  n= 3546   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    -0.424  (SE 0.074, p 0.0000)***  n= 3401   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            -0.431  (SE 0.082, p 0.0000)***  n= 2816   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    -0.560  (SE 0.115, p 0.0000)***  n= 1607   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              -0.416  (SE 0.137, p 0.0023)***  n= 1209   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              -0.360  (SE 0.084, p 0.0000)***  n= 2337   nur Oktober–Mai
+
+  [B2] Neckarwestheim 1 — Besigheim → Mannheim (Fernfeld) — oxygen (mg/l)
+    baseline            +0.061  (SE 0.199, p 0.7605)     n= 3389   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         +0.060  (SE 0.203, p 0.7657)     n= 3389   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      -0.088  (SE 0.177, p 0.6206)     n= 3389   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    -0.023  (SE 0.151, p 0.8804)     n= 3244   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            -0.312  (SE 0.146, p 0.0326)**   n= 2677   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    +0.105  (SE 0.120, p 0.3816)     n= 1555   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              -0.904  (SE 0.278, p 0.0012)***  n= 1161   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              +0.563  (SE 0.243, p 0.0203)**   n= 2228   nur Oktober–Mai
+
+  [B2] Neckarwestheim 1 — Besigheim → Mannheim (Fernfeld) — o2_saturation (%)
+    baseline            -0.582  (SE 2.068, p 0.7782)     n= 3378   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         -0.568  (SE 2.147, p 0.7915)     n= 3378   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      -2.124  (SE 1.826, p 0.2445)     n= 3378   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    -1.498  (SE 1.546, p 0.3327)     n= 3233   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            -4.398  (SE 1.539, p 0.0043)***  n= 2666   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    -0.017  (SE 1.229, p 0.9892)     n= 1555   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer             -10.585  (SE 3.058, p 0.0005)***  n= 1161   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              +4.653  (SE 2.471, p 0.0597)*    n= 2217   nur Oktober–Mai
+
+  [C1] Philippsburg 1 — Karlsruhe → Mannheim (flussübergreifend, NICHT identifiziert) — temperature (°C)
+    baseline            -0.082  (SE 0.112, p 0.4616)     n= 3496   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         -0.105  (SE 0.180, p 0.5593)     n= 3496   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      -0.219  (SE 0.110, p 0.0463)**   n= 3496   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    -0.164  (SE 0.110, p 0.1384)     n= 3351   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            -0.270  (SE 0.115, p 0.0183)**   n= 2768   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    -0.824  (SE 0.128, p 0.0000)***  n= 1593   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              -0.058  (SE 0.190, p 0.7596)     n= 1196   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              -0.095  (SE 0.133, p 0.4738)     n= 2300   nur Oktober–Mai
+
+  [C1] Philippsburg 1 — Karlsruhe → Mannheim (flussübergreifend, NICHT identifiziert) — oxygen (mg/l)
+    baseline            +0.180  (SE 0.171, p 0.2946)     n= 3392   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         +0.178  (SE 0.193, p 0.3571)     n= 3392   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      +0.401  (SE 0.149, p 0.0073)***  n= 3392   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    +0.312  (SE 0.155, p 0.0446)**   n= 3247   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            +0.364  (SE 0.164, p 0.0264)**   n= 2670   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    +0.266  (SE 0.116, p 0.0212)**   n= 1576   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              +0.353  (SE 0.342, p 0.3018)     n= 1182   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              +0.087  (SE 0.183, p 0.6361)     n= 2210   nur Oktober–Mai
+
+  [C1] Philippsburg 1 — Karlsruhe → Mannheim (flussübergreifend, NICHT identifiziert) — o2_saturation (%)
+    baseline            +1.958  (SE 1.815, p 0.2807)     n= 3371   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         +1.956  (SE 2.076, p 0.3462)     n= 3371   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      +3.984  (SE 1.583, p 0.0119)**   n= 3371   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    +3.166  (SE 1.668, p 0.0576)*    n= 3226   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            +3.672  (SE 1.791, p 0.0404)**   n= 2649   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    +0.831  (SE 1.126, p 0.4608)     n= 1575   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              +4.090  (SE 3.763, p 0.2770)     n= 1172   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              +0.819  (SE 1.857, p 0.6591)     n= 2199   nur Oktober–Mai
+
+  [P1] Placebo Donau — Neu-Ulm → Donauwörth — temperature (°C)
+    baseline            -0.176  (SE 0.060, p 0.0031)***  n= 3631   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         -0.180  (SE 0.143, p 0.2085)     n= 3631   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      -0.170  (SE 0.060, p 0.0045)***  n= 3631   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    -0.180  (SE 0.061, p 0.0033)***  n= 3486   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            -0.289  (SE 0.061, p 0.0000)***  n= 2902   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    -0.304  (SE 0.069, p 0.0000)***  n= 1674   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              -0.220  (SE 0.109, p 0.0432)**   n= 1198   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              -0.155  (SE 0.068, p 0.0223)**   n= 2433   nur Oktober–Mai
+
+  [P2] Placebo Kontrolle↔Kontrolle — Karlsruhe → Besigheim — temperature (°C)
+    baseline            +0.296  (SE 0.097, p 0.0022)***  n= 3573   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         +0.293  (SE 0.164, p 0.0746)*    n= 3573   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      +0.214  (SE 0.099, p 0.0302)**   n= 3573   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    +0.260  (SE 0.099, p 0.0086)***  n= 3428   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            +0.159  (SE 0.099, p 0.1099)     n= 2845   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    -0.245  (SE 0.113, p 0.0309)**   n= 1660   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              +0.363  (SE 0.195, p 0.0618)*    n= 1200   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              +0.261  (SE 0.099, p 0.0084)***  n= 2373   nur Oktober–Mai
+
+  [P2] Placebo Kontrolle↔Kontrolle — Karlsruhe → Besigheim — oxygen (mg/l)
+    baseline            +0.109  (SE 0.239, p 0.6481)     n= 3494   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         +0.112  (SE 0.263, p 0.6712)     n= 3494   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      +0.464  (SE 0.216, p 0.0317)**   n= 3494   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    +0.318  (SE 0.188, p 0.0905)*    n= 3349   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            +0.642  (SE 0.197, p 0.0011)***  n= 2782   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    +0.161  (SE 0.175, p 0.3580)     n= 1623   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer              +1.255  (SE 0.379, p 0.0009)***  n= 1174   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              -0.471  (SE 0.281, p 0.0932)*    n= 2320   nur Oktober–Mai
+
+  [P2] Placebo Kontrolle↔Kontrolle — Karlsruhe → Besigheim — o2_saturation (%)
+    baseline            +2.292  (SE 2.470, p 0.3535)     n= 3484   Schnitt 06.08.2011, Monats-FE, HAC(30)
+    no_month_fe         +2.369  (SE 2.798, p 0.3971)     n= 3484   ohne Monats-FE = klassisches 2×2 auf den gepaarten Tagen
+    cut_moratorium      +5.721  (SE 2.224, p 0.0101)**   n= 3484   Schnitt 14.03.2011 (Moratorium, Netzabgang)
+    donut_transition    +4.366  (SE 1.973, p 0.0269)**   n= 3339   Übergangsmonate 14.03.–05.08.2011 entfernt
+    donut_1y            +7.544  (SE 2.075, p 0.0003)***  n= 2772   ±1 Jahr um den Schnitt entfernt
+    placebo_cut_2008    +0.833  (SE 1.766, p 0.6374)     n= 1622   Nur Vorperiode, Scheinschnitt 06.08.2008
+    summer             +14.364  (SE 4.190, p 0.0006)***  n= 1164   nur Juni–September (Niedrigwasser, größte thermische Last)
+    winter              -3.763  (SE 2.799, p 0.1788)     n= 2320   nur Oktober–Mai
+
+Geschrieben nach: C:\Users\vulpe\Documents\GitHub\seminar-aeer\data_temperature_oxygen\results

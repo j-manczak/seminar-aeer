@@ -18,11 +18,13 @@ per-plant results were empty and what replaced them.
 | `plant_2x2/thermal_plants_on_study_rivers.csv` | All condensing plants ≥ 50 MW placed on the river network |
 | `plant_2x2/effect_per_generation.csv` | Warming per TWh of generation removed and per GW of river-bound waste heat |
 | `plant_2x2/reactor_thermal_load.csv` | Thermal rating, waste heat, river share and annual generation per reactor block |
+| [`ENERGIEERZEUGER_JE_STANDORT.md`](ENERGIEERZEUGER_JE_STANDORT.md) | Per site: every other power station on the same river, with coordinates, along-river distance to the plant and to both gauges, which side of each gauge it sits on, how it generates, and whether it takes river cooling water |
+| `plant_2x2/energy_producers_by_site.csv` | The same inventory as data |
 | `../gkd_water_temperature_daily.csv` | 305,070 daily station readings, GKD Bayern, 1995–2024 (Isar, Danube, Main) |
 | `../gkd_dissolved_oxygen.csv` | 45,336 dissolved-oxygen readings, GKD chemistry programme, 1990–2024 |
 
-Figures: `../../figures/plant_2x2/`, `../../figures/study_map.png`,
-`../../figures/study_sites_by_reactor.png`.
+Figures: `../../figures/plant_2x2/`, `../../figures/site_context/`,
+`../../figures/study_map.png`, `../../figures/study_sites_by_reactor.png`.
 
 Rebuild:
 
@@ -38,6 +40,7 @@ python scripts/confounder_report.py        # reads the radius
 python scripts/effect_per_generation.py
 python scripts/make_study_map.py
 python scripts/make_sites_by_reactor.py
+python scripts/site_energy_context.py     # site inventory + per-site maps
 ```
 
 ## Superseded — moved to `Archiv/`

@@ -1,0 +1,5 @@
+﻿case,outcome,grund
+A1,oxygen,Isar: Landshut-Birket und Landau liegen nur als _C (Temperatur) und _P (Pegel) vor. Ohne eine _O-Datei für beide Pegel ist der Sauerstoffkanal am einzigen Standort mit Durchlaufkühlung nicht schätzbar.
+A1,o2_saturation,Folgt aus der fehlenden Sauerstoffreihe an der Isar.
+B1,level,"Neckar: Besigheim und Lauffen sind LUBW-Gütemessstellen (_CO), es gibt keine Pegeldatei. Die Abflusskontrolle fehlt für alle Neckar- und Rheinpaare."
+P1,level,"Neu-Ulm hat keine _P-Datei, deshalb kein Pegelpaar an der Donau."

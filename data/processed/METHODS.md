@@ -823,3 +823,95 @@ ersten Waterbase-basierten Durchlaufs) mit einer eigenen `README.md`, die
 erklärt, warum. Nichts wurde gelöscht. `pipeline/river_position.py` bleibt in der
 Pipeline, weil ältere Ausgabedateien seine Spalten tragen und `build_all.py` es
 noch importiert.
+
+---
+
+## 12. Standort-Inventar: was sonst noch am Fluss steht
+
+*Code: `scripts/site_energy_context.py`. Tabelle:
+`analysis/ENERGIEERZEUGER_JE_STANDORT.md` und
+`analysis/plant_2x2/energy_producers_by_site.csv`. Karten:
+`figures/site_context/<standort>.png`.*
+
+§11.3 fragt eng: *hat sich etwas verändert, das das 2×2 stört?* Dieses Inventar
+fragt breit: *was steht überhaupt an diesem Flussabschnitt?* — als Nachschlagewerk
+für die Standortdiskussion im Paper.
+
+### 12.1 Was aufgenommen wird
+
+Alle Anlagen ab **10 MW** aus den OPSD-Daten auf demselben Fluss, innerhalb von
+**50 km entlang des Laufs** vom Kernkraftwerk (Radius aus §11.2); liegt ein
+Bezugspegel weiter draußen, wird der Radius auf die gesamte Messstrecke
+erweitert. Kernkraftwerke selbst sind ausgenommen.
+
+Die Schwelle ist bewusst niedriger als die 50 MW der Confounder-Analyse. Das
+KWK Landshut (17,6 MW, Gas mit Dampfteil) liegt zwischen Oberlieger und Reaktor
+an der Isar und wäre bei 50 MW durchgerutscht — klein, aber in der behandelten
+Strecke, und deshalb erwähnenswert.
+
+Anders als in §11.3 ist hier auch **Wasserkraft** enthalten. Eine
+Laufwasserturbine fügt dem Fluss keine Wärme zu, steht aber am selben Ort, und
+die Frage „was ist da noch?" wird sonst unvollständig beantwortet. An der Isar
+liegt etwa das Laufwasserkraftwerk Niederaichbach 0,7 km vom Reaktor und das
+Kraftwerk Landau praktisch am Downstream-Pegel.
+
+### 12.2 Spalten
+
+Pro Zeile: Erzeuger, Ort, Betreiber, **exakte Koordinaten**, Fluss-km,
+Entfernung zum Kernkraftwerk **entlang des Flusses**, Lage dazu, Entfernung und
+Lage zur benutzten Upstream- und Downstream-Messstelle, ob die Anlage
+**zwischen den Pegeln** liegt, Technologie, Energieträger, KWK-Kennzeichen,
+Nettoleistung, Inbetriebnahme/Stilllegung — und die Kühlwasser-Einschätzung.
+
+Bei Abständen unter 500 m steht `am Standort` statt „upstream"/„downstream":
+mehrere Anlagen teilen sich denselben Industriestandort (RWE Emsland steht auf
+denselben Koordinaten wie das Kernkraftwerk), und die Projektion auf die
+Flussachse ist ohnehin nur auf einige hundert Meter genau.
+
+### 12.3 Kühlwasser-Einschätzung
+
+Aus der Technologie abgeleitet, **keine Genehmigungsauskunft**:
+
+| Technologie | Flusskühlwasser? | Begründung |
+|---|---|---|
+| Dampfturbine | ja | Kondensator braucht eine Wärmesenke |
+| GuD (Combined cycle) | ja | Dampfteil mit Kondensator |
+| Gasturbine (offen) | nein | kein Kondensator, Abgas geht in den Kamin |
+| Laufwasser / Speicher / Pumpspeicher | nein | Wasserkraft, keine Wärmeeinleitung |
+| Verbrennungsmotor | unwahrscheinlich | Motorkühlung meist im geschlossenen Kreis |
+
+Bei KWK-Anlagen wird ergänzt, dass ein Teil der Wärme ins Fernwärmenetz geht und
+entsprechend weniger in den Fluss.
+
+### 12.4 Was dabei herauskommt
+
+100 Anlagen an 10 Standorten, davon 78 mit Flusskühlwasser. Die Standorte
+unterscheiden sich stark:
+
+* **Isar und Gundremmingen** — die beiden Standorte mit schätzbarer
+  Temperatur-Wirkung — haben in der Messstrecke praktisch nur Wasserkraft.
+  An der Isar ist die einzige Wärmequelle zwischen den Pegeln das KWK Landshut
+  mit 17,6 MW, gegenüber 1.610 MW Flusswärme aus Isar 1. Das ist der Grund,
+  warum die Isar-Schätzung so sauber ist.
+* **Philippsburg (22 Anlagen)** und **Biblis (20)** liegen am industriellen
+  Oberrhein: Mannheim, Karlsruhe, Ludwigshafen und die MiRO-Raffinerie summieren
+  sich auf mehrere Gigawatt kondensierende Leistung. Selbst mit Vorperiodendaten
+  wäre der Rhein dort ein deutlich schwierigeres Umfeld als die Isar.
+* **Emsland** teilt sich den Standort mit dem RWE-Gaskraftwerk Emsland
+  (5 GuD-Blöcke, 1.837 MW, Flusskühlung) — auf denselben Koordinaten.
+* **Neckarwestheim** hat das Kraftwerk Walheim (Steinkohle, 244 MW) 4,7 km
+  oberhalb und Heilbronn (1.028 MW) 19 km unterhalb, beide in der Messstrecke.
+
+### 12.5 Karten je Standort
+
+Jede Karte hat zwei Teile. Oben der geografische Ausschnitt mit echtem
+Flusslauf, Fließrichtungspfeilen, dem Kernkraftwerk samt Koordinaten, den beiden
+Messstellen (UP/DOWN, schwarz umrandet) und den Erzeugern, eingefärbt nach
+Kühlwassernutzung. Unten eine **Flusskilometer-Leiste**: dieselben Objekte auf
+einer Achse, flussabwärts nach rechts, mit der Messstrecke rot hinterlegt.
+
+Die Leiste ist nicht Zierde. Auf einem gewundenen Fluss sagt die Karte nichts
+Verlässliches über Reihenfolge und Abstand, und an Industriestandorten liegen
+mehrere Blöcke auf denselben Koordinaten. Die Leiste zeigt beides eindeutig — und
+sie ist die Darstellung, die der Frage „ober- oder unterhalb der Messstelle?"
+direkt entspricht.

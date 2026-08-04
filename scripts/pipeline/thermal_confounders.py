@@ -44,6 +44,38 @@ CONDENSING_TECHNOLOGIES = {"Steam turbine", "Combined cycle"}
 # Everything that only moves water, or burns without a steam cycle.
 NON_THERMAL_SOURCES = {"Hydro"}
 
+# Whether a plant plausibly takes cooling water from the river it sits on, and
+# why. This is a judgement from technology, not a licence record, so each answer
+# carries its reason and the table should be read as "expected", not "verified".
+#
+#   Steam turbine / combined cycle -> a condenser has to dump the latent heat of
+#     the exhaust steam somewhere. On a river that is river water, either
+#     once-through or as tower make-up.
+#   Open-cycle gas turbine -> exhaust goes up the stack; there is no condenser
+#     and therefore no cooling-water demand worth speaking of.
+#   Hydro -> the water passes through a turbine and leaves at the temperature it
+#     arrived at. No heat is added.
+COOLING_WATER_RULES = {
+    "Steam turbine": ("ja", "Kondensator braucht eine Wärmesenke"),
+    "Combined cycle": ("ja", "Dampfteil mit Kondensator"),
+    "Gas turbine": ("nein", "offener Gasturbinenprozess, kein Kondensator"),
+    "Combustion Engine": ("unwahrscheinlich", "Motorkühlung meist im geschlossenen Kreis"),
+    "Run-of-river": ("nein", "Wasserkraft, keine Wärmeeinleitung"),
+    "Reservoir": ("nein", "Wasserkraft, keine Wärmeeinleitung"),
+    "Pumped storage": ("nein", "Wasserkraft, keine Wärmeeinleitung"),
+    "RES": ("nein", "Wasserkraft, keine Wärmeeinleitung"),
+    "Storage technologies": ("nein", "Speicher, keine Wärmeeinleitung"),
+}
+
+
+def classify_cooling_water(technology: str, energy_source: str, chp: str) -> tuple:
+    """(nutzt Flusskühlwasser?, Begründung) für eine Anlage."""
+    answer, reason = COOLING_WATER_RULES.get(
+        technology, ("unklar", "Technologie nicht eindeutig zuzuordnen"))
+    if answer == "ja" and str(chp).lower() == "yes":
+        reason += "; als KWK-Anlage geht ein Teil der Wärme ins Fernwärmenetz"
+    return answer, reason
+
 # A plant this small cannot move a river reach measurably; it only adds noise to
 # the confounder table.
 MIN_CAPACITY_MW = 50.0
@@ -84,6 +116,56 @@ def load_thermal_plants(max_offset_m: float = 2500.0) -> pd.DataFrame:
         "plant", "company", "city", "state", "energy_source", "technology", "chp",
         "capacity_net_bnetza", "commissioned_year", "shutdown_year", "status",
         "is_nuclear", "latitude", "longitude", "river", "river_km", "offset_m",
+    ]
+    return located[[c for c in columns if c in located.columns]].sort_values(
+        ["river", "river_km"], ascending=[True, False]
+    ).reset_index(drop=True)
+
+
+def load_river_energy_producers(min_capacity_mw: float = 10.0,
+                                max_offset_m: float = 2500.0) -> pd.DataFrame:
+    """*Every* power station on a study river, not only the condensing ones.
+
+    :func:`load_thermal_plants` answers "what else could be heating this reach".
+    This answers the wider question "what else is on this river at all", which is
+    what a site inventory needs: run-of-river hydro adds no heat but is still an
+    energy producer at the same location, and readers ask about it.
+    """
+    if not PLANTS_CSV.exists():
+        raise FileNotFoundError(f"{PLANTS_CSV} not found.")
+    plants = pd.read_csv(PLANTS_CSV, low_memory=False)
+
+    keep = (
+        plants["capacity_net_bnetza"].ge(min_capacity_mw)
+        & plants["lat"].notna()
+        & plants["lon"].notna()
+    )
+    frame = plants[keep].rename(columns={"lat": "latitude", "lon": "longitude"}).copy()
+
+    located = river_network.locate_frame(frame, max_offset_m=max_offset_m)
+    located = located[located["river"].notna()].copy()
+
+    located["commissioned_year"] = pd.to_numeric(located["commissioned"], errors="coerce")
+    located["shutdown_year"] = pd.to_numeric(located["shutdown"], errors="coerce")
+    located["plant"] = (
+        located["name_bnetza"].fillna("").astype(str).str.strip()
+        + located["block_bnetza"].fillna("").astype(str).apply(
+            lambda b: f" ({b})" if b.strip() else "")
+    )
+    located["is_nuclear"] = located["energy_source"].eq("Nuclear")
+
+    cooling = located.apply(
+        lambda r: classify_cooling_water(r["technology"], r["energy_source"], r.get("chp")),
+        axis=1, result_type="expand",
+    )
+    located["uses_river_cooling_water"] = cooling[0]
+    located["cooling_water_reason"] = cooling[1]
+
+    columns = [
+        "plant", "company", "city", "state", "energy_source", "technology", "chp",
+        "capacity_net_bnetza", "commissioned_year", "shutdown_year", "status",
+        "is_nuclear", "uses_river_cooling_water", "cooling_water_reason",
+        "latitude", "longitude", "river", "river_km", "offset_m",
     ]
     return located[[c for c in columns if c in located.columns]].sort_values(
         ["river", "river_km"], ascending=[True, False]

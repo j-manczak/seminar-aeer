@@ -1,0 +1,16 @@
+﻿case,outcome,unit,upstream,downstream,gepaarte_tage,davon_vor_schnitt,davon_nach_schnitt,erster_tag,letzter_tag,abdeckung_vorperiode,abdeckung_nachperiode
+A1,temperature,°C,Landshut-Birket,Landau a.d. Isar,3336,1517,1819,2007-05-16,2016-08-05,0.831,0.996
+A1,level,cm,Landshut-Birket,Landau a.d. Isar,3653,1826,1827,2006-08-06,2016-08-05,1.0,1.001
+B1,temperature,°C,Besigheim,Lauffen,2208,492,1716,2010-03-17,2016-08-05,0.269,0.94
+B1,oxygen,mg/l,Besigheim,Lauffen,2141,488,1653,2010-03-11,2016-08-05,0.267,0.905
+B1,o2_saturation,%,Besigheim,Lauffen,2135,482,1653,2010-03-17,2016-08-05,0.264,0.905
+B2,temperature,°C,Besigheim,Mannheim (Neckar),3546,1752,1794,2006-08-06,2016-08-05,0.959,0.982
+B2,oxygen,mg/l,Besigheim,Mannheim (Neckar),3389,1700,1689,2006-08-06,2016-08-05,0.931,0.925
+B2,o2_saturation,%,Besigheim,Mannheim (Neckar),3378,1700,1678,2006-08-06,2016-08-05,0.931,0.919
+C1,temperature,°C,Karlsruhe (Rhein),Mannheim (Neckar),3496,1738,1758,2006-08-06,2016-08-05,0.952,0.963
+C1,oxygen,mg/l,Karlsruhe (Rhein),Mannheim (Neckar),3392,1721,1671,2006-08-06,2016-08-05,0.942,0.915
+C1,o2_saturation,%,Karlsruhe (Rhein),Mannheim (Neckar),3371,1720,1651,2006-08-06,2016-08-05,0.942,0.904
+P1,temperature,°C,Neu-Ulm,Donauwörth,3631,1819,1812,2006-08-06,2016-08-05,0.996,0.992
+P2,temperature,°C,Karlsruhe (Rhein),Besigheim,3573,1805,1768,2006-08-06,2016-08-05,0.988,0.968
+P2,oxygen,mg/l,Karlsruhe (Rhein),Besigheim,3494,1768,1726,2006-08-06,2016-08-05,0.968,0.945
+P2,o2_saturation,%,Karlsruhe (Rhein),Besigheim,3484,1767,1717,2006-08-06,2016-08-05,0.968,0.94

@@ -1,0 +1,13 @@
+﻿case,role,station,river,source,lat,lon,km_luftlinie_zum_kraftwerk,dateien
+A1,upstream/Kontrolle,Landshut-Birket,Isar,GKD Bayern,48.5274,12.1332,14.7,"Landshut_Birket_2011-5_C.csv, Landshut_Birket_2011-5_P.csv"
+A1,downstream/Treatment,Landau a.d. Isar,Isar,GKD Bayern,48.6751,12.6926,30.3,"Landau_2011-5_C.csv, Landau_2011-5_P.csv"
+B1,upstream/Kontrolle,Besigheim,Neckar,LUBW,49.0023,9.1472,4.7,Besigheim-2011-5_CO.csv
+B1,downstream/Treatment,Lauffen,Neckar,LUBW,49.0719,9.1606,3.5,Lauffen-2011-5_CO.csv
+B2,upstream/Kontrolle,Besigheim,Neckar,LUBW,49.0023,9.1472,4.7,Besigheim-2011-5_CO.csv
+B2,downstream/Treatment,Mannheim (Neckar),Neckar,LUBW,49.4943,8.4687,71.8,Mannheim-2011-5_CO.csv
+C1,upstream/Kontrolle,Karlsruhe (Rhein),Rhein,LUBW,49.011,8.2983,28.7,Karlsruhe_2011-5_CO.csv
+C1,downstream/Treatment,Mannheim (Neckar),Neckar,LUBW,49.4943,8.4687,27.0,Mannheim-2011-5_CO.csv
+P1,upstream/Kontrolle,Neu-Ulm,Donau,GKD Bayern,48.3891,9.9866,33.7,Neu_Ulm_2001-5_C.csv
+P1,downstream/Treatment,Donauwörth,Donau,GKD Bayern,48.7107,10.8015,36.6,"Donauworth_2011-5_C.csv, Donauworth_2011-5_P.csv"
+P2,upstream/Kontrolle,Karlsruhe (Rhein),Rhein,LUBW,49.011,8.2983,,Karlsruhe_2011-5_CO.csv
+P2,downstream/Treatment,Besigheim,Neckar,LUBW,49.0023,9.1472,,Besigheim-2011-5_CO.csv
