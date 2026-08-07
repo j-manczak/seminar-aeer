@@ -1,0 +1,785 @@
+TASK — Analysis of Nuclear Power Plant Shutdowns and River Water Temperature / Dissolved Oxygen
+You are an expert Data Scientist, Data Analyst and Python developer, with strong experience in:
+•	Difference-in-Differences (DiD)
+•	causal inference
+•	environmental and hydrological data
+•	time-series analysis
+•	statistical analysis
+•	sensitivity and robustness analysis
+•	geospatial and river-distance analysis
+•	Python, Pandas, NumPy, Matplotlib, Seaborn and Statsmodels
+•	scientific data visualization
+•	reproducible research
+•	Master's-level academic research
+Your goal is to build a clean, reproducible and scientifically defensible analysis of whether nuclear power plant shutdowns affected:
+1.	River water temperature
+2.	Dissolved oxygen
+The final results should be suitable for use in a Master's seminar paper.
+ 
+1. FIRST: INSPECT THE EXISTING PROJECT
+Do NOT start writing code immediately.
+First inspect the complete project structure.
+In particular, carefully inspect:
+data/
+datatemperature/
+data/oxygen/
+Skrypty/
+Also inspect other relevant folders and files.
+The folder Skrypty/ is especially important.
+There may already be code for:
+•	loading data,
+•	cleaning data,
+•	station matching,
+•	river-distance calculations,
+•	plant/station mapping,
+•	data aggregation,
+•	visualization,
+•	previous statistical analysis.
+Important rule
+Do not rewrite existing functionality unnecessarily.
+If a script in Skrypty/ already performs a task correctly, reuse it or refactor it into the new analysis.
+Avoid creating a second implementation of something that already exists.
+However, do not blindly trust existing code.
+Review it critically and verify:
+•	what it does,
+•	whether it is correct,
+•	what assumptions it makes,
+•	whether it can be reused,
+•	whether there are bugs or methodological problems.
+If existing code calculates distance along the river, prefer using that implementation rather than calculating straight-line geographical distance.
+ 
+2. BEFORE CODING: DATA AUDIT
+After inspecting the project, perform a complete data audit.
+Determine:
+•	available files,
+•	file formats,
+•	column names,
+•	station names,
+•	station IDs,
+•	dates,
+•	measurement frequency,
+•	units,
+•	missing values,
+•	duplicate observations,
+•	available time period,
+•	measurement coverage,
+•	possible station changes,
+•	possible data-quality problems.
+For both:
+Data_temperature_oxygen/
+determine exactly what data are available.
+Create a clear understanding of:
+•	which stations are present,
+•	which stations can be used,
+•	what period each station covers,
+•	how many observations each station contains.
+ 
+3. IMPORTANT — ASK QUESTIONS BEFORE IMPLEMENTATION
+If important information cannot be reliably determined from:
+•	the project files,
+•	existing scripts,
+•	metadata,
+•	reliable external sources,
+then ask me before implementing the affected part.
+Do not silently invent assumptions.
+However, do NOT ask questions about information that can reasonably be established yourself.
+For example, shutdown dates should be researched independently.
+Before starting the actual implementation, report any important ambiguities or methodological decisions that require my confirmation.
+ 
+4. THE EIGHT OBSERVATIONS
+The analysis contains eight shutdown observations.
+Use the following structure as the starting point, but verify the names, dates and station assignments yourself.
+Observation 1 — Isar 1
+•	Plant: Isar 1
+•	Upstream: Landshut-Birket
+•	Downstream: Landau an der Isar
+Observation 2 — Neckarwestheim 1
+•	Plant: Neckarwestheim 1
+•	Upstream: Lauffen am Neckar
+•	Downstream: Besigheim
+Observation 3 — Philippsburg 1
+•	Plant: Philippsburg 1
+•	Upstream: Karlsruhe
+•	Downstream: Mannheim
+Observation 4 — Gundremmingen B
+•	Plant: Gundremmingen B
+•	Upstream: Neu-Ulm
+•	Downstream: Donauwörth
+Observation 5 — Philippsburg 2
+•	Plant: Philippsburg 2
+•	Upstream: Karlsruhe
+•	Downstream: Mannheim
+Observation 6 — Gundremmingen C
+•	Plant: Gundremmingen C
+•	Upstream: Neu-Ulm
+•	Downstream: Donauwörth
+Observation 7 — Isar 2
+•	Plant: Isar 2
+•	Upstream: Landshut-Birket
+•	Downstream: Landau an der Isar
+Observation 8 — Neckarwestheim 2
+•	Plant: Neckarwestheim 2
+•	Upstream: Lauffen am Neckar
+•	Downstream: Besigheim
+ 
+5. SHUTDOWN DATES
+You should independently determine the actual shutdown date of every nuclear power plant.
+Do not simply assume that:
+shutdown year = 2011
+means:
+shutdown date = 2011-01-01
+Use reliable sources.
+Record the exact shutdown date where possible.
+Create one central configuration/data table containing:
+observation_id
+plant
+shutdown_date
+shutdown_year
+river
+upstream_station
+downstream_station
+Do not scatter shutdown dates throughout the code.
+The source for each shutdown date should be documented in the final report.
+ 
+6. CORE RESEARCH QUESTION
+The main research question is:
+Did the shutdown of a nuclear power plant cause a measurable change in downstream river water temperature and dissolved oxygen compared with an upstream station?
+The basic identification strategy is:
+              BEFORE        AFTER
+
+UPSTREAM         A             B
+DOWNSTREAM       C             D
+The Difference-in-Differences estimator is:
+DiD = (D - C) - (B - A)
+In words:
+Change downstream after shutdown minus change upstream after shutdown.
+The shutdown is the treatment.
+The upstream/downstream distinction provides the spatial comparison.
+Do NOT incorrectly describe downstream itself as the treatment.
+ 
+7. MAIN ANALYSIS — FIVE-YEAR WINDOW
+The main specification must use a five-year event window.
+For every shutdown:
+•	5 years before shutdown
+•	shutdown/transition period
+•	5 years after shutdown
+The shutdown year/date should be handled carefully.
+If the exact shutdown date is available, use it.
+The shutdown period itself may represent a transition period and should generally not simply be treated as a normal pre or post observation without justification.
+Document exactly how the transition period is handled.
+The main analysis should therefore be based on a clearly defined:
+PRE
+POST
+period around the shutdown.
+The five-year specification is the main result.
+ 
+8. MULTIPLE SHUTDOWNS AND REUSED STATIONS
+Some stations are used for multiple shutdown events.
+For example:
+Landshut-Berg → Landau
+    Isar 1
+    Isar 2
+
+Karlsruhe → Mannheim
+    Philippsburg 1
+    Philippsburg 2
+
+Neu-Ulm → Donauwörth
+    Gundremmingen B
+    Gundremmingen C
+
+Lauffen → Besigheim
+    Neckarwestheim 1
+    Neckarwestheim 2
+This is important.
+Do NOT duplicate the raw station data unnecessarily.
+Instead, construct separate event windows around each shutdown.
+The same physical station can therefore contribute to multiple events.
+Detect whether any five-year windows overlap.
+If they overlap substantially, report this clearly and consider whether the observations can reasonably be treated as separate events.
+Do not assume independence blindly.
+ 
+9. OUTCOME 1 — WATER TEMPERATURE
+Use the temperature data under:
+Data_temperature_oxygen, files always end with _C 
+Determine the correct variable and unit.
+The preferred standardized variable is:
+water_temperature
+with units:
+°C
+ 
+10. OUTCOME 2 — DISSOLVED OXYGEN
+Use the oxygen data under:
+Data_temperature_oxygen, files end with _CO
+Determine the exact variable and unit.
+Possible units may include:
+•	mg/L
+•	µg/L
+•	% saturation
+Do not combine different units.
+If several oxygen variables are available, determine which is scientifically appropriate and document the decision.
+ 
+11. DATA CLEANING
+Build a transparent preprocessing pipeline.
+Check:
+•	date formats,
+•	station names,
+•	duplicate observations,
+•	missing observations,
+•	impossible values,
+•	extreme values,
+•	unit consistency,
+•	measurement frequency,
+•	temporal gaps,
+•	station metadata.
+Do not automatically interpolate missing environmental measurements.
+Prefer actual observations.
+If observations are removed, document:
+•	how many,
+•	from which station,
+•	why they were removed.
+Do not remove observations simply because they make the result less significant.
+The goal is scientific validity, not statistical significance.
+ 
+12. MONTHLY AGGREGATION
+The primary analysis and visualization should use monthly means.
+For each station:
+1.	Convert measurements to datetime.
+2.	Aggregate observations by month.
+3.	Calculate the monthly mean.
+4.	Record the number of observations used for that monthly mean.
+Create variables such as:
+year
+month
+year_month
+monthly_mean
+n_observations
+If a month contains very few observations, investigate whether it should be included.
+Do not invent a completeness threshold without justification.
+Document the chosen threshold.
+ 
+13. SIMPLE DESCRIPTIVE ANALYSIS
+Before performing DiD, calculate simple pre/post comparisons for every observation.
+For each plant and each outcome:
+Upstream
+Calculate:
+•	pre-period mean
+•	post-period mean
+•	absolute change
+•	percentage change where meaningful
+Downstream
+Calculate:
+•	pre-period mean
+•	post-period mean
+•	absolute change
+•	percentage change where meaningful
+Then calculate the 2×2 DiD.
+Create a table:
+Observation
+Plant
+Shutdown Date
+Outcome
+Upstream Pre
+Upstream Post
+Downstream Pre
+Downstream Post
+Upstream Change
+Downstream Change
+DiD
+ 
+14. 2×2 DIFFERENCE-IN-DIFFERENCES MODEL
+Implement the standard model:
+Y = β0
+  + β1 Post
+  + β2 Downstream
+  + β3(Post × Downstream)
+  + ε
+where:
+Y = outcome
+Post = 1 after shutdown
+Downstream = 1 for downstream station
+Post × Downstream = interaction
+The main coefficient of interest is:
+β3
+which represents the Difference-in-Differences effect.
+Run the analysis separately for:
+1.	Water temperature
+2.	Dissolved oxygen
+and separately for all eight shutdown observations.
+Where statistically justified, calculate:
+•	standard errors,
+•	confidence intervals,
+•	p-values.
+Use robust standard errors where appropriate.
+Do not automatically cluster standard errors without considering the very small number of events.
+Explain the chosen inference method.
+ 
+15. SEASONALITY
+This is a critical part of the analysis.
+Water temperature and dissolved oxygen are strongly seasonal.
+Therefore, raw annual averages alone are not sufficient.
+The analysis should:
+•	use monthly data,
+•	compare equivalent periods where appropriate,
+•	investigate seasonal patterns,
+•	assess whether the estimated shutdown effect is driven by seasonality.
+Consider models including:
+•	month fixed effects,
+•	year effects,
+•	seasonal controls.
+Keep the main 2×2 analysis simple and interpretable.
+Use more advanced specifications as robustness checks.
+ 
+16. PARALLEL TRENDS
+Assess whether the upstream and downstream stations behaved similarly before the shutdown.
+For every observation, inspect the pre-treatment period.
+The question is:
+Before the shutdown, did upstream and downstream measurements follow reasonably similar trends?
+Do this for:
+•	water temperature,
+•	dissolved oxygen.
+Create clear visualizations.
+Do not claim that parallel trends are "proven".
+Use cautious language such as:
+"The pre-treatment trends appear broadly consistent with the parallel trends assumption."
+or:
+"The pre-treatment trends provide limited support for the parallel trends assumption."
+If the assumption looks clearly problematic for a particular observation, flag it.
+ 
+17. EVENT STUDY / DYNAMIC EFFECTS
+If the data support it, construct an event-time analysis around the shutdown.
+Show:
+years/months before shutdown
+        ↓
+shutdown
+        ↓
+years/months after shutdown
+This should help identify:
+•	pre-existing trends,
+•	immediate effects,
+•	delayed effects,
+•	persistence of effects.
+Do not force an event study if the available data do not support it.
+ 
+18. SENSITIVITY ANALYSIS — TIME WINDOW
+The main analysis is:
+5 years before vs 5 years after.
+Repeat the analysis using:
+•	3 years
+•	4 years
+•	5 years
+•	6 years
+•	7 years
+where data availability allows.
+For each window calculate:
+•	temperature DiD,
+•	oxygen DiD,
+•	confidence interval,
+•	sample size.
+Create a table:
+Window
+Observation
+Temperature DiD
+Temperature CI
+Oxygen DiD
+Oxygen CI
+N
+Create a sensitivity plot:
+X-axis = window length
+Y-axis = DiD estimate
+Error bars = confidence interval
+The purpose is to determine whether the main five-year result is robust to reasonable changes in the time window.
+ 
+19. DISTANCE FROM THE NUCLEAR POWER PLANT
+Distance is an important part of the analysis.
+First inspect the existing code under:
+Skrypty/
+to determine whether river-distance calculations already exist.
+If an existing and reliable river-distance method exists:
+reuse it.
+Do not create a competing implementation unnecessarily.
+ 
+20. RIVER DISTANCE — NOT STRAIGHT-LINE DISTANCE
+The preferred distance is:
+distance along the river.
+Do NOT use straight-line geographical distance if river-distance information is available.
+For each observation determine:
+1.	Plant → upstream station distance
+2.	Plant → downstream station distance
+3.	Upstream → downstream distance
+The result should be a table such as:
+Plant
+River
+Upstream Station
+Downstream Station
+Upstream Distance from Plant [km]
+Downstream Distance from Plant [km]
+Upstream-Downstream Distance [km]
+Also verify that:
+•	upstream is actually upstream,
+•	downstream is actually downstream,
+•	the plant lies between the relevant stations where expected.
+Flag suspicious cases.
+ 
+21. DISTANCE SENSITIVITY ANALYSIS
+This is an important robustness analysis.
+The hypothesis is:
+The effect of a nuclear power plant shutdown should potentially be stronger at measurement stations located closer to the plant and weaker further downstream.
+However, do not assume this relationship is true.
+Test it empirically.
+For every observation calculate:
+distance_to_downstream_station
+Then compare:
+DiD effect
+vs.
+distance from plant
+Do this separately for:
+•	water temperature,
+•	dissolved oxygen.
+Create a clear scatter plot:
+X-axis = downstream distance from plant [km]
+Y-axis = DiD estimate
+Include a fitted trend only if statistically meaningful and appropriate.
+Because there are only eight shutdown events, do not overinterpret a regression with eight observations.
+If the sample is too small for a meaningful regression, use:
+•	descriptive comparison,
+•	rank correlation where appropriate,
+•	scatter plot,
+•	qualitative interpretation.
+The objective is a robustness/exploratory analysis, not to manufacture a statistically significant relationship.
+ 
+22. DISTANCE GROUPS
+If useful, also investigate whether the results differ between:
+•	relatively close stations,
+•	medium-distance stations,
+•	relatively distant stations.
+Do not arbitrarily choose thresholds just to obtain a desired result.
+If the sample is too small for meaningful grouping, skip this analysis and explain why.
+ 
+23. MAIN GRAPH — WATER TEMPERATURE
+Create a clean main figure showing:
+Monthly mean water temperature over time.
+Preferred:
+X-axis = month/year
+Y-axis = monthly mean water temperature [°C]
+Show:
+•	upstream,
+•	downstream,
+•	shutdown date.
+Use a simple scientific style.
+The graph should immediately communicate:
+•	the long-term temperature pattern,
+•	seasonal variation,
+•	the shutdown,
+•	upstream vs downstream differences.
+Do not overload the graph with unnecessary information.
+ 
+24. MAIN GRAPH — DISSOLVED OXYGEN
+Create the equivalent figure for dissolved oxygen.
+X-axis = month/year
+Y-axis = monthly mean dissolved oxygen [correct unit]
+Show:
+•	upstream,
+•	downstream,
+•	shutdown date.
+ 
+25. FIGURE ORGANIZATION
+Do not generate dozens of redundant figures.
+The main figures should be concise and useful for the thesis.
+Recommended figures:
+Figure 1
+Water temperaturę for each observation — monthly means, upstream vs downstream, shutdown marked.
+Figure 2
+Dissolved oxygen for each observation — monthly means, upstream vs downstream, shutdown marked.
+Figure 3
+Temperature DiD estimates across the eight shutdowns.
+Figure 4
+Dissolved oxygen DiD estimates across the eight shutdowns.
+Figure 5
+Temperature sensitivity to event-window length.
+Figure 6
+Oxygen sensitivity to event-window length.
+Figure 7
+Pre-treatment / parallel-trends analysis.
+Figure 8
+DiD effect vs downstream distance from plant.
+If a figure does not provide useful information, do not create it.
+ 
+26. FIGURE DESIGN
+All graphics should be:
+•	clean,
+•	readable,
+•	publication-ready,
+•	suitable for a Master's thesis.
+Use:
+•	clear axis labels,
+•	units,
+•	readable dates,
+•	simple legends,
+•	meaningful titles.
+Avoid:
+•	3D graphics,
+•	excessive decoration,
+•	unnecessary colors,
+•	dual axes unless absolutely necessary,
+•	excessive annotations.
+The reader should understand each graph without reading the source code.
+ 
+27. FINAL RESULTS DIRECTORY
+Create:
+final_results/
+Organize the results approximately as:
+final_results/
+│
+├── tables/
+│   ├── data_quality.csv
+│   ├── descriptive_statistics.csv
+│   ├── did_temperature.csv
+│   ├── did_oxygen.csv
+│   ├── sensitivity_time_windows.csv
+│   └── station_distances.csv
+│
+├── figures/
+│   ├── water_temperature_over_time.png
+│   ├── dissolved_oxygen_over_time.png
+│   ├── did_temperature.png
+│   ├── did_oxygen.png
+│   ├── sensitivity_temperature.png
+│   ├── sensitivity_oxygen.png
+│   ├── parallel_trends_temperature.png
+│   ├── parallel_trends_oxygen.png
+│   └── did_vs_distance.png
+│
+├── reports/
+│   ├── analysis_summary.md
+│   └── methodology_notes.md
+│
+└── data_quality/
+    ├── station_coverage.csv
+    └── missing_values.csv
+Adapt this structure if the existing project has a better organization.
+ 
+28. CODE STRUCTURE
+Do not create one huge Python file.
+Use a clean modular structure.
+For example:
+src/
+├── config.py
+├── data_loading.py
+├── data_cleaning.py
+├── monthly_aggregation.py
+├── event_windows.py
+├── did_analysis.py
+├── sensitivity_analysis.py
+├── distance_analysis.py
+├── visualization.py
+└── main.py
+Reuse existing scripts from Skrypty/ where appropriate.
+Follow:
+•	KISS
+•	DRY
+•	YAGNI
+•	clean code
+•	reproducibility
+•	meaningful variable names
+•	functions with single responsibilities
+•	type hints where useful
+•	docstrings for important functions.
+Do not duplicate the same logic separately for temperature and oxygen.
+Use reusable functions.
+ 
+29. CENTRAL CONFIGURATION
+Important assumptions should be stored centrally.
+For example:
+MAIN_WINDOW_YEARS = 5
+SENSITIVITY_WINDOWS = [3, 4, 5, 6, 7]
+The plant/station mapping and shutdown dates should also be stored centrally.
+Do not hard-code values throughout multiple scripts.
+ 
+30. STATISTICAL QUALITY CONTROL
+Act as a statistician, not only as a programmer.
+For every important methodological decision ask:
+•	Is this statistically defensible?
+•	Is seasonality controlled?
+•	Are missing values handled appropriately?
+•	Are pre-treatment trends plausible?
+•	Could the upstream station also be affected?
+•	Are the stations sufficiently close to the plant?
+•	Is the downstream station actually downstream?
+•	Are repeated station observations handled correctly?
+•	Are confidence intervals meaningful given the sample size?
+•	Are we overinterpreting p-values?
+•	Is the five-year window appropriate?
+•	Are results robust to alternative windows?
+•	Does distance influence the estimated effect?
+If a requested method is statistically inappropriate:
+1.	identify the problem,
+2.	explain it,
+3.	propose a better method,
+4.	implement the better method if appropriate.
+Do not blindly follow a method simply because it was requested.
+ 
+31. IMPORTANT: DO NOT OPTIMIZE FOR SIGNIFICANCE
+The objective is NOT:
+Find statistically significant effects.
+The objective is:
+Determine whether the data provide credible evidence of a change associated with nuclear power plant shutdowns.
+Do not:
+•	remove observations because they weaken the effect,
+•	select a time window because it produces a significant result,
+•	change station assignments because they improve the result,
+•	manipulate the data,
+•	perform excessive model searching without documenting it.
+All methodological decisions must be defensible independently of the result.
+ 
+32. FINAL REPORT
+Create:
+final_results/reports/analysis_summary.md
+Include:
+1. Executive Summary
+Briefly explain:
+•	research question,
+•	eight shutdown events,
+•	two outcomes,
+•	main five-year DiD results.
+2. Data
+Describe:
+•	data sources,
+•	stations,
+•	variables,
+•	measurement frequency,
+•	time coverage,
+•	missing data.
+3. Methodology
+Explain:
+•	upstream/downstream comparison,
+•	pre/post comparison,
+•	2×2 DiD,
+•	five-year event window,
+•	seasonality,
+•	sensitivity analysis,
+•	river-distance analysis.
+4. Results
+Report:
+•	descriptive statistics,
+•	DiD estimates,
+•	confidence intervals,
+•	p-values,
+•	sensitivity analysis,
+•	distance analysis.
+5. Robustness
+Discuss:
+•	alternative time windows,
+•	seasonality,
+•	parallel trends,
+•	distance,
+•	data coverage.
+6. Limitations
+Discuss:
+•	observational nature,
+•	small number of shutdown events,
+•	DiD assumptions,
+•	station distance,
+•	potential confounders,
+•	repeated use of stations,
+•	measurement limitations,
+•	potential overlap between event windows.
+7. Conclusions
+Give a short, cautious conclusion.
+Do not overstate causality.
+ 
+33. REPRODUCIBILITY
+The entire analysis should be reproducible with one command.
+For example:
+python src/main.py
+Running the pipeline should:
+1.	load raw data,
+2.	clean data,
+3.	aggregate monthly data,
+4.	identify shutdown dates,
+5.	construct five-year event windows,
+6.	calculate descriptive statistics,
+7.	calculate 2×2 DiD,
+8.	run sensitivity analysis,
+9.	calculate river distances,
+10.	run distance sensitivity analysis,
+11.	generate tables,
+12.	generate figures,
+13.	generate the final report.
+ 
+34. FINAL VALIDATION
+Before considering the task complete, run the complete pipeline from the beginning.
+Verify:
+•	all eight observations are included,
+•	all shutdown dates are correct,
+•	upstream/downstream assignments are correct,
+•	temperature data are correct,
+•	oxygen data are correct,
+•	units are correct,
+•	monthly aggregation works,
+•	five-year windows work,
+•	sensitivity windows work,
+•	DiD calculations are correct,
+•	confidence intervals are calculated correctly,
+•	river distances are correct,
+•	figures are generated,
+•	tables are generated,
+•	report is generated,
+•	no hard-coded local paths exist,
+•	no duplicated unnecessary code exists.
+Perform sanity checks on the numerical results.
+For at least one observation, manually verify:
+Upstream Pre
+Upstream Post
+Downstream Pre
+Downstream Post
+
+DiD =
+(Downstream Post - Downstream Pre)
+-
+(Upstream Post - Upstream Pre)
+and confirm that the regression-based DiD coefficient gives the same result.
+ 
+35. FINAL OUTPUT
+When everything is complete, provide a concise final summary:
+ANALYSIS COMPLETE
+
+Observations analysed: 8
+
+Outcomes:
+- Water temperature
+- Dissolved oxygen
+
+Main specification:
+- Monthly data
+- 5-year pre/post window
+- Upstream vs downstream
+- 2×2 Difference-in-Differences
+
+Robustness:
+- 3–7 year event windows
+- Parallel trends
+- Seasonal analysis
+- River-distance analysis
+- DiD vs distance
+
+Results:
+final_results/
+
+Existing scripts reused:
+[list relevant scripts from Skrypty/]
+
+Important methodological limitations:
+[list the most important ones]
+Most importantly:
+Build the analysis as a researcher, not as a code generator.
+The final code and results should be:
+•	scientifically defensible,
+•	transparent,
+•	reproducible,
+•	easy to understand,
+•	easy to modify,
+•	suitable for a Master's-level seminar paper.
+Do not manufacture significance.
+Do not hide methodological problems.
+If the data do not support a particular conclusion, explicitly report that.
