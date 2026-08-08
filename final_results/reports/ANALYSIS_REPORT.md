@@ -30,13 +30,13 @@ Successfully loaded and processed data for the following observations:
 | Observation | Plant | River | Upstream | Downstream | Years | Status |
 |---|---|---|---|---|---|---|
 | 1 | Isar 1 | Isar | Landshut-Birket | Landau | 1980-2023 | ✓ Temperature |
-| 2 | Neckarwestheim 1 | Neckar | Lauffen | Besigheim | 2006-2023 | ✓ Oxygen only |
+| 2 | Neckarwestheim 1 | Neckar | Besigheim | Lauffen | 2006-2023 | ✓ Oxygen only |
 | 3 | Philippsburg 1 | Rhine | Karlsruhe | Mannheim | 2006-2019 | Data quality issues |
 | 4 | Gundremmingen B | Danube | Neu-Ulm | Donauwörth | 2001-2026 | ✓ Temperature |
 | 5 | Philippsburg 2 | Rhine | Karlsruhe | Mannheim | 2006-2019 | Data quality issues |
 | 6 | Gundremmingen C | Danube | Neu-Ulm | Donauwörth | 2001-2026 | ✓ Temperature |
 | 7 | Isar 2 | Isar | Landshut-Birket | Landau | 1980-2023 | ✓ Temperature |
-| 8 | Neckarwestheim 2 | Neckar | Lauffen | Besigheim | 2006-2023 | ✓ Oxygen only |
+| 8 | Neckarwestheim 2 | Neckar | Besigheim | Lauffen | 2006-2023 | ✓ Oxygen only |
 
 ### Data Quality
 

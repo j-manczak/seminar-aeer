@@ -1,9 +1,9 @@
 obs_id,plant,river,shutdown_date,upstream_station,downstream_station,pre_months_in_regression,post_months_in_regression,total_regression_months,temperature_available,oxygen_available,data_notes
 1,Isar 1,Isar,2011-08-06,Landshut-Birket,Landau,116,116,232,True,False,
-2,Neckarwestheim 1,Neckar,2011-08-06,Lauffen,Besigheim,27,121,148,True,True,
+2,Neckarwestheim 1,Neckar,2011-08-06,Besigheim,Lauffen,27,121,148,True,True,
 3,Philippsburg 1,Rhine,2011-08-06,Karlsruhe,Mannheim,126,126,252,True,True,
 4,Gundremmingen B,Danube,2017-12-31,Neu-Ulm,Donauwörth,132,132,264,True,False,
 5,Philippsburg 2,Rhine,2019-12-31,Karlsruhe,Mannheim,126,126,252,True,True,
 6,Gundremmingen C,Danube,2021-12-31,Neu-Ulm,Donauwörth,120,120,240,True,False,
 7,Isar 2,Isar,2023-04-15,Landshut-Birket,Landau,96,96,192,True,False,
-8,Neckarwestheim 2,Neckar,2023-04-15,Lauffen,Besigheim,91,91,182,True,True,
+8,Neckarwestheim 2,Neckar,2023-04-15,Besigheim,Lauffen,91,91,182,True,True,
