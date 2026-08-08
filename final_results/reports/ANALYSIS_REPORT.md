@@ -276,7 +276,7 @@ Examined pre-treatment period (5 years before shutdown) for each observation:
 ### Regression Estimation
 
 - **Estimator:** Ordinary Least Squares (OLS)
-- **Standard errors:** Non-clustered, robust covariance matrix (HC1)
+- **Standard errors:** Ordinary OLS (non-clustered, unadjusted)
 - **Inference:** Two-tailed t-tests at α=0.05
 - **Fixed effects:** Month dummies (12 indicators)
 

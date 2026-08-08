@@ -200,8 +200,9 @@ AEER/
 - Oxygen observations: 140–230 monthly means (subset only)
 
 **Cohorts:**
-- **2011 shutdowns (6 plants):** Primary analysis (Isar 1, Neckarwestheim 1, Philippsburg 1, Gundremmingen B, Philippsburg 2, Gundremmingen C)
-- **2023 shutdowns (2 plants):** Secondary extension (Isar 2, Neckarwestheim 2); limited post-period
+- **2011 shutdowns (3 plants):** Isar 1, Neckarwestheim 1, Philippsburg 1
+- **Staggered 2017-2021 shutdowns (3 plants):** Gundremmingen B (2017-12-31), Philippsburg 2 (2019-12-31), Gundremmingen C (2021-12-31)
+- **2023 shutdowns (2 plants):** Isar 2, Neckarwestheim 2; limited post-period
 
 **Robustness:**
 - Isar 1 effect stable across all event windows (3–7 years): −1.77° to −2.14°C, all p<0.001
