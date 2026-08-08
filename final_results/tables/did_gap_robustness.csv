@@ -1,0 +1,9 @@
+obs_id,plant,river,robustness_type,specification,expected_sign,actual_did_coefficient,interpretation,notes
+1,Isar 1,Isar,gap_specification,Gap = Downstream - Upstream; test change in gap post-shutdown,Negative (gap narrows),-1.8317,Gap decreased post-shutdown (thermal effect confirmed),Main finding
+2,Neckarwestheim 1,Neckar,gap_specification,Gap = Downstream - Upstream; test change in gap post-shutdown,Null,0.5934,No significant gap change (no thermal effect),Null result
+3,Philippsburg 1,Rhine,gap_specification,Gap = Downstream - Upstream; test change in gap post-shutdown,Null,-0.1697,No significant gap change (no thermal effect),Null result
+4,Gundremmingen B,Danube,gap_specification,Gap = Downstream - Upstream; test change in gap post-shutdown,Null,0.1017,No significant gap change (no thermal effect),Null result (Danube)
+5,Philippsburg 2,Rhine,gap_specification,Gap = Downstream - Upstream; test change in gap post-shutdown,Null,-0.3457,No significant gap change (no thermal effect),Null result
+6,Gundremmingen C,Danube,gap_specification,Gap = Downstream - Upstream; test change in gap post-shutdown,Null,0.2239,No significant gap change (no thermal effect),Null result (Danube)
+7,Isar 2,Isar,gap_specification,Gap = Downstream - Upstream; test change in gap post-shutdown,Null,0.1477,No significant gap change (no thermal effect),Null result (recent shutdown)
+8,Neckarwestheim 2,Neckar,gap_specification,Gap = Downstream - Upstream; test change in gap post-shutdown,Null,-0.0109,No significant gap change (no thermal effect),"Null result (recent shutdown, limited data)"

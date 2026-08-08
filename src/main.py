@@ -228,13 +228,16 @@ def main():
                             all_results.append(did_result.to_dict())
                             print_regression_summary(did_result)
                 
-                # Sensitivity analysis
+                # Sensitivity analysis (alternative window sizes)
                 logger.info(f"    Sensitivity analysis:")
                 sensitivity_windows = create_multiple_windows(
                     monthly_temp, shutdown_date, config.SENSITIVITY_WINDOWS
                 )
                 
                 for window_years, (windowed, info) in sensitivity_windows.items():
+                    # Skip the main window to avoid duplication
+                    if window_years == config.MAIN_WINDOW_YEARS:
+                        continue
                     if info.get('has_complete_window', False):
                         did_data = prepare_did_data(windowed, upstream_col, downstream_col)
                         regression = run_2x2_did_regression(did_data, include_month_fe=True)
@@ -287,13 +290,16 @@ def main():
                             all_results.append(did_result.to_dict())
                             print_regression_summary(did_result)
                 
-                # Sensitivity analysis
+                # Sensitivity analysis (alternative window sizes)
                 logger.info(f"    Sensitivity analysis:")
                 sensitivity_windows = create_multiple_windows(
                     monthly_oxygen, shutdown_date, config.SENSITIVITY_WINDOWS
                 )
                 
                 for window_years, (windowed, info) in sensitivity_windows.items():
+                    # Skip the main window to avoid duplication
+                    if window_years == config.MAIN_WINDOW_YEARS:
+                        continue
                     if info.get('has_complete_window', False):
                         did_data = prepare_did_data(windowed, upstream_col, downstream_col)
                         regression = run_2x2_did_regression(did_data, include_month_fe=True)

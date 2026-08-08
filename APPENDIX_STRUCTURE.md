@@ -86,7 +86,7 @@ Where:
 - MONTH_m = 12 month dummies (January–December) as fixed effects
 - ε_{ist} = error term
 
-**Standard errors:** Newey–West HAC with 12-month lag (matches seasonal cycle)
+**Standard errors:** Ordinary least squares (OLS) standard errors. Note: OLS SEs are conservative estimates that do not adjust for serial correlation; true confidence intervals may be wider due to month-to-month persistence in hydrological variables.
 
 ---
 
@@ -99,7 +99,7 @@ Each observation uses a different shutdown date:
 | 1 | Isar 1 | Isar | 2011-08-06 | 2006-08 to 2011-08 | 2011-08 to 2016-08 |
 | 2 | Neckarwestheim 1 | Neckar | 2011-08-06 | 2006-08 to 2011-08 | 2011-08 to 2016-08 |
 | 3 | Philippsburg 1 | Rhine/Neckar | 2011-08-06 | 2006-08 to 2011-08 | 2011-08 to 2016-08 |
-| 4 | Gundremmingen B | Danube | 2011-08-06 | 2006-08 to 2011-08 | 2011-08 to 2016-08 |
+| 4 | Gundremmingen B | Danube | 2017-12-31 | 2012-12 to 2017-12 | 2017-12 to 2022-12 |
 | 5 | Philippsburg 2 | Rhine/Neckar | 2015-04-15 | 2010-04 to 2015-04 | 2015-04 to 2020-04 |
 | 6 | Gundremmingen C | Danube | 2019-06-30 | 2014-06 to 2019-06 | 2019-06 to 2024-06 |
 | 7 | Isar 2 | Isar | 2023-04-15 | 2018-04 to 2023-04 | 2023-04 to 2026-08 (32 mo.) |

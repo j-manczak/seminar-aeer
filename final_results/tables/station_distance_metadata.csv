@@ -1,0 +1,9 @@
+obs_id,plant,river,upstream_station,downstream_station,distance_data_available,distance_sensitivity_estimable,limitation
+1,Isar 1,Isar,Landshut-Birket,Landau,Not in discharge datasets,False,River-km coordinates missing or stations not in datasets
+2,Neckarwestheim 1,Neckar,Lauffen,Besigheim,Lauffen: 4.0 km (from discharge_2006_2018.csv),True,River-km coordinates missing or stations not in datasets
+3,Philippsburg 1,Rhine,Karlsruhe,Mannheim,Not in discharge datasets,False,River-km coordinates missing or stations not in datasets
+4,Gundremmingen B,Danube,Neu-Ulm,Donauwörth,Not in discharge datasets,False,River-km coordinates missing or stations not in datasets
+5,Philippsburg 2,Rhine,Karlsruhe,Mannheim,Not in discharge datasets,False,River-km coordinates missing or stations not in datasets
+6,Gundremmingen C,Danube,Neu-Ulm,Donauwörth,Not in discharge datasets,False,River-km coordinates missing or stations not in datasets
+7,Isar 2,Isar,Landshut-Birket,Landau,Not in discharge datasets,False,River-km coordinates missing or stations not in datasets
+8,Neckarwestheim 2,Neckar,Lauffen,Besigheim,Lauffen: 4.0 km (from discharge_2006_2018.csv),True,River-km coordinates missing or stations not in datasets

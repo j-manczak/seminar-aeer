@@ -113,7 +113,7 @@ final_results/
 ### Statistical Control
 - **Fixed effects:** Month indicators (12 dummies for seasonality)
 - **Rationale:** Temperature is strongly seasonal; month FE removes this confound
-- **Standard errors:** OLS robust covariance (HC1)
+- **Standard errors:** Ordinary least squares (OLS)
 
 ### Identification
 - **Design:** 2×2 DiD with upstream/downstream comparison

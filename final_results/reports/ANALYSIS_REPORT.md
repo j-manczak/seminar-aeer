@@ -12,10 +12,10 @@ This analysis examines the causal impact of eight German nuclear power plant shu
 ### Key Findings
 
 **Analysis covers 4 observations with temperature data:**
-- **Isar 1 (April 2011)**: Significant cooling effect of **-1.91°C** (p < 0.001) ***
+- **Isar 1 (August 2011)**: Significant cooling effect of **-1.91°C** (p < 0.001) ***
 - **Gundremmingen B (December 2017)**: Small effect of **+0.10°C** (p = 0.726)
 - **Gundremmingen C (December 2021)**: Small effect of **+0.22°C** (p = 0.443)
-- **Isar 2 (May 2023)**: Small effect of **+0.16°C** (p = 0.612)
+- **Isar 2 (April 2023)**: Small effect of **+0.16°C** (p = 0.612)
 
 **Main specification:** 5-year pre/post event windows, monthly aggregates, with month fixed effects to control for seasonality.
 
@@ -112,7 +112,7 @@ Where:
 - **Time unit:** Monthly means (accounts for measurement frequency variation)
 - **Minimum obs per month:** 5 daily measurements (to ensure data quality)
 - **Seasonality control:** Month fixed effects
-- **Standard errors:** OLS with robust covariance
+- **Standard errors:** Ordinary least squares (OLS)
 
 ### Sensitivity Analysis
 
@@ -146,11 +146,12 @@ Purpose: Determine whether results are robust to reasonable changes in temporal 
 - Strong and precisely estimated (95% CI: -2.49 to -1.33°C)
 - Robust across window lengths (3-7 years)
 
-**Gundremmingen (B & C, 2017-2021):** No significant effects detected
-- Both observations show small, positive, non-significant coefficients
+**Gundremmingen B & C (2017 & 2021):** No significant effects detected
+- Both observations show small, non-significant coefficients
 - Consistent across window lengths
 - Interpretation: Cooling tower design limits thermal discharge to river
-- Limited statistical power due to later shutdown dates and shorter post-periods
+- Gundremmingen B (2017): Limited pre-period data (Danube stations have coverage gaps)
+- Gundremmingen C (2021): Limited post-period data
 
 **Isar 2 (2023):** Insufficient post-period data
 - Only 32 months post-shutdown available
